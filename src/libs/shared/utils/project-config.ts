@@ -14,7 +14,7 @@ export async function setProjectConfig(): Promise<void> {
 export async function setProjectRoot() {
     const configFilePath = await findUp(defaultConfigFile);
     if (!configFilePath) {
-        throw Error(`The configuration file "${defaultConfigFile}" in project root is missing.`);
+        throw new Error(`The configuration file "${defaultConfigFile}" in project root is missing.`);
     }
     projectRoot = configFilePath.replace(defaultConfigFile, '');
 }
