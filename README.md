@@ -21,7 +21,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/0.5.4-poc linux-x64 node-v12.13.1
+@hoevelmanns/vcli/0.5.5-poc linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -155,7 +155,7 @@ USAGE
   $ vc abo:create-orders
 ```
 
-_See code: [src/commands/abo/create-orders.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/abo/create-orders.ts)_
+_See code: [src/commands/abo/create-orders.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/abo/create-orders.ts)_
 
 ## `vc abo:create-orders-csv`
 
@@ -166,7 +166,7 @@ USAGE
   $ vc abo:create-orders-csv
 ```
 
-_See code: [src/commands/abo/create-orders-csv.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/abo/create-orders-csv.ts)_
+_See code: [src/commands/abo/create-orders-csv.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/abo/create-orders-csv.ts)_
 
 ## `vc abo:create-orders-test`
 
@@ -177,7 +177,7 @@ USAGE
   $ vc abo:create-orders-test
 ```
 
-_See code: [src/commands/abo/create-orders-test.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/abo/create-orders-test.ts)_
+_See code: [src/commands/abo/create-orders-test.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/abo/create-orders-test.ts)_
 
 ## `vc abo:send-failed-orders`
 
@@ -188,7 +188,7 @@ USAGE
   $ vc abo:send-failed-orders
 ```
 
-_See code: [src/commands/abo/send-failed-orders.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/abo/send-failed-orders.ts)_
+_See code: [src/commands/abo/send-failed-orders.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/abo/send-failed-orders.ts)_
 
 ## `vc abo:send-next-order-inform`
 
@@ -199,7 +199,7 @@ USAGE
   $ vc abo:send-next-order-inform
 ```
 
-_See code: [src/commands/abo/send-next-order-inform.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/abo/send-next-order-inform.ts)_
+_See code: [src/commands/abo/send-next-order-inform.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/abo/send-next-order-inform.ts)_
 
 ## `vc abo:update-old-abo-create-date`
 
@@ -210,7 +210,7 @@ USAGE
   $ vc abo:update-old-abo-create-date
 ```
 
-_See code: [src/commands/abo/update-old-abo-create-date.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/abo/update-old-abo-create-date.ts)_
+_See code: [src/commands/abo/update-old-abo-create-date.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/abo/update-old-abo-create-date.ts)_
 
 ## `vc autocomplete [SHELL]`
 
@@ -251,7 +251,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/build.ts)_
+_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/build.ts)_
 
 ## `vc cache:clear`
 
@@ -262,7 +262,7 @@ USAGE
   $ vc cache:clear
 ```
 
-_See code: [src/commands/cache/clear.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/cache/clear.ts)_
+_See code: [src/commands/cache/clear.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/cache/clear.ts)_
 
 ## `vc create`
 
@@ -278,7 +278,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/create.ts)_
 
 ## `vc ct:commercetools:setup`
 
@@ -289,7 +289,7 @@ USAGE
   $ vc ct:commercetools:setup
 ```
 
-_See code: [src/commands/ct/commercetools/setup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/commercetools/setup.ts)_
+_See code: [src/commands/ct/commercetools/setup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/commercetools/setup.ts)_
 
 ## `vc ct:commercetools:translation:cleanup`
 
@@ -300,7 +300,7 @@ USAGE
   $ vc ct:commercetools:translation:cleanup
 ```
 
-_See code: [src/commands/ct/commercetools/translation/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/commercetools/translation/cleanup.ts)_
+_See code: [src/commands/ct/commercetools/translation/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/commercetools/translation/cleanup.ts)_
 
 ## `vc ct:commercetools:translation:import`
 
@@ -311,7 +311,7 @@ USAGE
   $ vc ct:commercetools:translation:import
 ```
 
-_See code: [src/commands/ct/commercetools/translation/import.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/commercetools/translation/import.ts)_
+_See code: [src/commands/ct/commercetools/translation/import.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/commercetools/translation/import.ts)_
 
 ## `vc ct:export:customers`
 
@@ -322,7 +322,7 @@ USAGE
   $ vc ct:export:customers
 ```
 
-_See code: [src/commands/ct/export/customers.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/export/customers.ts)_
+_See code: [src/commands/ct/export/customers.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/export/customers.ts)_
 
 ## `vc ct:export:order`
 
@@ -333,7 +333,7 @@ USAGE
   $ vc ct:export:order
 ```
 
-_See code: [src/commands/ct/export/order.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/export/order.ts)_
+_See code: [src/commands/ct/export/order.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/export/order.ts)_
 
 ## `vc ct:export:order-delta`
 
@@ -344,7 +344,7 @@ USAGE
   $ vc ct:export:order-delta
 ```
 
-_See code: [src/commands/ct/export/order-delta.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/export/order-delta.ts)_
+_See code: [src/commands/ct/export/order-delta.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/export/order-delta.ts)_
 
 ## `vc ct:import:articleStock`
 
@@ -355,7 +355,7 @@ USAGE
   $ vc ct:import:articleStock
 ```
 
-_See code: [src/commands/ct/import/articleStock.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/import/articleStock.ts)_
+_See code: [src/commands/ct/import/articleStock.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/import/articleStock.ts)_
 
 ## `vc ct:import:articles`
 
@@ -366,7 +366,7 @@ USAGE
   $ vc ct:import:articles
 ```
 
-_See code: [src/commands/ct/import/articles.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/import/articles.ts)_
+_See code: [src/commands/ct/import/articles.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/import/articles.ts)_
 
 ## `vc ct:import:categories`
 
@@ -377,7 +377,7 @@ USAGE
   $ vc ct:import:categories
 ```
 
-_See code: [src/commands/ct/import/categories.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/import/categories.ts)_
+_See code: [src/commands/ct/import/categories.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/import/categories.ts)_
 
 ## `vc ct:import:orderState`
 
@@ -388,7 +388,7 @@ USAGE
   $ vc ct:import:orderState
 ```
 
-_See code: [src/commands/ct/import/orderState.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/import/orderState.ts)_
+_See code: [src/commands/ct/import/orderState.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/import/orderState.ts)_
 
 ## `vc ct:import:translation:product-type`
 
@@ -399,7 +399,7 @@ USAGE
   $ vc ct:import:translation:product-type
 ```
 
-_See code: [src/commands/ct/import/translation/product-type.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/import/translation/product-type.ts)_
+_See code: [src/commands/ct/import/translation/product-type.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/import/translation/product-type.ts)_
 
 ## `vc ct:shopware:deactivate-unsynced-articles`
 
@@ -410,7 +410,7 @@ USAGE
   $ vc ct:shopware:deactivate-unsynced-articles
 ```
 
-_See code: [src/commands/ct/shopware/deactivate-unsynced-articles.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/shopware/deactivate-unsynced-articles.ts)_
+_See code: [src/commands/ct/shopware/deactivate-unsynced-articles.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/shopware/deactivate-unsynced-articles.ts)_
 
 ## `vc ct:shopware:generate-test-orders`
 
@@ -421,7 +421,7 @@ USAGE
   $ vc ct:shopware:generate-test-orders
 ```
 
-_See code: [src/commands/ct/shopware/generate-test-orders.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/shopware/generate-test-orders.ts)_
+_See code: [src/commands/ct/shopware/generate-test-orders.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/shopware/generate-test-orders.ts)_
 
 ## `vc ct:shopware:setup-shop-attributes`
 
@@ -432,7 +432,7 @@ USAGE
   $ vc ct:shopware:setup-shop-attributes
 ```
 
-_See code: [src/commands/ct/shopware/setup-shop-attributes.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/shopware/setup-shop-attributes.ts)_
+_See code: [src/commands/ct/shopware/setup-shop-attributes.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/shopware/setup-shop-attributes.ts)_
 
 ## `vc ct:shopware:update-reference-attributes`
 
@@ -443,7 +443,7 @@ USAGE
   $ vc ct:shopware:update-reference-attributes
 ```
 
-_See code: [src/commands/ct/shopware/update-reference-attributes.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/ct/shopware/update-reference-attributes.ts)_
+_See code: [src/commands/ct/shopware/update-reference-attributes.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/ct/shopware/update-reference-attributes.ts)_
 
 ## `vc dbal:import`
 
@@ -454,7 +454,7 @@ USAGE
   $ vc dbal:import
 ```
 
-_See code: [src/commands/dbal/import.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/dbal/import.ts)_
+_See code: [src/commands/dbal/import.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/dbal/import.ts)_
 
 ## `vc dbal:run-sql`
 
@@ -465,7 +465,7 @@ USAGE
   $ vc dbal:run-sql
 ```
 
-_See code: [src/commands/dbal/run-sql.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/dbal/run-sql.ts)_
+_See code: [src/commands/dbal/run-sql.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/dbal/run-sql.ts)_
 
 ## `vc elaine:backlog:process`
 
@@ -476,7 +476,7 @@ USAGE
   $ vc elaine:backlog:process
 ```
 
-_See code: [src/commands/elaine/backlog/process.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/elaine/backlog/process.ts)_
+_See code: [src/commands/elaine/backlog/process.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/elaine/backlog/process.ts)_
 
 ## `vc elaine:mail:customer-service-export`
 
@@ -487,7 +487,7 @@ USAGE
   $ vc elaine:mail:customer-service-export
 ```
 
-_See code: [src/commands/elaine/mail/customer-service-export.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/elaine/mail/customer-service-export.ts)_
+_See code: [src/commands/elaine/mail/customer-service-export.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/elaine/mail/customer-service-export.ts)_
 
 ## `vc elaine:mail:test`
 
@@ -498,7 +498,7 @@ USAGE
   $ vc elaine:mail:test
 ```
 
-_See code: [src/commands/elaine/mail/test.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/elaine/mail/test.ts)_
+_See code: [src/commands/elaine/mail/test.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/elaine/mail/test.ts)_
 
 ## `vc halt`
 
@@ -513,7 +513,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -541,7 +541,7 @@ USAGE
   $ vc orm:clear-cache:metadata
 ```
 
-_See code: [src/commands/orm/clear-cache/metadata.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/clear-cache/metadata.ts)_
+_See code: [src/commands/orm/clear-cache/metadata.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/clear-cache/metadata.ts)_
 
 ## `vc orm:clear-cache:query`
 
@@ -552,7 +552,7 @@ USAGE
   $ vc orm:clear-cache:query
 ```
 
-_See code: [src/commands/orm/clear-cache/query.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/clear-cache/query.ts)_
+_See code: [src/commands/orm/clear-cache/query.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/clear-cache/query.ts)_
 
 ## `vc orm:clear-cache:result`
 
@@ -563,7 +563,7 @@ USAGE
   $ vc orm:clear-cache:result
 ```
 
-_See code: [src/commands/orm/clear-cache/result.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/clear-cache/result.ts)_
+_See code: [src/commands/orm/clear-cache/result.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/clear-cache/result.ts)_
 
 ## `vc orm:convert-d1-schema`
 
@@ -574,7 +574,7 @@ USAGE
   $ vc orm:convert-d1-schema
 ```
 
-_See code: [src/commands/orm/convert-d1-schema.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/convert-d1-schema.ts)_
+_See code: [src/commands/orm/convert-d1-schema.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/convert-d1-schema.ts)_
 
 ## `vc orm:convert-mapping`
 
@@ -585,7 +585,7 @@ USAGE
   $ vc orm:convert-mapping
 ```
 
-_See code: [src/commands/orm/convert-mapping.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/convert-mapping.ts)_
+_See code: [src/commands/orm/convert-mapping.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/convert-mapping.ts)_
 
 ## `vc orm:ensure-production-settings`
 
@@ -596,7 +596,7 @@ USAGE
   $ vc orm:ensure-production-settings
 ```
 
-_See code: [src/commands/orm/ensure-production-settings.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/ensure-production-settings.ts)_
+_See code: [src/commands/orm/ensure-production-settings.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/ensure-production-settings.ts)_
 
 ## `vc orm:generate-entities`
 
@@ -607,7 +607,7 @@ USAGE
   $ vc orm:generate-entities
 ```
 
-_See code: [src/commands/orm/generate-entities.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/generate-entities.ts)_
+_See code: [src/commands/orm/generate-entities.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/generate-entities.ts)_
 
 ## `vc orm:generate-proxies`
 
@@ -618,7 +618,7 @@ USAGE
   $ vc orm:generate-proxies
 ```
 
-_See code: [src/commands/orm/generate-proxies.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/generate-proxies.ts)_
+_See code: [src/commands/orm/generate-proxies.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/generate-proxies.ts)_
 
 ## `vc orm:generate-repositories`
 
@@ -629,7 +629,7 @@ USAGE
   $ vc orm:generate-repositories
 ```
 
-_See code: [src/commands/orm/generate-repositories.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/generate-repositories.ts)_
+_See code: [src/commands/orm/generate-repositories.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/generate-repositories.ts)_
 
 ## `vc orm:info`
 
@@ -640,7 +640,7 @@ USAGE
   $ vc orm:info
 ```
 
-_See code: [src/commands/orm/info.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/info.ts)_
+_See code: [src/commands/orm/info.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/info.ts)_
 
 ## `vc orm:mapping:describe`
 
@@ -651,7 +651,7 @@ USAGE
   $ vc orm:mapping:describe
 ```
 
-_See code: [src/commands/orm/mapping/describe.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/mapping/describe.ts)_
+_See code: [src/commands/orm/mapping/describe.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/mapping/describe.ts)_
 
 ## `vc orm:run-dql`
 
@@ -662,7 +662,7 @@ USAGE
   $ vc orm:run-dql
 ```
 
-_See code: [src/commands/orm/run-dql.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/run-dql.ts)_
+_See code: [src/commands/orm/run-dql.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/run-dql.ts)_
 
 ## `vc orm:schema-tool:create`
 
@@ -673,7 +673,7 @@ USAGE
   $ vc orm:schema-tool:create
 ```
 
-_See code: [src/commands/orm/schema-tool/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/schema-tool/create.ts)_
+_See code: [src/commands/orm/schema-tool/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/schema-tool/create.ts)_
 
 ## `vc orm:schema-tool:drop`
 
@@ -684,7 +684,7 @@ USAGE
   $ vc orm:schema-tool:drop
 ```
 
-_See code: [src/commands/orm/schema-tool/drop.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/schema-tool/drop.ts)_
+_See code: [src/commands/orm/schema-tool/drop.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/schema-tool/drop.ts)_
 
 ## `vc orm:schema-tool:update`
 
@@ -695,7 +695,7 @@ USAGE
   $ vc orm:schema-tool:update
 ```
 
-_See code: [src/commands/orm/schema-tool/update.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/schema-tool/update.ts)_
+_See code: [src/commands/orm/schema-tool/update.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/schema-tool/update.ts)_
 
 ## `vc orm:validate-schema`
 
@@ -706,7 +706,7 @@ USAGE
   $ vc orm:validate-schema
 ```
 
-_See code: [src/commands/orm/validate-schema.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/orm/validate-schema.ts)_
+_See code: [src/commands/orm/validate-schema.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/orm/validate-schema.ts)_
 
 ## `vc refresh`
 
@@ -722,7 +722,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/refresh.ts)_
 
 ## `vc sw:admin:create`
 
@@ -733,7 +733,7 @@ USAGE
   $ vc sw:admin:create
 ```
 
-_See code: [src/commands/sw/admin/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/admin/create.ts)_
+_See code: [src/commands/sw/admin/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/admin/create.ts)_
 
 ## `vc sw:cache:clear`
 
@@ -744,7 +744,7 @@ USAGE
   $ vc sw:cache:clear
 ```
 
-_See code: [src/commands/sw/cache/clear.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/cache/clear.ts)_
+_See code: [src/commands/sw/cache/clear.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/cache/clear.ts)_
 
 ## `vc sw:clone:category:tree`
 
@@ -755,7 +755,7 @@ USAGE
   $ vc sw:clone:category:tree
 ```
 
-_See code: [src/commands/sw/clone/category/tree.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/clone/category/tree.ts)_
+_See code: [src/commands/sw/clone/category/tree.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/clone/category/tree.ts)_
 
 ## `vc sw:cron:list`
 
@@ -766,7 +766,7 @@ USAGE
   $ vc sw:cron:list
 ```
 
-_See code: [src/commands/sw/cron/list.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/cron/list.ts)_
+_See code: [src/commands/sw/cron/list.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/cron/list.ts)_
 
 ## `vc sw:cron:run`
 
@@ -777,7 +777,7 @@ USAGE
   $ vc sw:cron:run
 ```
 
-_See code: [src/commands/sw/cron/run.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/cron/run.ts)_
+_See code: [src/commands/sw/cron/run.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/cron/run.ts)_
 
 ## `vc sw:es:analyze`
 
@@ -788,7 +788,7 @@ USAGE
   $ vc sw:es:analyze
 ```
 
-_See code: [src/commands/sw/es/analyze.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/es/analyze.ts)_
+_See code: [src/commands/sw/es/analyze.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/es/analyze.ts)_
 
 ## `vc sw:es:backlog:clear`
 
@@ -799,7 +799,7 @@ USAGE
   $ vc sw:es:backlog:clear
 ```
 
-_See code: [src/commands/sw/es/backlog/clear.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/es/backlog/clear.ts)_
+_See code: [src/commands/sw/es/backlog/clear.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/es/backlog/clear.ts)_
 
 ## `vc sw:es:backlog:sync`
 
@@ -810,7 +810,7 @@ USAGE
   $ vc sw:es:backlog:sync
 ```
 
-_See code: [src/commands/sw/es/backlog/sync.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/es/backlog/sync.ts)_
+_See code: [src/commands/sw/es/backlog/sync.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/es/backlog/sync.ts)_
 
 ## `vc sw:es:index:cleanup`
 
@@ -821,7 +821,7 @@ USAGE
   $ vc sw:es:index:cleanup
 ```
 
-_See code: [src/commands/sw/es/index/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/es/index/cleanup.ts)_
+_See code: [src/commands/sw/es/index/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/es/index/cleanup.ts)_
 
 ## `vc sw:es:index:populate`
 
@@ -832,7 +832,7 @@ USAGE
   $ vc sw:es:index:populate
 ```
 
-_See code: [src/commands/sw/es/index/populate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/es/index/populate.ts)_
+_See code: [src/commands/sw/es/index/populate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/es/index/populate.ts)_
 
 ## `vc sw:es:switch:alias`
 
@@ -843,7 +843,7 @@ USAGE
   $ vc sw:es:switch:alias
 ```
 
-_See code: [src/commands/sw/es/switch/alias.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/es/switch/alias.ts)_
+_See code: [src/commands/sw/es/switch/alias.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/es/switch/alias.ts)_
 
 ## `vc sw:firstrunwizard:disable`
 
@@ -854,7 +854,7 @@ USAGE
   $ vc sw:firstrunwizard:disable
 ```
 
-_See code: [src/commands/sw/firstrunwizard/disable.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/firstrunwizard/disable.ts)_
+_See code: [src/commands/sw/firstrunwizard/disable.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/firstrunwizard/disable.ts)_
 
 ## `vc sw:firstrunwizard:enable`
 
@@ -865,7 +865,7 @@ USAGE
   $ vc sw:firstrunwizard:enable
 ```
 
-_See code: [src/commands/sw/firstrunwizard/enable.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/firstrunwizard/enable.ts)_
+_See code: [src/commands/sw/firstrunwizard/enable.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/firstrunwizard/enable.ts)_
 
 ## `vc sw:generate:attributes`
 
@@ -876,7 +876,7 @@ USAGE
   $ vc sw:generate:attributes
 ```
 
-_See code: [src/commands/sw/generate/attributes.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/generate/attributes.ts)_
+_See code: [src/commands/sw/generate/attributes.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/generate/attributes.ts)_
 
 ## `vc sw:media:cleanup`
 
@@ -887,7 +887,7 @@ USAGE
   $ vc sw:media:cleanup
 ```
 
-_See code: [src/commands/sw/media/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/media/cleanup.ts)_
+_See code: [src/commands/sw/media/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/media/cleanup.ts)_
 
 ## `vc sw:media:migrate`
 
@@ -898,7 +898,7 @@ USAGE
   $ vc sw:media:migrate
 ```
 
-_See code: [src/commands/sw/media/migrate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/media/migrate.ts)_
+_See code: [src/commands/sw/media/migrate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/media/migrate.ts)_
 
 ## `vc sw:media:optimize`
 
@@ -909,7 +909,7 @@ USAGE
   $ vc sw:media:optimize
 ```
 
-_See code: [src/commands/sw/media/optimize.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/media/optimize.ts)_
+_See code: [src/commands/sw/media/optimize.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/media/optimize.ts)_
 
 ## `vc sw:migrate:article:attribute:translations`
 
@@ -920,7 +920,7 @@ USAGE
   $ vc sw:migrate:article:attribute:translations
 ```
 
-_See code: [src/commands/sw/migrate/article/attribute/translations.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/migrate/article/attribute/translations.ts)_
+_See code: [src/commands/sw/migrate/article/attribute/translations.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/migrate/article/attribute/translations.ts)_
 
 ## `vc sw:plugin:activate`
 
@@ -931,7 +931,7 @@ USAGE
   $ vc sw:plugin:activate
 ```
 
-_See code: [src/commands/sw/plugin/activate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/activate.ts)_
+_See code: [src/commands/sw/plugin/activate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/activate.ts)_
 
 ## `vc sw:plugin:config:list`
 
@@ -942,7 +942,7 @@ USAGE
   $ vc sw:plugin:config:list
 ```
 
-_See code: [src/commands/sw/plugin/config/list.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/config/list.ts)_
+_See code: [src/commands/sw/plugin/config/list.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/config/list.ts)_
 
 ## `vc sw:plugin:config:set`
 
@@ -953,7 +953,7 @@ USAGE
   $ vc sw:plugin:config:set
 ```
 
-_See code: [src/commands/sw/plugin/config/set.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/config/set.ts)_
+_See code: [src/commands/sw/plugin/config/set.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/config/set.ts)_
 
 ## `vc sw:plugin:deactivate`
 
@@ -964,7 +964,7 @@ USAGE
   $ vc sw:plugin:deactivate
 ```
 
-_See code: [src/commands/sw/plugin/deactivate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/deactivate.ts)_
+_See code: [src/commands/sw/plugin/deactivate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/deactivate.ts)_
 
 ## `vc sw:plugin:delete`
 
@@ -975,7 +975,7 @@ USAGE
   $ vc sw:plugin:delete
 ```
 
-_See code: [src/commands/sw/plugin/delete.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/delete.ts)_
+_See code: [src/commands/sw/plugin/delete.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/delete.ts)_
 
 ## `vc sw:plugin:install`
 
@@ -986,7 +986,7 @@ USAGE
   $ vc sw:plugin:install
 ```
 
-_See code: [src/commands/sw/plugin/install.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/install.ts)_
+_See code: [src/commands/sw/plugin/install.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/install.ts)_
 
 ## `vc sw:plugin:list`
 
@@ -997,7 +997,7 @@ USAGE
   $ vc sw:plugin:list
 ```
 
-_See code: [src/commands/sw/plugin/list.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/list.ts)_
+_See code: [src/commands/sw/plugin/list.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/list.ts)_
 
 ## `vc sw:plugin:refresh`
 
@@ -1008,7 +1008,7 @@ USAGE
   $ vc sw:plugin:refresh
 ```
 
-_See code: [src/commands/sw/plugin/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/refresh.ts)_
+_See code: [src/commands/sw/plugin/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/refresh.ts)_
 
 ## `vc sw:plugin:reinstall`
 
@@ -1019,7 +1019,7 @@ USAGE
   $ vc sw:plugin:reinstall
 ```
 
-_See code: [src/commands/sw/plugin/reinstall.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/reinstall.ts)_
+_See code: [src/commands/sw/plugin/reinstall.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/reinstall.ts)_
 
 ## `vc sw:plugin:uninstall`
 
@@ -1030,7 +1030,7 @@ USAGE
   $ vc sw:plugin:uninstall
 ```
 
-_See code: [src/commands/sw/plugin/uninstall.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/uninstall.ts)_
+_See code: [src/commands/sw/plugin/uninstall.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/uninstall.ts)_
 
 ## `vc sw:plugin:update`
 
@@ -1041,7 +1041,7 @@ USAGE
   $ vc sw:plugin:update
 ```
 
-_See code: [src/commands/sw/plugin/update.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/plugin/update.ts)_
+_See code: [src/commands/sw/plugin/update.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/plugin/update.ts)_
 
 ## `vc sw:product:feeds:refresh`
 
@@ -1052,7 +1052,7 @@ USAGE
   $ vc sw:product:feeds:refresh
 ```
 
-_See code: [src/commands/sw/product/feeds/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/product/feeds/refresh.ts)_
+_See code: [src/commands/sw/product/feeds/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/product/feeds/refresh.ts)_
 
 ## `vc sw:rebuild:category:tree`
 
@@ -1063,7 +1063,7 @@ USAGE
   $ vc sw:rebuild:category:tree
 ```
 
-_See code: [src/commands/sw/rebuild/category/tree.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/rebuild/category/tree.ts)_
+_See code: [src/commands/sw/rebuild/category/tree.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/rebuild/category/tree.ts)_
 
 ## `vc sw:rebuild:seo`
 
@@ -1074,7 +1074,7 @@ USAGE
   $ vc sw:rebuild:seo
 ```
 
-_See code: [src/commands/sw/rebuild/seo/index.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/rebuild/seo/index.ts)_
+_See code: [src/commands/sw/rebuild/seo/index.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/rebuild/seo/index.ts)_
 
 ## `vc sw:refresh:search`
 
@@ -1085,7 +1085,7 @@ USAGE
   $ vc sw:refresh:search
 ```
 
-_See code: [src/commands/sw/refresh/search/index.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/refresh/search/index.ts)_
+_See code: [src/commands/sw/refresh/search/index.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/refresh/search/index.ts)_
 
 ## `vc sw:session:cleanup`
 
@@ -1096,7 +1096,7 @@ USAGE
   $ vc sw:session:cleanup
 ```
 
-_See code: [src/commands/sw/session/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/session/cleanup.ts)_
+_See code: [src/commands/sw/session/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/session/cleanup.ts)_
 
 ## `vc sw:settings:label:find:missing`
 
@@ -1107,7 +1107,7 @@ USAGE
   $ vc sw:settings:label:find:missing
 ```
 
-_See code: [src/commands/sw/settings/label/find/missing.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/settings/label/find/missing.ts)_
+_See code: [src/commands/sw/settings/label/find/missing.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/settings/label/find/missing.ts)_
 
 ## `vc sw:snippets:find:missing`
 
@@ -1118,7 +1118,7 @@ USAGE
   $ vc sw:snippets:find:missing
 ```
 
-_See code: [src/commands/sw/snippets/find/missing.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/snippets/find/missing.ts)_
+_See code: [src/commands/sw/snippets/find/missing.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/snippets/find/missing.ts)_
 
 ## `vc sw:snippets:remove`
 
@@ -1129,7 +1129,7 @@ USAGE
   $ vc sw:snippets:remove
 ```
 
-_See code: [src/commands/sw/snippets/remove.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/snippets/remove.ts)_
+_See code: [src/commands/sw/snippets/remove.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/snippets/remove.ts)_
 
 ## `vc sw:snippets:to:db`
 
@@ -1140,7 +1140,7 @@ USAGE
   $ vc sw:snippets:to:db
 ```
 
-_See code: [src/commands/sw/snippets/to/db.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/snippets/to/db.ts)_
+_See code: [src/commands/sw/snippets/to/db.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/snippets/to/db.ts)_
 
 ## `vc sw:snippets:to:ini`
 
@@ -1151,7 +1151,7 @@ USAGE
   $ vc sw:snippets:to:ini
 ```
 
-_See code: [src/commands/sw/snippets/to/ini.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/snippets/to/ini.ts)_
+_See code: [src/commands/sw/snippets/to/ini.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/snippets/to/ini.ts)_
 
 ## `vc sw:snippets:to:sql`
 
@@ -1162,7 +1162,7 @@ USAGE
   $ vc sw:snippets:to:sql
 ```
 
-_See code: [src/commands/sw/snippets/to/sql.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/snippets/to/sql.ts)_
+_See code: [src/commands/sw/snippets/to/sql.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/snippets/to/sql.ts)_
 
 ## `vc sw:snippets:validate`
 
@@ -1173,7 +1173,7 @@ USAGE
   $ vc sw:snippets:validate
 ```
 
-_See code: [src/commands/sw/snippets/validate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/snippets/validate.ts)_
+_See code: [src/commands/sw/snippets/validate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/snippets/validate.ts)_
 
 ## `vc sw:store:download`
 
@@ -1184,7 +1184,7 @@ USAGE
   $ vc sw:store:download
 ```
 
-_See code: [src/commands/sw/store/download.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/store/download.ts)_
+_See code: [src/commands/sw/store/download.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/store/download.ts)_
 
 ## `vc sw:store:list`
 
@@ -1195,7 +1195,7 @@ USAGE
   $ vc sw:store:list
 ```
 
-_See code: [src/commands/sw/store/list.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/store/list.ts)_
+_See code: [src/commands/sw/store/list.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/store/list.ts)_
 
 ## `vc sw:store:list:domains`
 
@@ -1206,7 +1206,7 @@ USAGE
   $ vc sw:store:list:domains
 ```
 
-_See code: [src/commands/sw/store/list/domains.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/store/list/domains.ts)_
+_See code: [src/commands/sw/store/list/domains.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/store/list/domains.ts)_
 
 ## `vc sw:store:list:integrated`
 
@@ -1217,7 +1217,7 @@ USAGE
   $ vc sw:store:list:integrated
 ```
 
-_See code: [src/commands/sw/store/list/integrated.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/store/list/integrated.ts)_
+_See code: [src/commands/sw/store/list/integrated.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/store/list/integrated.ts)_
 
 ## `vc sw:store:list:updates`
 
@@ -1228,7 +1228,7 @@ USAGE
   $ vc sw:store:list:updates
 ```
 
-_See code: [src/commands/sw/store/list/updates.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/store/list/updates.ts)_
+_See code: [src/commands/sw/store/list/updates.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/store/list/updates.ts)_
 
 ## `vc sw:theme:cache:generate`
 
@@ -1239,7 +1239,7 @@ USAGE
   $ vc sw:theme:cache:generate
 ```
 
-_See code: [src/commands/sw/theme/cache/generate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/theme/cache/generate.ts)_
+_See code: [src/commands/sw/theme/cache/generate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/theme/cache/generate.ts)_
 
 ## `vc sw:theme:create`
 
@@ -1250,7 +1250,7 @@ USAGE
   $ vc sw:theme:create
 ```
 
-_See code: [src/commands/sw/theme/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/theme/create.ts)_
+_See code: [src/commands/sw/theme/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/theme/create.ts)_
 
 ## `vc sw:theme:dump:configuration`
 
@@ -1261,7 +1261,7 @@ USAGE
   $ vc sw:theme:dump:configuration
 ```
 
-_See code: [src/commands/sw/theme/dump/configuration.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/theme/dump/configuration.ts)_
+_See code: [src/commands/sw/theme/dump/configuration.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/theme/dump/configuration.ts)_
 
 ## `vc sw:theme:initialize`
 
@@ -1272,7 +1272,7 @@ USAGE
   $ vc sw:theme:initialize
 ```
 
-_See code: [src/commands/sw/theme/initialize.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/theme/initialize.ts)_
+_See code: [src/commands/sw/theme/initialize.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/theme/initialize.ts)_
 
 ## `vc sw:thumbnail:cleanup`
 
@@ -1283,7 +1283,7 @@ USAGE
   $ vc sw:thumbnail:cleanup
 ```
 
-_See code: [src/commands/sw/thumbnail/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/thumbnail/cleanup.ts)_
+_See code: [src/commands/sw/thumbnail/cleanup.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/thumbnail/cleanup.ts)_
 
 ## `vc sw:thumbnail:generate`
 
@@ -1294,7 +1294,7 @@ USAGE
   $ vc sw:thumbnail:generate
 ```
 
-_See code: [src/commands/sw/thumbnail/generate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/thumbnail/generate.ts)_
+_See code: [src/commands/sw/thumbnail/generate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/thumbnail/generate.ts)_
 
 ## `vc sw:warm:http:cache`
 
@@ -1305,7 +1305,7 @@ USAGE
   $ vc sw:warm:http:cache
 ```
 
-_See code: [src/commands/sw/warm/http/cache.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/sw/warm/http/cache.ts)_
+_See code: [src/commands/sw/warm/http/cache.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/sw/warm/http/cache.ts)_
 
 ## `vc up`
 
@@ -1320,7 +1320,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/up.ts)_
 
 ## `vc zr:brands:generate_urls`
 
@@ -1331,7 +1331,7 @@ USAGE
   $ vc zr:brands:generate_urls
 ```
 
-_See code: [src/commands/zr/brands/generate_urls.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/brands/generate_urls.ts)_
+_See code: [src/commands/zr/brands/generate_urls.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/brands/generate_urls.ts)_
 
 ## `vc zr:check:health`
 
@@ -1342,7 +1342,7 @@ USAGE
   $ vc zr:check:health
 ```
 
-_See code: [src/commands/zr/check/health.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/check/health.ts)_
+_See code: [src/commands/zr/check/health.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/check/health.ts)_
 
 ## `vc zr:check:ordernumber`
 
@@ -1353,7 +1353,7 @@ USAGE
   $ vc zr:check:ordernumber
 ```
 
-_See code: [src/commands/zr/check/ordernumber.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/check/ordernumber.ts)_
+_See code: [src/commands/zr/check/ordernumber.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/check/ordernumber.ts)_
 
 ## `vc zr:emarsys:order_export`
 
@@ -1364,7 +1364,7 @@ USAGE
   $ vc zr:emarsys:order_export
 ```
 
-_See code: [src/commands/zr/emarsys/order_export.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/emarsys/order_export.ts)_
+_See code: [src/commands/zr/emarsys/order_export.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/emarsys/order_export.ts)_
 
 ## `vc zr:export:findologic`
 
@@ -1375,7 +1375,7 @@ USAGE
   $ vc zr:export:findologic
 ```
 
-_See code: [src/commands/zr/export/findologic.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/export/findologic.ts)_
+_See code: [src/commands/zr/export/findologic.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/export/findologic.ts)_
 
 ## `vc zr:import:votingimport`
 
@@ -1386,7 +1386,7 @@ USAGE
   $ vc zr:import:votingimport
 ```
 
-_See code: [src/commands/zr/import/votingimport.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/import/votingimport.ts)_
+_See code: [src/commands/zr/import/votingimport.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/import/votingimport.ts)_
 
 ## `vc zr:market:import`
 
@@ -1397,7 +1397,7 @@ USAGE
   $ vc zr:market:import
 ```
 
-_See code: [src/commands/zr/market/import.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/market/import.ts)_
+_See code: [src/commands/zr/market/import.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/market/import.ts)_
 
 ## `vc zr:media:migrate`
 
@@ -1408,7 +1408,7 @@ USAGE
   $ vc zr:media:migrate
 ```
 
-_See code: [src/commands/zr/media/migrate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/media/migrate.ts)_
+_See code: [src/commands/zr/media/migrate.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/media/migrate.ts)_
 
 ## `vc zr:productline:attribute-migration`
 
@@ -1419,7 +1419,7 @@ USAGE
   $ vc zr:productline:attribute-migration
 ```
 
-_See code: [src/commands/zr/productline/attribute-migration.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/productline/attribute-migration.ts)_
+_See code: [src/commands/zr/productline/attribute-migration.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/productline/attribute-migration.ts)_
 
 ## `vc zr:shopware:deactivate-unmapped-articles`
 
@@ -1430,7 +1430,7 @@ USAGE
   $ vc zr:shopware:deactivate-unmapped-articles
 ```
 
-_See code: [src/commands/zr/shopware/deactivate-unmapped-articles.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/shopware/deactivate-unmapped-articles.ts)_
+_See code: [src/commands/zr/shopware/deactivate-unmapped-articles.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/shopware/deactivate-unmapped-articles.ts)_
 
 ## `vc zr:shopware:fix-tax-rules`
 
@@ -1441,7 +1441,7 @@ USAGE
   $ vc zr:shopware:fix-tax-rules
 ```
 
-_See code: [src/commands/zr/shopware/fix-tax-rules.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/shopware/fix-tax-rules.ts)_
+_See code: [src/commands/zr/shopware/fix-tax-rules.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/shopware/fix-tax-rules.ts)_
 
 ## `vc zr:shopware:plugin-config-update`
 
@@ -1452,5 +1452,5 @@ USAGE
   $ vc zr:shopware:plugin-config-update
 ```
 
-_See code: [src/commands/zr/shopware/plugin-config-update.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.4-poc/src/commands/zr/shopware/plugin-config-update.ts)_
+_See code: [src/commands/zr/shopware/plugin-config-update.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.5-poc/src/commands/zr/shopware/plugin-config-update.ts)_
 <!-- commandsstop -->
