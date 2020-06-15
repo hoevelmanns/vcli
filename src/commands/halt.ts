@@ -1,6 +1,6 @@
 import { flags } from '@oclif/command';
 import Command from './base';
-import { Vagrant } from '../libs/shell/models';
+import { vagrant } from '../libs/shell/models';
 
 export default class Halt extends Command {
     static hidden = false;
@@ -15,6 +15,6 @@ export default class Halt extends Command {
     };
 
     async run() {
-        await new Vagrant().halt();
+        vagrant.halt();
     }
 }

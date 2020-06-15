@@ -1,6 +1,5 @@
 /* tslint:disable:no-useless-constructor */
 import { shell } from './shell';
-import { ExecOutput } from 'rxjs-shell/models';
 import { initProject } from '../../shared/utils';
 
 export abstract class ShellCommand {
@@ -18,16 +17,16 @@ export abstract class ShellCommand {
      *
      * @param vagrant
      */
-    public exec = async (vagrant = false): Promise<void | Error | ExecOutput> => {
+    public exec = async (vagrant = false): Promise<void> => {
         await initProject();
-
-        return shell
+        await shell
             .exec({
                 runInVagrant: this.runInVagrant || vagrant,
                 command: this.execute,
                 displayText: 'Executing command: ' + this.description,
             })
-            .then((res) => console.log(res));
+            .toPromise()
+            .then((output) => console.log(output));
     };
 
     public get vagrant() {

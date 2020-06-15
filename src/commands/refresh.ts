@@ -10,7 +10,11 @@ export default class Refresh extends Command {
     static flags = {
         ...Command.flags,
         help: flags.help({ char: 'h' }),
-        vagrant: flags.boolean({ char: 'v', type: 'boolean', description: 'run generator in vagrant' }), // todo description
+        vagrant: flags.boolean({
+            char: 'v',
+            type: 'boolean',
+            description: 'run generator in vagrant',
+        }), // todo description
     };
 
     async run() {

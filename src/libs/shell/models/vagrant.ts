@@ -1,32 +1,26 @@
 import { shell } from './shell';
 import { notify } from '../../shared/utils';
+import cli from 'cli-ux';
 
 export class Vagrant {
     /**
      * Starts the vagrant machine
      */
+
     up(): void {
-        shell
-            .exec({
-                command: 'vagrant up',
-                displayText: 'Starting machine',
-            })
-            .then((out) =>
-                notify({
-                    message: 'Vagrant successfully started',
-                }),
-            );
+        cli.action.start('Starting machine');
+
+        shell.exec('vagrant up').subscribe(() => notify('Vagrant successfully started'));
     }
 
     /**
      * Halts the vagrant machine
      */
     halt(): void {
-        shell
-            .exec({
-                command: 'vagrant halt',
-                displayText: 'Stopping machine',
-            })
-            .then((out) => notify({ message: 'Vagrant stopped' }));
+        cli.action.start('Stopping machine');
+
+        shell.exec('vagrant halt').subscribe(() => notify('Vagrant stopped'));
     }
 }
+
+export const vagrant = new Vagrant();

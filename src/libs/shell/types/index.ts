@@ -6,6 +6,7 @@ export interface ShellCommandOptions {
     command: string;
     flags?: Flags;
     runInVagrant?: boolean;
+    runInProjectRoot?: boolean;
     displayText?: string;
 }
 

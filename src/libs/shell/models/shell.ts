@@ -1,11 +1,10 @@
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription, throwError } from 'rxjs';
 import { ExecOutput, SpawnChunk } from 'rxjs-shell/models';
 import cli from 'cli-ux';
 import { exec, spawn } from 'rxjs-shell';
 import { catchError, map } from 'rxjs/operators';
 import { ShellCommandOptions } from '../types';
 import { projectConfig, projectRoot } from '../../shared/utils';
-import { option } from '@oclif/command/lib/flags';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -43,16 +42,15 @@ class Shell {
      *
      * @param command
      * @param runInVagrant
+     * @param runInProjectRoot
      */
-    exec(command: ShellCommandOptions | string, runInVagrant = false): Promise<ExecOutput | any> {
-        command = this.prepareCommand(command, runInVagrant);
+    exec(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false): Observable<string> {
+        command = this.prepareCommand(command, runInVagrant, runInProjectRoot);
 
-        return exec(command)
-            .pipe(
-                map((output) => output.stdout.toString('utf8')),
-                catchError((err) => Shell.convertOutput(err.stderr)),
-            )
-            .toPromise();
+        return exec(command).pipe(
+            map((output) => output.stdout.toString('utf8')),
+            catchError((err) => throwError(err.stderr)),
+        );
     }
 
     /**
@@ -60,15 +58,23 @@ class Shell {
      *
      * @param options
      * @param runInVagrant
+     * @param runInProjectRoot
      * @returns string
      */
-    private prepareCommand(options: ShellCommandOptions | string, runInVagrant = false): string {
+    private prepareCommand(
+        options: ShellCommandOptions | string,
+        runInVagrant = false,
+        runInProjectRoot = false,
+    ): string {
+        // todo refactor following lines
         options = typeof options === 'string' ? ({ runInVagrant, command: options } as ShellCommandOptions) : options;
 
         options.command =
             options.runInVagrant || this.runInVagrant
                 ? `vagrant ssh --no-tty  -c "cd ~/${projectConfig.vagrant?.deployDir} && ${options.command}"`
-                : `cd ${projectRoot} && ${options.command}`;
+                : options?.runInProjectRoot || runInProjectRoot
+                ? `cd ${projectRoot} && ${options.command}`
+                : options.command;
 
         if (!options.flags) return options.command;
 
@@ -78,24 +84,6 @@ class Shell {
             .trim();
 
         return options.command.concat(' ', flagsStr).trim();
-    }
-
-    /**
-     * Displays message
-     * @param message
-     */
-    private static displayText(message?: string) {
-        cli.action.start(message ?? 'Please wait');
-    }
-
-    /**
-     *
-     * @param buffer
-     */
-    private static convertOutput(buffer: string | Buffer): Observable<string> {
-        const str = buffer.toString('utf8');
-        console.info(str);
-        return of(str);
     }
 }
 
