@@ -1,7 +1,7 @@
 {
     "name": "vcli",
     "description": "An universal and flexible CLI",
-    "version": "1.0.2-poc",
+    "version": "1.0.3-poc",
     "author": "Marcelle Hövelmanns",
     "bin": {
         "vc": "./bin/run"
