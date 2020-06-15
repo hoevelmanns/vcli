@@ -1,7 +1,7 @@
 {
     "name": "vcli",
     "description": "An universal and flexible CLI",
-    "version": "1.0.1-poc",
+    "version": "1.0.2-poc",
     "author": "Marcelle Hövelmanns",
     "bin": {
         "vc": "./bin/run"
@@ -78,7 +78,7 @@
         "version": "oclif-dev readme && git add README.md",
         "lint": "eslint 'src/**/*.{js,ts}'",
         "lint:fix": "eslint 'src/**/*.{js,ts}' --quiet --fix",
-        "postinstall": "vc up && vc refresh -v && vc autocomplete"
+        "--todo-postinstall": "vc up && vc refresh -v && vc autocomplete"
     },
     "types": "lib/index.d.ts"
 }
