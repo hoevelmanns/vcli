@@ -21,7 +21,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/0.6.6-poc linux-x64 node-v12.13.1
+@hoevelmanns/vcli/0.6.7-poc linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -77,7 +77,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.6-poc/src/commands/build.ts)_
+_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.7-poc/src/commands/build.ts)_
 
 ## `vc create`
 
@@ -93,7 +93,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.6-poc/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.7-poc/src/commands/create.ts)_
 
 ## `vc halt`
 
@@ -108,7 +108,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.6-poc/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.7-poc/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -141,7 +141,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.6-poc/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.7-poc/src/commands/refresh.ts)_
 
 ## `vc up`
 
@@ -156,5 +156,5 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.6-poc/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.6.7-poc/src/commands/up.ts)_
 <!-- commandsstop -->

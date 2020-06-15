@@ -1,11 +1,9 @@
-import { Observable, of, Subscription, throwError } from 'rxjs';
-import { ExecOutput, SpawnChunk } from 'rxjs-shell/models';
-import cli from 'cli-ux';
+import { Observable, of, throwError } from 'rxjs';
+import { SpawnChunk } from 'rxjs-shell/models';
 import { exec, spawn } from 'rxjs-shell';
 import { catchError, map } from 'rxjs/operators';
 import { Flags, ShellCommandOptions } from '../types';
 import { projectConfig, projectRoot } from '../../shared/utils';
-import { run } from '@oclif/command';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -44,7 +42,6 @@ class Shell {
      * @param command
      * @param runInVagrant
      * @param runInProjectRoot
-     * @param flags
      */
     exec(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false): Observable<string> {
         command = this.prepareCommand(command, runInVagrant, runInProjectRoot);
@@ -86,7 +83,9 @@ class Shell {
                 ? `vagrant ssh --no-tty  -c "cd ~/${projectConfig.vagrant?.deployDir} && ${options.command}"`
                 : options?.runInProjectRoot || runInProjectRoot
                 ? `cd ${projectRoot} && ${options.command}`
-                : options.command;
+                : options.command
+
+        console.log('----------------\n' +options.command + '\n-------------------*');
 
         if (!options.flags) return options.command;
 
