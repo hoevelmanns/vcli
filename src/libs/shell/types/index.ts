@@ -5,7 +5,7 @@ export interface Flags {
 export interface ShellCommandOptions {
     command: string;
     flags?: Flags;
-    vagrant?: boolean;
+    runInVagrant?: boolean;
     displayText?: string;
 }
 

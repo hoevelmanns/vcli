@@ -1,8 +1,6 @@
 import * as fs from 'fs';
 import { CliConfig } from '../types';
 import * as findUp from 'find-up';
-import * as path from 'path';
-import { relative } from 'path';
 
 export const defaultConfigFile = '.vclirc.json';
 export let projectRoot: string;

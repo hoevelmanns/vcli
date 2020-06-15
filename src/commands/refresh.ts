@@ -15,6 +15,6 @@ export default class Refresh extends Command {
 
     async run() {
         const { flags } = this.parse(Refresh);
-        await new Generator(this.config.root).run(flags.vagrant);
+        new Generator(this.config.root).run(flags.vagrant);
     }
 }

@@ -11,7 +11,7 @@ export class Vagrant {
                 command: 'vagrant up',
                 displayText: 'Starting machine',
             })
-            .subscribe((out) =>
+            .then((out) =>
                 notify({
                     message: 'Vagrant successfully started',
                 }),
@@ -27,6 +27,6 @@ export class Vagrant {
                 command: 'vagrant halt',
                 displayText: 'Stopping machine',
             })
-            .subscribe((out) => notify({ message: 'Vagrant stopped' }));
+            .then((out) => notify({ message: 'Vagrant stopped' }));
     }
 }

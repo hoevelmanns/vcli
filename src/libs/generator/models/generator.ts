@@ -1,5 +1,4 @@
 import {
-    initProject,
     makeClassName,
     makeFileName,
     makeFunctionName,
@@ -27,38 +26,25 @@ export class Generator {
     private shellCommandTemplates: CommandTemplate[] = [];
     private shellCommandFile = this.cliRoot + `${projectConfig.generatorOutput}/generated.ts`;
     private cliCommandsPath = this.cliRoot + '/src/commands/'; // todo move to types
+    private _consoleOutput = <string>'';
 
     constructor(private cliRoot: string) {}
 
     /**
      * todo description
      */
-    run = async (runInVagrant = false): Promise<void> =>
-        Object.entries(projectConfig?.consoles).forEach((c) => {
-            this.console = { ...c[1], ...{ context: c[0] } }; // todo check
+    run = (runInVagrant = false): void =>
+        Object.entries(projectConfig?.consoles).forEach(async (c) => {
+            cli.action.start('Generating shell and cli commands');
+            this.console = { ...c[1], ...{ context: c[0] } };
+            this.consoleOutput = await shell.exec(`${this.console.executable} ${this.console.list}`, runInVagrant);
+            this.parseConsoleOutput();
+            this.generateTemplates();
+            this.writeShellCommands();
+            await this.writeCliCommands();
 
-            // todo write shell-command
-            shell
-                .exec({
-                    command: `${this.console.executable} ${this.console.list}`,
-                    vagrant: this.runInVagrant || runInVagrant,
-                    displayText: 'Generating shell and cli commands',
-                })
-                .subscribe((content) => {
-                    this.parseConsoleList(content);
-                    this.generateTemplates();
-                    this.writeShellCommands();
-                    this.writeCliCommands();
-                    // update cli commands -> prepack
-
-                    // todo write shell-command (or operator?)
-                    shell
-                        .exec({
-                            displayText: 'Update CLI Manifest & Readme',
-                            command: `cd ${this.cliRoot} && npm run prepack`,
-                        })
-                        .toPromise();
-                });
+            cli.action.start('Update CLI Manifest & Readme');
+            await shell.exec(`cd ${this.cliRoot} && npm run prepack`);
         });
 
     /**
@@ -80,15 +66,9 @@ export class Generator {
     /**
      * todo description
      *
-     * @param content
      */
-    private parseConsoleList = (content: string): void => {
-        // removes all contents until given "parserStartSting"
-        content = content.substr(
-            content.indexOf(this.console.parserStartString) + this.console.parserStartString.length,
-        );
-
-        const lines = content.split('\n');
+    private parseConsoleOutput = (): void => {
+        const lines = this.consoleOutput.split('\n');
 
         lines.forEach((line) => {
             const command = line.trim().split(' ')[0];
@@ -136,9 +116,7 @@ export class Generator {
     /**
      * @todo abstract
      */
-    private writeCliCommands = async (): Promise<void> => {
-        await initProject();
-
+    private writeCliCommands = (): void => {
         this.cliCommandTemplates.map((cmdTemplate: CommandTemplate) => {
             const targetPath = this.cliCommandsPath + makePath(cmdTemplate.command.name);
             const shellCommandPath = relative(targetPath, this.cliRoot + '/src/shell-commands/');
@@ -157,5 +135,15 @@ export class Generator {
     get vagrant() {
         this.runInVagrant = true;
         return this;
+    }
+
+    set consoleOutput(content: string) {
+        this._consoleOutput = content.substr(
+            content.indexOf(this.console.parserStartString) + this.console.parserStartString.length,
+        );
+    }
+
+    get consoleOutput(): string {
+        return this._consoleOutput;
     }
 }

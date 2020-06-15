@@ -23,11 +23,10 @@ export abstract class ShellCommand {
 
         return shell
             .exec({
-                vagrant: this.runInVagrant || vagrant,
+                runInVagrant: this.runInVagrant || vagrant,
                 command: this.execute,
                 displayText: 'Executing command: ' + this.description,
             })
-            .toPromise()
             .then((res) => console.log(res));
     };
 

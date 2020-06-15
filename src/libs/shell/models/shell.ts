@@ -5,6 +5,7 @@ import { exec, spawn } from 'rxjs-shell';
 import { catchError, map } from 'rxjs/operators';
 import { ShellCommandOptions } from '../types';
 import { projectConfig, projectRoot } from '../../shared/utils';
+import { option } from '@oclif/command/lib/flags';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -40,32 +41,32 @@ class Shell {
      * @description exec has a maxBuffer and can only transfer a certain amount of data ( default: 200KB )
      * @see https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
      *
-     * @param options
+     * @param command
+     * @param runInVagrant
      */
-    exec(options: ShellCommandOptions): Observable<ExecOutput | any> {
-        Shell.displayText(options.displayText);
+    exec(command: ShellCommandOptions | string, runInVagrant = false): Promise<ExecOutput | any> {
+        command = this.prepareCommand(command, runInVagrant);
 
-        const command = this.prepareCommand(options);
-
-        if (options.vagrant || this.runInVagrant) {
-            // todo check 'vagrant status' and start vagrant if necessary
-        }
-
-        return exec(command).pipe(
-            map((output) => output.stdout.toString('utf8')),
-            catchError((err) => Shell.convertOutput(err.stderr)),
-        );
+        return exec(command)
+            .pipe(
+                map((output) => output.stdout.toString('utf8')),
+                catchError((err) => Shell.convertOutput(err.stderr)),
+            )
+            .toPromise();
     }
 
     /**
      * Concat given flags stringified to the given command and prepends vagrant command if given
      *
      * @param options
+     * @param runInVagrant
      * @returns string
      */
-    private prepareCommand(options: ShellCommandOptions): string {
+    private prepareCommand(options: ShellCommandOptions | string, runInVagrant = false): string {
+        options = typeof options === 'string' ? ({ runInVagrant, command: options } as ShellCommandOptions) : options;
+
         options.command =
-            options.vagrant || this.runInVagrant
+            options.runInVagrant || this.runInVagrant
                 ? `vagrant ssh --no-tty  -c "cd ~/${projectConfig.vagrant?.deployDir} && ${options.command}"`
                 : `cd ${projectRoot} && ${options.command}`;
 
