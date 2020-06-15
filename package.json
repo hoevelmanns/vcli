@@ -2,7 +2,7 @@
   "name": "@hoevelmanns/vcli",
   "private": false,
   "description": "A universal and extensible CLI for Shopware, Laravel and others with vagrant support",
-  "version": "0.5.7-poc",
+  "version": "0.5.8-poc",
   "author": "Marcelle Hövelmanns",
   "bin": {
     "vc": "bin/run"
@@ -79,7 +79,7 @@
     "link": "npm link",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "npm run lint",
-    "-- todo prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rm -rf lib && tsc && oclif-dev manifest",
     "test": "echo NO TESTS",
     "version": "oclif-dev readme && git add README.md",
     "lint": "eslint 'src/**/*.{js,ts}'",
