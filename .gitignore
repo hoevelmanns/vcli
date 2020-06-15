@@ -9,7 +9,7 @@
 node_modules
 /.editorconfig
 src/shell-commands/generated.ts
-src/commands
+src/commands/**/*
 !src/commands/base.ts
 !src/commands/build.ts
 !src/commands/create.ts
