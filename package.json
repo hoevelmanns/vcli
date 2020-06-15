@@ -2,7 +2,7 @@
   "name": "@hoevelmanns/vcli",
   "private": false,
   "description": "A universal and extensible CLI for Shopware, Laravel and others with vagrant support",
-  "version": "0.5.0-poc",
+  "version": "0.5.4-poc",
   "author": "Marcelle Hövelmanns",
   "bin": {
     "vc": "bin/run"
@@ -76,7 +76,7 @@
     "url": "git+https://github.com/hoevelmanns/vcli.git"
   },
   "scripts": {
-    "publish": "npm publish --access public",
+    "-publish": "npm login && npm publish --access public",
     "link": "npm link",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "npm run lint",
