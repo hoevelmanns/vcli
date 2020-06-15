@@ -6,9 +6,9 @@ Wraps your current Command Line Interfaces and allows you to stream the CLI comm
 
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/vcli.svg)](https://npmjs.org/package/vcli)
-[![Downloads/week](https://img.shields.io/npm/dw/vcli.svg)](https://npmjs.org/package/vcli)
-[![License](https://img.shields.io/npm/l/vcli.svg)](https://github.com/zooroyalweb/vcli/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/vcli.svg)](https://npmjs.org/package/@hoevelmanns/vcli)
+[![Downloads/week](https://img.shields.io/npm/dw/vcli.svg)](https://npmjs.org/package/@hoevelmanns/vcli)
+[![License](https://img.shields.io/npm/l/vcli.svg)](https://github.com/hoevelmanns/vcli/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
@@ -17,11 +17,11 @@ Wraps your current Command Line Interfaces and allows you to stream the CLI comm
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g vcli
+$ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-vcli/0.5.0-poc linux-x64 node-v12.13.1
+@hoevelmanns/vcli/0.5.1-poc linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -77,7 +77,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.0-poc/src/commands/build.ts)_
+_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.1-poc/src/commands/build.ts)_
 
 ## `vc create`
 
@@ -93,7 +93,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.0-poc/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.1-poc/src/commands/create.ts)_
 
 ## `vc halt`
 
@@ -108,7 +108,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.0-poc/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.1-poc/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -141,7 +141,7 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.0-poc/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.1-poc/src/commands/refresh.ts)_
 
 ## `vc up`
 
@@ -156,5 +156,5 @@ OPTIONS
   --loglevel=error|warn|info|debug
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.0-poc/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.5.1-poc/src/commands/up.ts)_
 <!-- commandsstop -->
