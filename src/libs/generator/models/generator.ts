@@ -20,7 +20,7 @@ import cli from 'cli-ux';
 export class Generator {
     private ignoreCommands = ['list', 'help'];
     private commands: ConsoleCommand[] = [];
-    private consoleData = <ExternalConsole>{};
+    private console = <ExternalConsole>{};
     private processedCommands: string[] = [];
     private runInVagrant = false;
     private cliCommandTemplates: CommandTemplate[] = [];
@@ -29,19 +29,6 @@ export class Generator {
     private cliCommandsPath = this.cliRoot + '/src/commands/'; // todo move to types
 
     constructor(private cliRoot: string) {}
-
-    set console(data: ExternalConsole) {
-        this.consoleData = data;
-    }
-
-    get console(): ExternalConsole {
-        return this.consoleData;
-    }
-
-    get vagrant() {
-        this.runInVagrant = true;
-        return this;
-    }
 
     /**
      * todo description
@@ -166,4 +153,9 @@ export class Generator {
             fs.writeFileSync(targetFile, cmdTemplate.template, { flag: 'w' });
         });
     };
+
+    get vagrant() {
+        this.runInVagrant = true;
+        return this;
+    }
 }
