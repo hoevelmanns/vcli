@@ -3,9 +3,7 @@ import {
     makeFileName,
     makeFunctionName,
     makePath,
-    notify,
     projectConfig,
-    projectRoot,
 } from '../../shared/utils';
 import { CommandTemplate, CommandType, ConsoleCommand } from '../types';
 import { cliCommandTemplate, shellCommandTemplate } from '../templates';
@@ -41,7 +39,7 @@ export class Generator {
 
             this.console = { ...c[1], ...{ context: c[0] } };
 
-            shell.exec(`${this.console.executable} ${this.console.list}`, runInVagrant, true).subscribe(
+            shell.execSync(`${this.console.executable} ${this.console.list}`, runInVagrant, true).then(
                 (content) => {
                     this.consoleOutput = content;
                     this.parseConsoleOutput();
@@ -53,10 +51,8 @@ export class Generator {
             );
 
             cli.action.start('Update CLI Manifest & Readme');
-            shell.exec(`cd ${this.cliRoot} && npm run prepack`).subscribe(
-                (res) => console.log(res),
-                (error) => console.error(error),
-            );
+
+            shell.execSync(`cd ${this.cliRoot} && npm run prepack`).catch((reason) => console.error(reason));
         });
 
     /**

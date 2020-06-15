@@ -3,8 +3,9 @@ import { ExecOutput, SpawnChunk } from 'rxjs-shell/models';
 import cli from 'cli-ux';
 import { exec, spawn } from 'rxjs-shell';
 import { catchError, map } from 'rxjs/operators';
-import { ShellCommandOptions } from '../types';
+import { Flags, ShellCommandOptions } from '../types';
 import { projectConfig, projectRoot } from '../../shared/utils';
+import { run } from '@oclif/command';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -43,6 +44,7 @@ class Shell {
      * @param command
      * @param runInVagrant
      * @param runInProjectRoot
+     * @param flags
      */
     exec(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false): Observable<string> {
         command = this.prepareCommand(command, runInVagrant, runInProjectRoot);
@@ -51,6 +53,16 @@ class Shell {
             map((output) => output.stdout.toString('utf8')),
             catchError((err) => throwError(err.stderr)),
         );
+    }
+
+    /**
+     *
+     * @param command
+     * @param runInVagrant
+     * @param runInProjectRoot
+     */
+    execSync(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false) {
+        return this.exec(command, runInVagrant, runInProjectRoot).toPromise();
     }
 
     /**

@@ -20,12 +20,11 @@ export abstract class ShellCommand {
     public exec = async (vagrant = false): Promise<void> => {
         await initProject();
         await shell
-            .exec({
+            .execSync({
                 runInVagrant: this.runInVagrant || vagrant,
                 command: this.execute,
                 displayText: 'Executing command: ' + this.description,
             })
-            .toPromise()
             .then((output) => console.log(output));
     };
 
