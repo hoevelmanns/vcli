@@ -103,7 +103,7 @@ export class Generator {
     /**
      *
      */
-    private generateTemplates = (): void => {
+    private generateTemplates = (): void =>
         this.commands.forEach((command) => {
             const className = makeClassName(command.name);
 
@@ -118,7 +118,6 @@ export class Generator {
             this.cliCommandTemplates.push({ command, template: cliCommandTemplate(command, this.cliRoot) });
             this.processedCommands.push(className);
         });
-    };
 
     /**
      * @returns void
@@ -139,6 +138,7 @@ export class Generator {
      */
     private writeCliCommands = async (): Promise<void> => {
         await initProject();
+
         this.cliCommandTemplates.map((cmdTemplate: CommandTemplate) => {
             const targetPath = this.cliCommandsPath + makePath(cmdTemplate.command.name);
             const shellCommandPath = relative(targetPath, this.cliRoot + '/src/shell-commands/');
