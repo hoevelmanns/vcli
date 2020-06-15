@@ -2,7 +2,7 @@
   "name": "@hoevelmanns/vcli",
   "private": false,
   "description": "A universal and extensible CLI for Shopware, Laravel and others with vagrant support",
-  "version": "0.5.8-poc",
+  "version": "0.5.9-poc",
   "author": "Marcelle Hövelmanns",
   "bin": {
     "vc": "bin/run"
@@ -13,7 +13,7 @@
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
-    "@oclif/plugin-autocomplete": "github:oclif/plugin-autocomplete",
+    "@oclif/plugin-autocomplete": "^0.2.0",
     "@oclif/plugin-help": "^3.1.0",
     "@types/node-notifier": "^6.0.1",
     "@types/utf8": "^2.1.6",
@@ -78,16 +78,12 @@
   "scripts": {
     "link": "npm link",
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "npm run lint",
     "prepack": "rm -rf lib && tsc && oclif-dev manifest",
+    "posttest": "npm run lint",
     "test": "echo NO TESTS",
     "version": "oclif-dev readme && git add README.md",
     "lint": "eslint 'src/**/*.{js,ts}'",
-    "lint:fix": "eslint 'src/**/*.{js,ts}' --quiet --fix",
-    "--todo-postinstall": "vc up && vc refresh -v && vc autocomplete"
+    "lint:fix": "eslint 'src/**/*.{js,ts}' --quiet --fix"
   },
-  "types": "lib/index.d.ts",
-  "directories": {
-    "lib": "lib"
-  }
+  "types": "lib/index.d.ts"
 }
