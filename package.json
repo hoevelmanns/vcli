@@ -1,12 +1,12 @@
 {
     "name": "vcli",
     "description": "An universal and flexible CLI",
-    "version": "0.0.0",
+    "version": "1.0.1-poc",
     "author": "Marcelle Hövelmanns",
     "bin": {
         "vc": "./bin/run"
     },
-    "bugs": "https://github.com/zooroyalweb/vcli/issues",
+    "bugs": "https://github.com/hoevelmanns/vcli/issues",
     "dependencies": {
         "@oclif/command": "^1",
         "@oclif/config": "^1",
@@ -49,7 +49,7 @@
         "/npm-shrinkwrap.json",
         "/oclif.manifest.json"
     ],
-    "homepage": "https://github.com/zooroyalweb/vcli",
+    "homepage": "https://github.com/hoevelmanns/vcli/",
     "keywords": [
         "oclif"
     ],
@@ -68,7 +68,7 @@
             }
         }
     },
-    "repository": "zooroyalweb/vcli",
+    "repository": "https://github.com/hoevelmanns/vcli",
     "scripts": {
         "link": "npm link",
         "postpack": "rm -f oclif.manifest.json",
