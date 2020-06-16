@@ -1,7 +1,6 @@
 import { flags } from '@oclif/command';
 import Command from './base';
 import cli from 'cli-ux';
-import { swCacheClear, swPluginList } from '../shell-commands';
 
 export default class Build extends Command {
     static description = 'build'; // todo description
@@ -18,7 +17,5 @@ export default class Build extends Command {
 
     async run() {
         cli.action.start('Starting build');
-        await swCacheClear.vagrant.exec();
-        await swPluginList.vagrant.exec();
     }
 }

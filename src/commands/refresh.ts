@@ -20,7 +20,10 @@ export default class Refresh extends Command {
 
     async run() {
         const { flags } = this.parse(Refresh);
-        initProject().then(() => new Generator(this.config.root).run(flags.vagrant))
+
+        initProject()
+          .then(() => new Generator(this.config.root).run(flags.vagrant))
+          .catch(err => console.log("error"))
 
     }
 }
