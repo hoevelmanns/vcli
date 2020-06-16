@@ -2,8 +2,8 @@ import { Observable, of, throwError } from 'rxjs';
 import { SpawnChunk } from 'rxjs-shell/models';
 import { exec, spawn } from 'rxjs-shell';
 import { catchError, map } from 'rxjs/operators';
-import { Flags, ShellCommandOptions } from '../types';
-import { projectConfig, projectRoot } from '../../shared/utils';
+import { ShellCommandOptions } from '../types';
+import { config } from '../../shared/utils';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -80,12 +80,10 @@ class Shell {
 
         options.command =
             options.runInVagrant || this.runInVagrant
-                ? `vagrant ssh --no-tty  -c "cd ~/${projectConfig.vagrant?.deployDir} && ${options.command}"`
+                ? `vagrant ssh --no-tty  -c "cd ~/${config.vagrant?.deployDir} && ${options.command}"`
                 : options?.runInProjectRoot || runInProjectRoot
-                ? `cd ${projectRoot} && ${options.command}`
-                : options.command
-
-        console.log('----------------\n' +options.command + '\n-------------------*');
+                ? `cd ${config.projectRoot} && ${options.command}`
+                : options.command;
 
         if (!options.flags) return options.command;
 

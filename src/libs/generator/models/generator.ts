@@ -1,10 +1,4 @@
-import {
-    makeClassName,
-    makeFileName,
-    makeFunctionName,
-    makePath,
-    projectConfig,
-} from '../../shared/utils';
+import { config, makeClassName, makeFileName, makeFunctionName, makePath } from '../../shared/utils';
 import { CommandTemplate, CommandType, ConsoleCommand } from '../types';
 import { cliCommandTemplate, shellCommandTemplate } from '../templates';
 import { ExternalConsole } from '../../shared/types';
@@ -12,6 +6,12 @@ import { shell } from '../../shell/models';
 import { relative } from 'path';
 import * as fs from 'fs';
 import cli from 'cli-ux';
+import { Command, IConfig } from '@oclif/config';
+import conf from 'conf-cli/lib/commands/conf';
+
+export interface ManifestCommand extends Command {
+    consoleCommand: ConsoleCommand;
+}
 
 /**
  * todo: refactoring
@@ -24,17 +24,17 @@ export class Generator {
     private runInVagrant = false;
     private cliCommandTemplates: CommandTemplate[] = [];
     private shellCommandTemplates: CommandTemplate[] = [];
-    private shellCommandFile = this.cliRoot + `${projectConfig.generatorOutput}/generated.ts`;
-    private cliCommandsPath = this.cliRoot + '/src/commands/'; // todo move to types
+    private shellCommandFile = config.root + `${config.generatorOutput}/generated.ts`;
+    private cliCommandsPath = config.root + '/src/commands/'; // todo move to types
     private _consoleOutput = <string>'';
 
-    constructor(private cliRoot: string) {}
+    constructor(private cliConfig: IConfig) {}
 
     /**
      * todo description
      */
     run = (runInVagrant = false): void =>
-        Object.entries(projectConfig?.consoles).forEach(async (c) => {
+        Object.entries(config.consoles).forEach(async (c) => {
             cli.action.start('Generating shell and cli commands');
 
             this.console = { ...c[1], ...{ context: c[0] } };
@@ -52,7 +52,7 @@ export class Generator {
 
             cli.action.start('Update CLI Manifest & Readme');
 
-            shell.execSync(`cd ${this.cliRoot} && npm run prepack`).catch((reason) => console.error(reason));
+            shell.execSync(`cd ${config.root} && npm run prepack`).catch((reason) => console.error(reason));
         });
 
     /**
@@ -105,7 +105,7 @@ export class Generator {
             // todo adds flags -> execute bin/console <command> -h -> bin/console sw:plugin:activate -h
             this.cliCommandTemplates.push({
                 command,
-                template: cliCommandTemplate(command, this.cliRoot),
+                template: cliCommandTemplate(command, config.root),
             });
             this.processedCommands.push(className);
         });
@@ -131,7 +131,7 @@ export class Generator {
     private writeCliCommands = (): void => {
         this.cliCommandTemplates.map((cmdTemplate: CommandTemplate) => {
             const targetPath = this.cliCommandsPath + makePath(cmdTemplate.command.name);
-            const shellCommandPath = relative(targetPath, this.cliRoot + '/src/shell-commands/');
+            const shellCommandPath = relative(targetPath, config.root + '/src/shell-commands/');
             const targetFile = targetPath + '/' + makeFileName(cmdTemplate.command.name);
 
             cmdTemplate.template = [

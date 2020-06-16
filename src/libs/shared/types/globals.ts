@@ -1,10 +1,23 @@
-export interface CliConfig {
+import { Command, IConfig } from '@oclif/config';
+
+export interface Globals extends IConfig {
     project?: string;
+    projectRoot: string;
     vagrant?: VagrantConfig;
     notifications?: NotificationConfig;
-    commands: ConsolesCommands;
     consoles: ExternalConsoles;
     generatorOutput: string;
+    customCommands: ICustomCommand[];
+}
+
+export interface ICustomCommand extends Command {
+    id: string;
+    name: string;
+    execute: string;
+    description: string;
+    context: string;
+    prefix?: string;
+    type: CommandType;
 }
 
 export interface ExternalConsoles {
@@ -27,22 +40,12 @@ export interface NotificationConfig {
     time: number;
 }
 
-// todo redundant in lib "shell"
-export interface ConsoleCommand {
-    name: string;
-    execute: string;
-    description?: string;
-    type: CommandType;
-    context: string;
-    prefix?: string;
-}
-
 export enum CommandType {
     external = 'external',
     vc = 'vc',
 }
 
 export interface ConsolesCommands {
-    [key: string]: ConsoleCommand;
+    [key: string]: ICustomCommand;
 }
 // todo redundant in lib "shell"

@@ -1,11 +1,10 @@
 /* tslint:disable:no-useless-constructor */
 import { shell } from './shell';
-import { initProject } from '../../shared/utils';
 
-export abstract class ShellCommand {
+export class CustomCommand {
     protected runInVagrant = false;
 
-    protected constructor(
+    constructor(
         public name: string,
         public description: string,
         public execute: string,
@@ -17,8 +16,7 @@ export abstract class ShellCommand {
      *
      * @param vagrant
      */
-    public exec = async (vagrant = false): Promise<void> => {
-        await initProject();
+    public run = async (vagrant = false): Promise<void> => {
         await shell
             .execSync({
                 runInVagrant: this.runInVagrant || vagrant,

@@ -1,4 +1,4 @@
 export * from './notifier';
 export * from './event-bus';
-export * from './project-config';
+export * from './config';
 export * from './template';
