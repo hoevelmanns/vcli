@@ -2,7 +2,7 @@
   "name": "@hoevelmanns/vcli",
   "private": false,
   "description": "A universal and extensible CLI for Shopware, Laravel and others with vagrant support",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "author": "Marcelle Hövelmanns",
   "bin": {
     "vc": "bin/run"
@@ -68,15 +68,9 @@
       "@oclif/plugin-autocomplete",
       "conf-cli"
     ],
-    "topics": {
-      "cache": {
-        "description": "control the Shopware cache"
-      }
-    },
     "hooks": {
-      "command_not_found": "./lib/hooks/command_not_found/run-external-command",
       "init": [
-        "./lib/hooks/init/merge-external-commands"
+        "./lib/hooks/init/init-workspace"
       ]
     }
   },

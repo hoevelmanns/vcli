@@ -1,8 +1,7 @@
-import { config, updateWorkspaceConfig } from '../../shared/utils';
+import { initConfig, updateWorkspaceConfig } from "../../shared/utils";
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { shell } from '../../shell/models';
 import cli from 'cli-ux';
-import * as fs from 'fs';
 
 /**
  * todo: refactoring
@@ -13,13 +12,16 @@ export class Generator {
     private console = <IExternalConsole>{};
     private runInVagrant = false;
     private _consoleOutput = <string>'';
-    private workspaceConfig = config.workspace;
+    private workspaceConfig = global.config.workspace;
 
     /**
      * todo description
      */
-    run = (runInVagrant = false): void =>
-        Object.entries(config.workspace?.consoles ?? {}).forEach(async (c) => {
+    run = (runInVagrant = false): void => {
+        if (!global.config.workspace?.consoles) {
+            cli.error('No consoles defined in .vclirc.json');
+        }
+        Object.entries(global.config.workspace.consoles).forEach(async (c) => {
             cli.action.start('Generating shell and cli commands');
 
             this.console = { ...c[1], ...{ context: c[0] } };
@@ -33,9 +35,13 @@ export class Generator {
                 (error) => console.log(error),
             );
         });
+    };
 
-    private storeCommands() {
-        config.workspace['customCommands'] = this.commands;
+    /**
+     *
+     */
+    private storeCommands(): void {
+        global.config.workspace['customCommands'] = this.commands;
         updateWorkspaceConfig();
     }
 

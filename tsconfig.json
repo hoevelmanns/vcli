@@ -11,5 +11,6 @@
         "target": "es2017",
         "baseUrl": "./src"
     },
-    "include": ["src/**/*"]
+    "include": ["src/**/*"],
+    "files": ["./src/index.ts"]
 }

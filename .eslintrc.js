@@ -12,5 +12,7 @@ module.exports = {
     rules: {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         '@typescript-eslint/consistent-type-assertions': 'off',
+        '@typescript-eslint/interface-name-prefix': 'off',
+        "@typescript-eslint/no-namespace": "off"
     }
 };

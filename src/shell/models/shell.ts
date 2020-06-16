@@ -3,7 +3,6 @@ import { SpawnChunk } from 'rxjs-shell/models';
 import { exec, spawn } from 'rxjs-shell';
 import { catchError, map } from 'rxjs/operators';
 import { ShellCommandOptions } from '../types';
-import { config } from '../../shared/utils';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -78,12 +77,15 @@ class Shell {
         // todo refactor following lines
         options = typeof options === 'string' ? ({ runInVagrant, command: options } as ShellCommandOptions) : options;
 
-        options.command =
-            options.runInVagrant || this.runInVagrant
-                ? `vagrant ssh --no-tty  -c "cd ~/${config.workspace.vagrant?.deployDir} && ${options.command}"`
-                : options?.runInProjectRoot || runInProjectRoot
-                ? `cd ${config.workspace.root} && ${options.command}`
-                : options.command;
+        runInVagrant = options.runInVagrant || this.runInVagrant;
+        runInProjectRoot = options?.runInProjectRoot || runInProjectRoot;
+
+        if (runInVagrant) {
+            options.command = `vagrant ssh --no-tty  -c "cd ~/${global.config.workspace.vagrant?.deployDir} && ${options.command}"`;
+        }
+        if (!runInVagrant && runInProjectRoot) {
+            options.command = `cd ${global.config.workspace.root} && ${options.command}`;
+        }
 
         if (!options.flags) return options.command;
 
