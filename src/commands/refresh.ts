@@ -5,7 +5,7 @@ import { Generator } from '../libs/generator/models';
 export default class Refresh extends Command {
     static hidden = false;
 
-    static description = 'generate commands for external consoles'; // todo description
+    static description = 'add commands from external consoles defined in .vclirc.json to VCLI';
 
     static flags = {
         ...Command.flags,
@@ -14,7 +14,7 @@ export default class Refresh extends Command {
             char: 'v',
             type: 'boolean',
             description: 'run generator in vagrant',
-        }), // todo description
+        }),
     };
 
     async run() {

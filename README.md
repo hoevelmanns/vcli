@@ -21,7 +21,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/0.9.0-poc linux-x64 node-v12.13.1
+@hoevelmanns/vcli/0.9.1 linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -31,7 +31,9 @@ USAGE
 # Commands
 <!-- commands -->
 * [`vc autocomplete [SHELL]`](#vc-autocomplete-shell)
+* [`vc base`](#vc-base)
 * [`vc build`](#vc-build)
+* [`vc conf [KEY] [VALUE]`](#vc-conf-key-value)
 * [`vc create`](#vc-create)
 * [`vc halt`](#vc-halt)
 * [`vc help [COMMAND]`](#vc-help-command)
@@ -61,6 +63,15 @@ EXAMPLES
 
 _See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v0.2.0/src/commands/autocomplete/index.ts)_
 
+## `vc base`
+
+```
+USAGE
+  $ vc base
+```
+
+_See code: [src/commands/base.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.1/src/commands/base.ts)_
+
 ## `vc build`
 
 build
@@ -70,14 +81,37 @@ USAGE
   $ vc build
 
 OPTIONS
-  -d, --clear=clear                 clears the Shopware cache
+  -d, --clear=clear        clears the Shopware cache
   -f, --force
-  -g, --generate=generate           generates a new template cache
-  -h, --help                        show CLI help
-  --loglevel=error|warn|info|debug
+  -g, --generate=generate  generates a new template cache
+  -h, --help               show CLI help
 ```
 
-_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.0-poc/src/commands/build.ts)_
+_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.1/src/commands/build.ts)_
+
+## `vc conf [KEY] [VALUE]`
+
+manage configuration
+
+```
+USAGE
+  $ vc conf [KEY] [VALUE]
+
+ARGUMENTS
+  KEY    key of the config
+  VALUE  value of the config
+
+OPTIONS
+  -d, --cwd=cwd          config file location
+  -d, --delete           delete?
+  -h, --help             show CLI help
+  -k, --key=key          key of the config
+  -n, --name=name        config file name
+  -p, --project=project  project name
+  -v, --value=value      value of the config
+```
+
+_See code: [conf-cli](https://github.com/natzcam/conf-cli/blob/v0.1.9/src/commands/conf.ts)_
 
 ## `vc create`
 
@@ -88,12 +122,11 @@ USAGE
   $ vc create
 
 OPTIONS
-  -h, --help                        show CLI help
-  -n, --create                      create workspace
-  --loglevel=error|warn|info|debug
+  -h, --help    show CLI help
+  -n, --create  create workspace
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.0-poc/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.1/src/commands/create.ts)_
 
 ## `vc halt`
 
@@ -104,11 +137,10 @@ USAGE
   $ vc halt
 
 OPTIONS
-  -h, --help                        show CLI help
-  --loglevel=error|warn|info|debug
+  -h, --help  show CLI help
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.0-poc/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.1/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -136,12 +168,11 @@ USAGE
   $ vc refresh
 
 OPTIONS
-  -h, --help                        show CLI help
-  -v, --vagrant                     run generator in vagrant
-  --loglevel=error|warn|info|debug
+  -h, --help     show CLI help
+  -v, --vagrant  run generator in vagrant
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.0-poc/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.1/src/commands/refresh.ts)_
 
 ## `vc up`
 
@@ -152,9 +183,8 @@ USAGE
   $ vc up
 
 OPTIONS
-  -h, --help                        show CLI help
-  --loglevel=error|warn|info|debug
+  -h, --help  show CLI help
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.0-poc/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.1/src/commands/up.ts)_
 <!-- commandsstop -->
