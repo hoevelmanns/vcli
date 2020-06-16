@@ -1,40 +1,25 @@
-import { config, makeClassName, makeFileName, makeFunctionName, makePath } from '../../shared/utils';
-import { CommandTemplate, CommandType, ConsoleCommand } from '../types';
-import { cliCommandTemplate, shellCommandTemplate } from '../templates';
-import { ExternalConsole } from '../../shared/types';
+import { config, updateWorkspaceConfig } from '../../shared/utils';
+import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { shell } from '../../shell/models';
-import { relative } from 'path';
-import * as fs from 'fs';
 import cli from 'cli-ux';
-import { Command, IConfig } from '@oclif/config';
-import conf from 'conf-cli/lib/commands/conf';
-
-export interface ManifestCommand extends Command {
-    consoleCommand: ConsoleCommand;
-}
+import * as fs from 'fs';
 
 /**
  * todo: refactoring
  */
 export class Generator {
     private ignoreCommands = ['list', 'help'];
-    private commands: ConsoleCommand[] = [];
-    private console = <ExternalConsole>{};
-    private processedCommands: string[] = [];
+    private commands: ICustomCommand[] = [];
+    private console = <IExternalConsole>{};
     private runInVagrant = false;
-    private cliCommandTemplates: CommandTemplate[] = [];
-    private shellCommandTemplates: CommandTemplate[] = [];
-    private shellCommandFile = config.root + `${config.generatorOutput}/generated.ts`;
-    private cliCommandsPath = config.root + '/src/commands/'; // todo move to types
     private _consoleOutput = <string>'';
-
-    constructor(private cliConfig: IConfig) {}
+    private workspaceConfig = config.workspace;
 
     /**
      * todo description
      */
     run = (runInVagrant = false): void =>
-        Object.entries(config.consoles).forEach(async (c) => {
+        Object.entries(config.workspace?.consoles ?? {}).forEach(async (c) => {
             cli.action.start('Generating shell and cli commands');
 
             this.console = { ...c[1], ...{ context: c[0] } };
@@ -43,17 +28,16 @@ export class Generator {
                 (content) => {
                     this.consoleOutput = content;
                     this.parseConsoleOutput();
-                    this.generateTemplates();
-                    this.writeShellCommands();
-                    this.writeCliCommands();
+                    this.storeCommands();
                 },
                 (error) => console.log(error),
             );
-
-            cli.action.start('Update CLI Manifest & Readme');
-
-            shell.execSync(`cd ${config.root} && npm run prepack`).catch((reason) => console.error(reason));
         });
+
+    private storeCommands() {
+        config.workspace['customCommands'] = this.commands;
+        updateWorkspaceConfig();
+    }
 
     /**
      *
@@ -62,8 +46,13 @@ export class Generator {
      * @param description
      * @param command
      */
-    addCommand = (description: string, command: string): void | number =>
+    private addCommand = (description: string, command: string): void | number =>
         this.commands.push({
+            aliases: [],
+            args: [],
+            flags: {},
+            hidden: false,
+            id: command,
             name: command,
             description,
             execute: `${this.console.executable} ${command}`,
@@ -72,8 +61,7 @@ export class Generator {
         });
 
     /**
-     * todo description
-     *
+     * @returns void
      */
     private parseConsoleOutput = (): void => {
         const lines = this.consoleOutput.split('\n');
@@ -83,65 +71,9 @@ export class Generator {
             const description = line.replace(command, '').trim();
 
             if (this.ignoreCommands.includes(command)) return;
+            if (this.workspaceConfig.customCommands?.hasOwnProperty(command)) return; // todo change "force flag" is given
             // todo check if error occurred
             if (command && description) this.addCommand(description, command);
-        });
-    };
-
-    /**
-     *
-     */
-    private generateTemplates = (): void =>
-        this.commands.forEach((command) => {
-            const className = makeClassName(command.name);
-
-            if (this.processedCommands.includes(className)) {
-                return cli.info(`Command "${command.name}" already exist. Skipped generating.`);
-            }
-
-            this.processedCommands.push(className);
-            this.shellCommandTemplates.push({ command, template: shellCommandTemplate(command) });
-
-            // todo adds flags -> execute bin/console <command> -h -> bin/console sw:plugin:activate -h
-            this.cliCommandTemplates.push({
-                command,
-                template: cliCommandTemplate(command, config.root),
-            });
-            this.processedCommands.push(className);
-        });
-
-    /**
-     * @returns void
-     */
-    private writeShellCommands = (): void => {
-        const fileHead = [
-            '/* tslint:disable */\n/**\n* This file was automatically generated by vcli.\n* ' +
-                'DO NOT MODIFY IT BY HAND. Instead, run "vc refresh" to regenerate this file.\n*/\n\n',
-            'import { ShellCommand } from "../libs/shell/models";\n',
-        ];
-
-        const fileContent = fileHead.join('') + this.shellCommandTemplates.map((item) => item.template).join('');
-
-        fs.writeFileSync(this.shellCommandFile, fileContent, { flag: 'w' });
-    };
-
-    /**
-     * @todo abstract
-     */
-    private writeCliCommands = (): void => {
-        this.cliCommandTemplates.map((cmdTemplate: CommandTemplate) => {
-            const targetPath = this.cliCommandsPath + makePath(cmdTemplate.command.name);
-            const shellCommandPath = relative(targetPath, config.root + '/src/shell-commands/');
-            const targetFile = targetPath + '/' + makeFileName(cmdTemplate.command.name);
-
-            cmdTemplate.template = [
-                `import { ${makeFunctionName(cmdTemplate.command.name)} } from "${shellCommandPath}";`,
-                cmdTemplate.template,
-            ].join('');
-
-            fs.mkdirSync(targetPath, { recursive: true });
-
-            fs.writeFileSync(targetFile, cmdTemplate.template, { flag: 'w' });
         });
     };
 

@@ -1,7 +1,7 @@
-import { ConsoleCommand } from '../types';
 import { makeClassName, makeFunctionName } from '../../shared/utils';
+import { ICustomCommand } from '../../shared/types';
 
-export const shellCommandTemplate = (cmd: ConsoleCommand) => `
+export const shellCommandTemplate = (cmd: ICustomCommand) => `
 export class ${makeClassName(cmd.name)} extends ShellCommand {
     constructor() {
         super(

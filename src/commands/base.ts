@@ -8,7 +8,6 @@ import Command, { flags } from '@oclif/command';
  *
  */
 export default class BaseClass extends Command {
-
     async init() {
         // do noting
     }

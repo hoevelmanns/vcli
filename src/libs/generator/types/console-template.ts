@@ -1,6 +1,6 @@
-import { ConsoleCommand } from './command';
+import { ICustomCommand } from '../../shared/types';
 
 export interface CommandTemplate {
-    command: ConsoleCommand;
+    command: ICustomCommand;
     template: string;
 }

@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import * as findUp from 'find-up';
-import { Globals } from '../types';
+import { IConfiguration } from '../types';
 import { IConfig } from '@oclif/config';
 
 export const defaultConfigFile = '.vclirc.json';
-export let config = <Globals>{};
+export let config = <IConfiguration>{};
 
 async function getProjectRoot() {
     const configFilePath = await findUp(defaultConfigFile);
@@ -17,5 +17,9 @@ async function getProjectRoot() {
 export async function initConfig(cliConfig: IConfig): Promise<void> {
     const projectRoot = await getProjectRoot();
     const projectConfig = JSON.parse(fs.readFileSync(`${projectRoot}/${defaultConfigFile}`).toString());
-    config = { ...cliConfig, ...projectConfig, ...{ projectRoot } };
+    const configFile = projectRoot + defaultConfigFile;
+    config = { ...cliConfig, ...{ workspace: { ...projectConfig, ...{ projectRoot }, ...{ configFile } } } };
 }
+
+export const updateWorkspaceConfig = () =>
+    fs.writeFileSync(config.workspace.configFile, JSON.stringify(config.workspace), { flag: 'w' });

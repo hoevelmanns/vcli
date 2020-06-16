@@ -80,9 +80,9 @@ class Shell {
 
         options.command =
             options.runInVagrant || this.runInVagrant
-                ? `vagrant ssh --no-tty  -c "cd ~/${config.vagrant?.deployDir} && ${options.command}"`
+                ? `vagrant ssh --no-tty  -c "cd ~/${config.workspace.vagrant?.deployDir} && ${options.command}"`
                 : options?.runInProjectRoot || runInProjectRoot
-                ? `cd ${config.projectRoot} && ${options.command}`
+                ? `cd ${config.workspace.root} && ${options.command}`
                 : options.command;
 
         if (!options.flags) return options.command;

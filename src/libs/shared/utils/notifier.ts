@@ -1,9 +1,9 @@
 import * as notifier from 'node-notifier';
-import { Notification } from '../types';
+import { INotification } from '../types';
 import { config } from './config';
 
-export function notify(notification: Notification | string) {
-    if (config.notifications?.disabled) {
+export function notify(notification: INotification | string) {
+    if (config.workspace.notifications?.disabled) {
         return;
     }
 
@@ -11,9 +11,9 @@ export function notify(notification: Notification | string) {
     const msg = typeof notification === 'string' ? notification : notification.message;
 
     notifier.notify({
-        title: config.project,
+        title: config.workspace.name,
         message: msg,
-        time: config.notifications?.time ?? 2000,
+        time: config.workspace?.notifications?.time ?? 2000,
         type: type ?? 'info',
     });
 }

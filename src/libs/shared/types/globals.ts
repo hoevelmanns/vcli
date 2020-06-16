@@ -1,13 +1,17 @@
 import { Command, IConfig } from '@oclif/config';
 
-export interface Globals extends IConfig {
-    project?: string;
-    projectRoot: string;
-    vagrant?: VagrantConfig;
-    notifications?: NotificationConfig;
-    consoles: ExternalConsoles;
-    generatorOutput: string;
-    customCommands: ICustomCommand[];
+export interface IConfiguration extends IConfig {
+    workspace: IWorkspaceConfig;
+}
+
+export interface IWorkspaceConfig {
+    name?: string;
+    root: string;
+    configFile: string;
+    vagrant?: IVagrantConfig;
+    notifications?: INotificationConfig;
+    consoles?: IExternalConsoles;
+    customCommands?: ICustomCommand[];
 }
 
 export interface ICustomCommand extends Command {
@@ -20,22 +24,22 @@ export interface ICustomCommand extends Command {
     type: CommandType;
 }
 
-export interface ExternalConsoles {
-    [key: string]: ExternalConsole;
+export interface IExternalConsoles {
+    [key: string]: IExternalConsole;
 }
 
-export interface ExternalConsole {
+export interface IExternalConsole {
     parserStartString: string;
     executable: string;
     list: string;
     context?: string;
 }
 
-export interface VagrantConfig {
+export interface IVagrantConfig {
     deployDir: string;
 }
 
-export interface NotificationConfig {
+export interface INotificationConfig {
     disabled: boolean;
     time: number;
 }
@@ -44,8 +48,3 @@ export enum CommandType {
     external = 'external',
     vc = 'vc',
 }
-
-export interface ConsolesCommands {
-    [key: string]: ICustomCommand;
-}
-// todo redundant in lib "shell"
