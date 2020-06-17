@@ -1,5 +1,5 @@
 import Command from '@oclif/command';
-import { initConfig } from "../shared/utils";
+import { initConfig } from '../shared/utils';
 
 /**
  * todo: credential / auth helper for git:

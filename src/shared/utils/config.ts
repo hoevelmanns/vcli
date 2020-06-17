@@ -5,11 +5,11 @@ import { IConfiguration } from '../types';
 
 export const defaultConfigFile = '.vclirc.json';
 
-async function getProjectRoot(): Promise<string> {
+async function getProjectRoot(): Promise<string | void> {
     const configFilePath = await findUp(defaultConfigFile);
 
     if (!configFilePath) {
-        throw Error(`The configuration file "${defaultConfigFile}" in project root is missing.`);
+        return console.info(`The configuration file "${defaultConfigFile}" in project root is missing.`);
     }
     return configFilePath.replace(defaultConfigFile, '');
 }
@@ -18,6 +18,7 @@ export async function initConfig(cliConfig: IConfig): Promise<IConfiguration> {
     const workspaceRoot = await getProjectRoot();
     const workspaceConfig = JSON.parse(fs.readFileSync(`${workspaceRoot}/${defaultConfigFile}`).toString());
     const configFile = workspaceRoot + defaultConfigFile;
+
     global.config = <IConfiguration>{};
     Object.assign(global.config, {
         ...cliConfig,

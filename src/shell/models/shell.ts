@@ -74,19 +74,14 @@ class Shell {
         runInVagrant = false,
         runInProjectRoot = false,
     ): string {
-        // todo refactor following lines
         options = typeof options === 'string' ? ({ runInVagrant, command: options } as ShellCommandOptions) : options;
-
         runInVagrant = options.runInVagrant || this.runInVagrant;
         runInProjectRoot = options?.runInProjectRoot || runInProjectRoot;
 
-        if (runInVagrant) {
+        if (runInVagrant)
             options.command = `vagrant ssh --no-tty  -c "cd ~/${global.config.workspace.vagrant?.deployDir} && ${options.command}"`;
-        }
-        if (!runInVagrant && runInProjectRoot) {
+        if (!runInVagrant && runInProjectRoot)
             options.command = `cd ${global.config.workspace.root} && ${options.command}`;
-        }
-
         if (!options.flags) return options.command;
 
         const flagsStr = Object.entries(options.flags)

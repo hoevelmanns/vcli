@@ -1,10 +1,3 @@
-/*
-todo: create workspace
- */
-/*
-Todo: place generators here
- */
-
 import { flags } from '@oclif/command';
 import Command from './base';
 

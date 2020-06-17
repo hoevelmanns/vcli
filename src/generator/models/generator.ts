@@ -1,4 +1,4 @@
-import { initConfig, updateWorkspaceConfig } from "../../shared/utils";
+import { updateWorkspaceConfig } from '../../shared/utils';
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { shell } from '../../shell/models';
 import cli from 'cli-ux';
@@ -18,13 +18,12 @@ export class Generator {
      * todo description
      */
     run = (runInVagrant = false): void => {
-        if (!global.config.workspace?.consoles) {
-            cli.error('No consoles defined in .vclirc.json');
-        }
-        Object.entries(global.config.workspace.consoles).forEach(async (c) => {
+        if (!global.config.workspace?.consoles) cli.error('No consoles defined in .vclirc.json');
+
+        Object.entries(global.config.workspace.consoles).forEach(async (consoleConfig) => {
             cli.action.start('Generating shell and cli commands');
 
-            this.console = { ...c[1], ...{ context: c[0] } };
+            this.console = { ...consoleConfig[1], ...{ context: consoleConfig[0] } };
 
             shell.execSync(`${this.console.executable} ${this.console.list}`, runInVagrant, true).then(
                 (content) => {
@@ -78,7 +77,6 @@ export class Generator {
 
             if (this.ignoreCommands.includes(command)) return;
             if (this.workspaceConfig.customCommands?.hasOwnProperty(command)) return; // todo change "force flag" is given
-            // todo check if error occurred
             if (command && description) this.addCommand(description, command);
         });
     };
