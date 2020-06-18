@@ -1,8 +1,5 @@
-import { Observable, of, throwError } from 'rxjs';
-import { SpawnChunk } from 'rxjs-shell/models';
-import { exec, spawn } from 'rxjs-shell';
-import { catchError, map } from 'rxjs/operators';
 import { ShellCommandOptions } from '../types';
+import { exec } from 'shelljs';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -16,23 +13,6 @@ class Shell {
     }
 
     /**
-     * Spawns given commands
-     *
-     * @description spawn transfers the data through a stream and is well suited when a lot of data is transferred.
-     * @see https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
-     *
-     * @param options
-     */
-    spawn(options: ShellCommandOptions): Observable<SpawnChunk> {
-        const command = this.prepareCommand(options);
-
-        return spawn(command).pipe(
-            map((output) => output.chunk),
-            catchError((err) => of(err)),
-        );
-    }
-
-    /**
      * Executes shell commands, also in a vagrant machine
      *
      * @description exec has a maxBuffer and can only transfer a certain amount of data ( default: 200KB )
@@ -41,25 +21,20 @@ class Shell {
      * @param command
      * @param runInVagrant
      * @param runInProjectRoot
+     * @param silent
      */
-    exec(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false): Observable<string> {
-        command = this.prepareCommand(command, runInVagrant, runInProjectRoot);
-
-        return exec(command).pipe(
-            map((output) => output.stdout.toString('utf8')),
-            catchError((err) => throwError(err.stderr)),
+    exec = async (
+        command: ShellCommandOptions | string,
+        runInVagrant = false,
+        runInProjectRoot = false,
+        silent = false,
+    ): Promise<string> =>
+        new Promise((resolve, reject) =>
+            exec(this.prepareCommand(command, runInVagrant, runInProjectRoot), { silent }, (error, stdout, stderr) => {
+                if (error) return reject(stderr);
+                resolve(stdout.trim());
+            }),
         );
-    }
-
-    /**
-     *
-     * @param command
-     * @param runInVagrant
-     * @param runInProjectRoot
-     */
-    execSync(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false) {
-        return this.exec(command, runInVagrant, runInProjectRoot).toPromise();
-    }
 
     /**
      * Concat given flags stringified to the given command and prepends vagrant command if given
@@ -79,7 +54,7 @@ class Shell {
         runInProjectRoot = options?.runInProjectRoot || runInProjectRoot;
 
         if (runInVagrant)
-            options.command = `vagrant ssh --no-tty  -c "cd ~/${global.config.workspace.vagrant?.deployDir} && ${options.command}"`;
+            options.command = `vagrant ssh -c "cd ~/${global.config.workspace.vagrant?.deployDir} && ${options.command}"`;
         if (!runInVagrant && runInProjectRoot)
             options.command = `cd ${global.config.workspace.root} && ${options.command}`;
         if (!options.flags) return options.command;

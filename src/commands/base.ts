@@ -1,5 +1,5 @@
 import Command from '@oclif/command';
-import { initConfig } from '../shared/utils';
+import { vcConfig } from "../shared/utils";
 
 /**
  * todo: credential / auth helper for git:
@@ -11,7 +11,7 @@ import { initConfig } from '../shared/utils';
 export default class BaseClass extends Command {
     static hidden = true;
     async init() {
-        await initConfig(this.config);
+        await vcConfig.initWorkspace(this.config);
     }
 
     async run() {

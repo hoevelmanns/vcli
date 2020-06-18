@@ -1,4 +1,3 @@
-/* tslint:disable:no-useless-constructor */
 import { shell } from './shell';
 import cli from 'cli-ux';
 
@@ -11,6 +10,7 @@ export class CustomCommand {
         public execute: string,
         public type: string,
         public context: string,
+        public id: string,
     ) {}
 
     /**
@@ -18,14 +18,12 @@ export class CustomCommand {
      * @param vagrant
      */
     public run = async (vagrant = false): Promise<void> => {
-        cli.action.start(this.description);
+        cli.action.start('Processing: ' + this.description);
 
-        await shell
-            .execSync({
-                runInVagrant: this.runInVagrant || vagrant,
-                command: this.execute,
-            })
-            .then((output) => console.log(output));
+        await shell.exec({
+            runInVagrant: this.runInVagrant || vagrant,
+            command: this.execute,
+        });
     };
 
     public get vagrant() {

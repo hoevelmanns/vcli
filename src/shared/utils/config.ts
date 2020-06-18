@@ -5,27 +5,38 @@ import { IConfiguration } from '../types';
 
 export const defaultConfigFile = '.vclirc.json';
 
-async function getProjectRoot(): Promise<string | void> {
-    const configFilePath = await findUp(defaultConfigFile);
+export class VConfig {
 
-    if (!configFilePath) {
-        return console.info(`The configuration file "${defaultConfigFile}" in project root is missing.`);
+    /**
+     *
+     * @param oclifConfig
+     * @returns void
+     */
+    async initWorkspace(oclifConfig: IConfig): Promise<void> {
+        const workspaceConfigFile = await findUp(defaultConfigFile);
+        if (!workspaceConfigFile) {
+            process.exit(); // todo prompting
+            return;
+        }
+        let workspaceConfig = JSON.parse(fs.readFileSync(workspaceConfigFile).toString());
+        const workspaceDir = workspaceConfigFile.replace(defaultConfigFile, '');
+
+        workspaceConfig = {
+            ...workspaceConfig,
+            ...{configFile: workspaceConfigFile},
+            ...{root: workspaceDir}
+        };
+
+        global.config = <IConfiguration>{};
+        Object.assign(global.config, {
+            ...oclifConfig,
+            ...{ workspace: { ...workspaceConfig} },
+        });
     }
-    return configFilePath.replace(defaultConfigFile, '');
+
+    updateWorkspaceConfig = () =>
+      fs.writeFileSync(global.config.workspace.configFile, JSON.stringify(global.config.workspace), { flag: 'w' });
+
 }
 
-export async function initConfig(cliConfig: IConfig): Promise<IConfiguration> {
-    const workspaceRoot = await getProjectRoot();
-    const workspaceConfig = JSON.parse(fs.readFileSync(`${workspaceRoot}/${defaultConfigFile}`).toString());
-    const configFile = workspaceRoot + defaultConfigFile;
-
-    global.config = <IConfiguration>{};
-    Object.assign(global.config, {
-        ...cliConfig,
-        ...{ workspace: { ...workspaceConfig, ...{ root: workspaceRoot, configFile } } },
-    });
-    return global.config;
-}
-
-export const updateWorkspaceConfig = () =>
-    fs.writeFileSync(global.config.workspace.configFile, JSON.stringify(global.config.workspace), { flag: 'w' });
+export const vcConfig = new VConfig();

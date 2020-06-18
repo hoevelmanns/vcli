@@ -7,12 +7,12 @@ export function notify(notification: INotification | string) {
     }
 
     const type = typeof notification === 'string' ? 'info' : notification.type;
-    const msg = typeof notification === 'string' ? notification : notification.message;
+    const message = typeof notification === 'string' ? notification : notification.message;
 
     notifier.notify({
-        title: global.config.workspace.name,
-        message: msg,
-        time: global.config.workspace?.notifications?.time ?? 2000,
+        ...global.config.workspace.notifications,
+        ...{ title: global.config.workspace.name },
+        ...{ message },
         type: type ?? 'info',
     });
 }

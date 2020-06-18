@@ -10,7 +10,10 @@ export class Vagrant {
     up(): void {
         cli.action.start('Starting machine');
 
-        shell.exec('vagrant up').subscribe(() => notify('Vagrant successfully started'));
+        shell
+            .exec('vagrant up')
+            .then(() => notify('Vagrant successfully started'))
+            .catch((err) => notify(`Error starting vagrant: ${err}`));
     }
 
     /**
@@ -19,7 +22,10 @@ export class Vagrant {
     halt(): void {
         cli.action.start('Stopping machine');
 
-        shell.exec('vagrant halt').subscribe(() => notify('Vagrant stopped'));
+        shell
+            .exec('vagrant halt')
+            .then(() => notify('Vagrant stopped'))
+            .catch((err) => notify(`Error halting vagrant: ${err}`));
     }
 }
 

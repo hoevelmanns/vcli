@@ -10,7 +10,7 @@ export interface IWorkspaceConfig {
     configFile: string;
     vagrant?: IVagrantConfig;
     notifications?: INotificationConfig;
-    consoles?: IExternalConsoles;
+    consoles?: IExternalConsole[];
     customCommands?: ICustomCommand[];
 }
 
@@ -20,19 +20,17 @@ export interface ICustomCommand extends Command {
     execute: string;
     description: string;
     context: string;
+    hidden: boolean; // todo
     prefix?: string;
     type: CommandType;
-}
-
-export interface IExternalConsoles {
-    [key: string]: IExternalConsole;
 }
 
 export interface IExternalConsole {
     parserStartString: string;
     executable: string;
     list: string;
-    context?: string;
+    name?: string;
+    prefix?: string;
 }
 
 export interface IVagrantConfig {
