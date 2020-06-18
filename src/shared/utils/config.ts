@@ -4,7 +4,7 @@ import { IConfig } from '@oclif/config';
 import { v4 as uuidv4 } from 'uuid';
 import * as findUp from 'find-up';
 import cli from 'cli-ux';
-const fs = require('fs-extra');
+const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 global.config = <IConfiguration>{};
 
@@ -18,8 +18,8 @@ export class VConfig {
      * @returns void
      */
     async initWorkspace(oclifConfig: IConfig): Promise<void> {
+        const workspaceConfigFile = await findUp(defaultConfigFile);
         VConfig.oclifConfig = oclifConfig;
-        const workspaceConfigFile = await findUp(defaultConfigFile); // todo remove
 
         if (!workspaceConfigFile) {
             await this.createWorkspace(true);
@@ -51,9 +51,8 @@ export class VConfig {
         const pkgJsonPath = process.cwd() + '/package.json';
         const localPackageJson = (await fs.pathExists(pkgJsonPath)) ? await fs.readJson(pkgJsonPath) : null;
         const name = await cli.prompt('What is the name of the workspace?', { default: localPackageJson?.name ?? '' });
-        const root = process.cwd(); // remove
+        const root = process.cwd();
         const uuid = uuidv4(name);
-
         const config: IWorkspaceConfig = {
             ...defaultWorkspace,
             name,

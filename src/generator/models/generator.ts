@@ -30,7 +30,7 @@ export class Generator {
                     this.parseConsoleOutput();
                     this.storeCommands();
                 },
-                (error) => console.log('Error generating commands', error),
+                (error) => console.log('Error generating commands: ', error),
             );
         });
     }
@@ -65,8 +65,8 @@ export class Generator {
             args: [],
             flags: {},
             hidden: false,
-            id: command,
-            name: command,
+            id: this.console.prefix ? this.console.prefix + ':' + command: command, // todo
+            name: this.console.prefix ? this.console.prefix + ':' + command: command, // todo
             description,
             execute: `${console.executable} ${command}`,
             type: CommandType.external,

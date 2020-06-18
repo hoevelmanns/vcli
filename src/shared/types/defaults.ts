@@ -1,6 +1,6 @@
 import { IExternalConsole, IWorkspaceConfig } from './globals';
 
-export const defaultConfigFile = '.vclirc.json'; // todo remove?
+export const defaultConfigFile = '.vclirc.json';
 
 export const defaultWorkspace = <IWorkspaceConfig>{
     vagrant: {
