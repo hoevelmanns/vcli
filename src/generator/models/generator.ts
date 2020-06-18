@@ -1,7 +1,7 @@
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { shell } from '../../shell/models';
 import cli from 'cli-ux';
-import { vcConfig } from "../../shared/utils";
+import { vcConfig } from '../../shared/utils';
 
 /**
  * todo: refactoring
@@ -76,9 +76,9 @@ export class Generator {
     /**
      *
      */
-    private storeCommands(): void {
-        global.config.workspace['customCommands'] = this.commands;
-        vcConfig.updateWorkspaceConfig();
+    private async storeCommands(): Promise<void> {
+        global.config.workspace.customCommands = this.commands;
+        await vcConfig.updateWorkspaceConfig();
     }
 
     get vagrant() {

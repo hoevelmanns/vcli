@@ -5,9 +5,10 @@ export interface IConfiguration extends IConfig {
 }
 
 export interface IWorkspaceConfig {
-    name?: string;
+    name: string;
+    uuid: string;
     root: string;
-    configFile: string;
+    configFile?: string;
     vagrant?: IVagrantConfig;
     notifications?: INotificationConfig;
     consoles?: IExternalConsole[];
