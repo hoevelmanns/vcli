@@ -77,7 +77,7 @@ export class VConfig {
         const targetDir = `${configDir}/${config.uuid}`;
         const targetFile = `${targetDir}/config.json`;
 
-        return fs.mkdir(targetDir).then(async () => {
+        return fs.mkdir(targetDir, { recursive: true }).then(async () => {
             await fs.writeFile(targetFile, JSON.stringify(config), { flag: 'w' }).then(async () => {
                 await fs.symlink(targetFile, `${process.cwd()}/${defaultConfigFile}`, 'file', (err: any) => {
                     if (err) throw err;
