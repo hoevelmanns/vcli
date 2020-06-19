@@ -10,19 +10,19 @@ import { vcConfig } from '../shared/utils';
  */
 export default class BaseClass extends Command {
     static hidden = true;
-    async init() {
+    async init(): Promise<void> {
         await vcConfig.initWorkspace(this.config);
     }
 
-    async run() {
+    async run(): Promise<void> {
         // do noting
     }
 
-    async catch(error: Error) {
+    async catch(error: Error): Promise<void> {
         // handle any error from the command
     }
 
-    async finally(error: Error | undefined) {
+    async finally(error: Error | undefined): Promise<void> {
         // called after run and catch regardless of whether or not the command errored
     }
 }

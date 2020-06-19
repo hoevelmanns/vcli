@@ -4,6 +4,8 @@ import { IConfig } from '@oclif/config';
 import { v4 as uuidv4 } from 'uuid';
 import * as findUp from 'find-up';
 import cli from 'cli-ux';
+import * as inquirer from 'inquirer';
+import { Generator } from '../../generator/models';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 global.config = <IConfiguration>{};
@@ -22,14 +24,20 @@ export class VConfig {
         VConfig.oclifConfig = oclifConfig;
 
         if (!workspaceConfigFile) {
-            await this.createWorkspace(true);
+            await this.createWorkspace();
             return;
         }
 
         VConfig.workspaceConfigFile = workspaceConfigFile;
 
+        await VConfig.setConfig();
+    }
+
+    private static async setConfig(workspaceConfigFile?: string): Promise<void> {
+        VConfig.workspaceConfigFile = workspaceConfigFile ?? VConfig.workspaceConfigFile;
+
         let workspaceConfig = await fs.readJSON(VConfig.workspaceConfigFile);
-        const workspaceDir = VConfig.workspaceConfigFile.replace(defaultConfigFile, '');
+        const workspaceDir = VConfig.workspaceConfigFile?.replace(defaultConfigFile, '');
 
         workspaceConfig = {
             ...workspaceConfig,
@@ -38,16 +46,13 @@ export class VConfig {
         };
 
         Object.assign(global.config, {
-            ...oclifConfig,
+            ...VConfig.oclifConfig,
             ...{ workspace: { ...workspaceConfig } },
         });
     }
 
-    /**
-     *
-     * @param force
-     */
-    async createWorkspace(force: true) {
+    async createWorkspace(): Promise<void> {
+        // todo force
         const pkgJsonPath = process.cwd() + '/package.json';
         const localPackageJson = (await fs.pathExists(pkgJsonPath)) ? await fs.readJson(pkgJsonPath) : null;
         const name = await cli.prompt('What is the name of the workspace?', { default: localPackageJson?.name ?? '' });
@@ -60,11 +65,25 @@ export class VConfig {
             root,
         };
 
-        await this.createWorkspaceConfig(config).then(() => {
+        await this.createWorkspaceConfig(config).then(async () => {
             console.log('Workspace created!');
-            // todo prompting: which consoles? refresh?
+
+            await this.setupInquirer();
+
             process.exit();
         });
+    }
+
+    async setupInquirer(): Promise<void> {
+        const questions: { refresh: boolean } = await inquirer.prompt([
+            {
+                name: 'refresh',
+                message: 'Generate the commands?',
+                type: 'confirm',
+            },
+        ]);
+
+        if (questions.refresh) await new Generator().run();
     }
 
     async updateWorkspaceConfig(): Promise<void> {
@@ -75,12 +94,14 @@ export class VConfig {
         const configDir = VConfig.oclifConfig.configDir;
         const targetDir = `${configDir}/${config.uuid}`;
         const targetFile = `${targetDir}/config.json`;
+        const workspaceConfigFile = `${process.cwd()}/${defaultConfigFile}`;
 
         return fs.mkdir(targetDir, { recursive: true }).then(async () => {
             await fs.writeFile(targetFile, JSON.stringify(config), { flag: 'w' }).then(async () => {
-                await fs.symlink(targetFile, `${process.cwd()}/${defaultConfigFile}`, 'file', (err: any) => {
-                    if (err) throw err;
-                });
+                try { // todo check if symlink exist
+                    await fs.symlink(targetFile, workspaceConfigFile, 'file');
+                } catch (e) {}
+                await VConfig.setConfig(workspaceConfigFile);
             });
         });
     };

@@ -9,17 +9,17 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
 
     const processed: string[] = [];
     global.config.workspace?.customCommands?.forEach((item: ICustomCommand) => {
-      if (processed.includes(item.id)) {
-        console.log("duplicate ", item.id)
-        return;
-      }
-      corePlugin.commands.push((<Command.Plugin>(<unknown>{
-        ...item,
-        load(): CustomCommand {
-          return new CustomCommand(item.name, item.description, item.execute, item.type, item.context, item.id);
-        },
-      })) as Command.Plugin);
-      processed.push(item.id)
+        if (processed.includes(item.id)) {
+            console.log('duplicate ', item.id);
+            return;
+        }
+        corePlugin.commands.push((<Command.Plugin>(<unknown>{
+            ...item,
+            load(): CustomCommand {
+                return new CustomCommand(item.name, item.description, item.execute, item.type, item.context, item.id);
+            },
+        })) as Command.Plugin);
+        processed.push(item.id);
     });
 };
 

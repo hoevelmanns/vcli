@@ -26,7 +26,7 @@ export class CustomCommand {
         });
     };
 
-    public get vagrant() {
+    public get vagrant(): CustomCommand {
         this.runInVagrant = true;
         return this;
     }

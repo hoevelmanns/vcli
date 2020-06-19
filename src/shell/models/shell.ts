@@ -7,7 +7,7 @@ import { exec } from 'shelljs';
 class Shell {
     private runInVagrant = false;
 
-    get vagrant() {
+    get vagrant(): Shell {
         this.runInVagrant = true;
         return this;
     }

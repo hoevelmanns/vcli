@@ -12,7 +12,7 @@ export default class Create extends Command {
         create: flags.boolean({ char: 'n', description: 'create workspace' }),
     };
 
-    async run() {
+    async run(): Promise<void> {
         const { flags } = this.parse(Create);
 
         !flags.create || this.log('started create workspace task - todo');

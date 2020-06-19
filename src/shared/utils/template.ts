@@ -7,12 +7,12 @@ export const makeFunctionName = (name: string): string => {
     return className.charAt(0).toLowerCase() + className.slice(1);
 };
 
-export const makeFileName = (name: string, extension = 'ts') => {
+export const makeFileName = (name: string, extension = 'ts'): string => {
     const parts = name.split(':');
     return parts[parts.length - 1] + `.${extension}`;
 };
 
-export const makePath = (name: string) => {
+export const makePath = (name: string): string => {
     const parts = name.split(':');
     return parts.slice(0, parts.length - 1).join('/');
 };

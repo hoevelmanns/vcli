@@ -21,7 +21,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/0.9.7 linux-x64 node-v12.13.1
+@hoevelmanns/vcli/0.9.8 linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -31,7 +31,6 @@ USAGE
 # Commands
 <!-- commands -->
 * [`vc autocomplete [SHELL]`](#vc-autocomplete-shell)
-* [`vc build`](#vc-build)
 * [`vc conf [KEY] [VALUE]`](#vc-conf-key-value)
 * [`vc create`](#vc-create)
 * [`vc halt`](#vc-halt)
@@ -61,23 +60,6 @@ EXAMPLES
 ```
 
 _See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v0.2.0/src/commands/autocomplete/index.ts)_
-
-## `vc build`
-
-build
-
-```
-USAGE
-  $ vc build
-
-OPTIONS
-  -d, --clear=clear        clears the Shopware cache
-  -f, --force
-  -g, --generate=generate  generates a new template cache
-  -h, --help               show CLI help
-```
-
-_See code: [src/commands/build.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.7/src/commands/build.ts)_
 
 ## `vc conf [KEY] [VALUE]`
 
@@ -116,7 +98,7 @@ OPTIONS
   -n, --create  create workspace
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.7/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.8/src/commands/create.ts)_
 
 ## `vc halt`
 
@@ -130,7 +112,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.7/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.8/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -162,7 +144,7 @@ OPTIONS
   -v, --vagrant  run generator in vagrant
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.7/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.8/src/commands/refresh.ts)_
 
 ## `vc up`
 
@@ -176,5 +158,5 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.7/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v0.9.8/src/commands/up.ts)_
 <!-- commandsstop -->

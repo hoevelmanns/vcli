@@ -5,6 +5,6 @@ export enum Environment {
 }
 export let environment = Environment.development;
 
-export function setEnvironment(env: Environment) {
+export function setEnvironment(env: Environment): void {
     environment = env;
 }

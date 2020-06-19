@@ -2,7 +2,7 @@
   "name": "@hoevelmanns/vcli",
   "private": false,
   "description": "A universal and extensible CLI for Shopware, Laravel and others with vagrant support",
-  "version": "0.9.7",
+  "version": "0.9.9",
   "author": "Marcelle Hövelmanns",
   "bin": {
     "vc": "bin/run"
@@ -16,6 +16,7 @@
     "@oclif/dev-cli": "^1",
     "@oclif/plugin-autocomplete": "^0.2.0",
     "@oclif/plugin-help": "^3.1.0",
+    "@types/inquirer": "^6.5.0",
     "@types/node-notifier": "^6.0.1",
     "@types/shelljs": "^0.8.8",
     "@types/utf8": "^2.1.6",
@@ -24,6 +25,7 @@
     "conf-cli": "^0.1.9",
     "find-up": "^4.1.0",
     "fs-extra": "^9.0.1",
+    "inquirer": "^7.2.0",
     "node-notifier": "^7.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.5",

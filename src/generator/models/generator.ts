@@ -65,8 +65,8 @@ export class Generator {
             args: [],
             flags: {},
             hidden: false,
-            id: this.console.prefix ? this.console.prefix + ':' + command: command, // todo
-            name: this.console.prefix ? this.console.prefix + ':' + command: command, // todo
+            id: this.console.prefix ? this.console.prefix + ':' + command : command, // todo
+            name: this.console.prefix ? this.console.prefix + ':' + command : command, // todo
             description,
             execute: `${console.executable} ${command}`,
             type: CommandType.external,
@@ -81,7 +81,7 @@ export class Generator {
         await vcConfig.updateWorkspaceConfig();
     }
 
-    get vagrant() {
+    get vagrant(): Generator {
         this.runInVagrant = true;
         return this;
     }
