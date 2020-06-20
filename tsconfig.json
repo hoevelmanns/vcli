@@ -9,7 +9,8 @@
         "rootDir": "src",
         "strict": true,
         "target": "es2017",
-        "baseUrl": "./src"
+        "baseUrl": "./src",
+      "allowSyntheticDefaultImports": true
     },
     "include": ["src/**/*"],
     "files": ["./src/index.ts"]

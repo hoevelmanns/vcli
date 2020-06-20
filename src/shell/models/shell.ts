@@ -1,5 +1,6 @@
 import { ShellCommandOptions } from '../types';
-import { exec } from 'shelljs';
+//import { exec } from 'shelljs';
+import { execSync, spawn, exec } from 'child_process';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -30,12 +31,19 @@ class Shell {
         silent = false,
     ): Promise<string> =>
         new Promise((resolve, reject) =>
-            exec(this.prepareCommand(command, runInVagrant, runInProjectRoot), { silent }, (error, stdout, stderr) => {
+            exec(this.prepareCommand(command, runInVagrant, runInProjectRoot), (error, stdout, stderr) => {
                 if (error) return reject(stderr);
                 resolve(stdout.trim());
             }),
         );
 
+    spawn(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false, silent = false) {
+        return spawn(this.prepareCommand(command, runInVagrant, runInProjectRoot));
+    }
+
+    execSync(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false, silent = false) {
+        return execSync(this.prepareCommand(command, runInVagrant, runInProjectRoot));
+    }
     /**
      * Concat given flags stringified to the given command and prepends vagrant command if given
      *

@@ -1,4 +1,4 @@
 import { cliCommandTemplate } from './cli-command.template';
-import { shellCommandTemplate } from './shell-command.template';
+import { customCommandTemplate } from './custom-command.template';
 
-export { cliCommandTemplate, shellCommandTemplate };
+export { cliCommandTemplate, customCommandTemplate };

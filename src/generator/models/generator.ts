@@ -1,7 +1,7 @@
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { shell } from '../../shell/models';
 import cli from 'cli-ux';
-import { vcConfig } from '../../shared/utils';
+import { vcConfig, errorTxtBold, infoText, successTxt } from '../../shared/utils';
 
 /**
  * todo: refactoring
@@ -17,21 +17,31 @@ export class Generator {
     /**
      * todo description
      */
-    run(runInVagrant = false): void {
-        if (!global.config.workspace?.consoles) cli.error('No consoles defined in .vclirc.json');
+    async run(runInVagrant = false): Promise<void> {
+        if (!global?.config?.workspace?.consoles) {
+            const error = 'No consoles defined in .vclirc.json';
+            cli.error(error);
+            return new Promise(() => Error(error));
+        }
 
-        global.config.workspace.consoles.map(async (consoleConfig) => {
-            cli.action.start('Generating cli commands from external consoles');
+        cli.action.start('Generating cli commands from external consoles');
 
-            await shell.exec(`${consoleConfig.executable} ${consoleConfig.list}`, runInVagrant, true, true).then(
-                (stdout) => {
-                    this.console = consoleConfig;
-                    this.consoleOutput = stdout;
-                    this.parseConsoleOutput();
-                    this.storeCommands();
-                },
-                (error) => console.log('Error generating commands: ', error),
+        const consoles = global.config.workspace?.consoles;
+
+        consoles.map((consoleConfig) => {
+            const stdout = shell.execSync(
+                `${consoleConfig.executable} ${consoleConfig.list}`,
+                runInVagrant,
+                true,
+                true,
             );
+
+            this.console = consoleConfig;
+            this.consoleOutput = stdout.toString('UTF8');
+            this.parseConsoleOutput();
+            this.storeCommands();
+
+            console.log(successTxt(consoleConfig.name + ' commands successfully added'));
         });
     }
 
@@ -77,8 +87,7 @@ export class Generator {
      *
      */
     private async storeCommands(): Promise<void> {
-        global.config.workspace.customCommands = this.commands;
-        await vcConfig.updateWorkspaceConfig();
+        return await vcConfig.updateWorkspaceConfig({ customCommands: this.commands });
     }
 
     get vagrant(): Generator {

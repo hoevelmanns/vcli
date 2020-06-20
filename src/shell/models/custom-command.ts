@@ -18,7 +18,7 @@ export class CustomCommand {
      * @param vagrant
      */
     public run = async (vagrant = false): Promise<void> => {
-        cli.action.start('Processing: ' + this.description);
+        cli.action.start(`Executing: ${this.description} -> ${this.execute}`);
 
         await shell.exec({
             runInVagrant: this.runInVagrant || vagrant,
