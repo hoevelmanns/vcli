@@ -1,6 +1,6 @@
 import { ShellCommandOptions } from '../types';
-//import { exec } from 'shelljs';
-import { execSync, spawn, exec } from 'child_process';
+import { execSync, spawn } from 'child_process';
+const { shellExec } = require('@annoai/shelljs-promise');
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -23,19 +23,18 @@ class Shell {
      * @param runInVagrant
      * @param runInProjectRoot
      * @param silent
+     * @param async
      */
     exec = async (
         command: ShellCommandOptions | string,
         runInVagrant = false,
         runInProjectRoot = false,
         silent = false,
+        async = true,
     ): Promise<string> =>
-        new Promise((resolve, reject) =>
-            exec(this.prepareCommand(command, runInVagrant, runInProjectRoot), (error, stdout, stderr) => {
-                if (error) return reject(stderr);
-                resolve(stdout.trim());
-            }),
-        );
+        await shellExec(this.prepareCommand(command, runInVagrant, runInProjectRoot), { silent, async })
+            .then((stdout: string) => stdout)
+            .catch((err: Error) => err);
 
     spawn(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false, silent = false) {
         return spawn(this.prepareCommand(command, runInVagrant, runInProjectRoot));
@@ -44,6 +43,7 @@ class Shell {
     execSync(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false, silent = false) {
         return execSync(this.prepareCommand(command, runInVagrant, runInProjectRoot));
     }
+
     /**
      * Concat given flags stringified to the given command and prepends vagrant command if given
      *
@@ -58,7 +58,7 @@ class Shell {
         runInProjectRoot = false,
     ): string {
         options = typeof options === 'string' ? ({ runInVagrant, command: options } as ShellCommandOptions) : options;
-        runInVagrant = options.runInVagrant || this.runInVagrant;
+        runInVagrant = (options.runInVagrant || this.runInVagrant) && 'vagrant' in global.config.workspace;
         runInProjectRoot = options?.runInProjectRoot || runInProjectRoot;
 
         if (runInVagrant)

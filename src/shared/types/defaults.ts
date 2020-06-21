@@ -3,14 +3,17 @@ import { IExternalConsole, IWorkspaceConfig } from './globals';
 export const defaultConfigFile = '.vclirc.json';
 
 export const defaultWorkspace = <IWorkspaceConfig>{
-    vagrant: {
-        deployDir: 'htdocs',
-    },
     notifications: {
         disabled: false,
         time: 2000,
     },
     consoles: <IExternalConsole[]>[
+        {
+            name: 'symfony',
+            parserStartString: 'Available commands:',
+            executable: 'bin/console',
+            list: 'list',
+        },
         {
             name: 'phing',
             parserStartString: 'Main targets:',
@@ -19,11 +22,11 @@ export const defaultWorkspace = <IWorkspaceConfig>{
             prefix: 'phing',
             topicDescription: 'Phing targets',
         },
-        {
-            name: 'symfony',
-            parserStartString: 'Available commands:',
-            executable: 'bin/console',
-            list: 'list',
-        },
     ],
+};
+
+export const defaultVagrantConfig = {
+    vagrant: {
+        deployDir: 'htdocs',
+    },
 };

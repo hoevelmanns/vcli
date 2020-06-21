@@ -1,7 +1,7 @@
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { shell } from '../../shell/models';
 import cli from 'cli-ux';
-import { vcConfig, errorTxtBold, infoText, successTxt } from '../../shared/utils';
+import { vcConfig, successTxt, errorTxt } from '../../shared/utils';
 
 /**
  * todo: refactoring
@@ -28,20 +28,19 @@ export class Generator {
 
         const consoles = global.config.workspace?.consoles;
 
-        consoles.map((consoleConfig) => {
-            const stdout = shell.execSync(
-                `${consoleConfig.executable} ${consoleConfig.list}`,
-                runInVagrant,
-                true,
-                true,
-            );
-
-            this.console = consoleConfig;
-            this.consoleOutput = stdout.toString('UTF8');
-            this.parseConsoleOutput();
-            this.storeCommands();
-
-            console.log(successTxt(consoleConfig.name + ' commands successfully added'));
+        return new Promise<void>(async (resolve) => {
+            consoles.map(async (consoleConfig) => {
+                await shell
+                    .exec(`${consoleConfig.executable} ${consoleConfig.list}`, runInVagrant, true, true, true)
+                    .then((stdout) => {
+                        this.console = consoleConfig;
+                        this.consoleOutput = stdout.toString();
+                        this.parseConsoleOutput();
+                        this.storeCommands();
+                        console.log(successTxt(consoleConfig.name + ' commands successfully added'));
+                    })
+                    .catch((err) => console.error(errorTxt(`Generating ${consoleConfig.name} commands failed`)));
+            });
         });
     }
 

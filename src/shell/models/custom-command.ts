@@ -1,5 +1,6 @@
 import { shell } from './shell';
 import cli from 'cli-ux';
+import { infoText } from '../../shared/utils';
 
 export class CustomCommand {
     protected runInVagrant = false;
@@ -18,12 +19,14 @@ export class CustomCommand {
      * @param vagrant
      */
     public run = async (vagrant = false): Promise<void> => {
-        cli.action.start(`Executing: ${this.description} -> ${this.execute}`);
+        cli.action.start(`Executing: ${this.description} -> ${infoText(this.execute)}`);
 
-        await shell.exec({
-            runInVagrant: this.runInVagrant || vagrant,
-            command: this.execute,
-        });
+        shell
+            .exec({
+                runInVagrant: this.runInVagrant || vagrant,
+                command: this.execute,
+            })
+            .then((res) => console.log(res));
     };
 
     public get vagrant(): CustomCommand {

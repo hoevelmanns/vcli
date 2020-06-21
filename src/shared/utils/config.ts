@@ -1,4 +1,4 @@
-import { defaultConfigFile, defaultWorkspace } from '../types/defaults';
+import { defaultConfigFile, defaultVagrantConfig, defaultWorkspace } from '../types/defaults';
 import { IConfiguration, IWorkspaceConfig } from '../types';
 import { IConfig } from '@oclif/config';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,6 +14,7 @@ global.config = <IConfiguration>{};
 export class VConfig {
     private static oclifConfig: IConfig;
     private static workspaceConfigFile: string;
+    private workspaceHasVagrantFile = false;
 
     /**
      *
@@ -22,6 +23,8 @@ export class VConfig {
      */
     async initWorkspace(oclifConfig: IConfig): Promise<void> {
         const workspaceConfigFile = await findUp(defaultConfigFile);
+        this.workspaceHasVagrantFile = await fs.existsSync('Vagrantfile');
+
         VConfig.oclifConfig = oclifConfig;
 
         if (!workspaceConfigFile) {
@@ -86,22 +89,32 @@ export class VConfig {
      * @returns void
      */
     async setupInquirer(): Promise<void> {
-        const questions: { refresh: boolean } = await inquirer.prompt([
-            /* todo
+        const questions: { refresh: boolean; useVagrant: boolean; vagrantDir: string } = await inquirer.prompt([
             {
                 name: 'useVagrant',
                 message: 'Do you want to use vagrant?',
-                type: "confirm"
+                type: 'confirm',
+                when: this.workspaceHasVagrantFile,
             },
-            */
+            {
+                name: 'vagrantDir',
+                message: 'Vagrant workspace directory?',
+                default: defaultVagrantConfig.vagrant.deployDir,
+                type: 'input',
+                when: (answers) => answers.useVagrant,
+            },
             {
                 name: 'refresh',
-                message: 'Generate the commands (vc refresh) now?',
+                message: 'Generate the commands now? (vc refresh)',
                 type: 'confirm',
             },
         ]);
-
-        if (questions.refresh) await new Generator().run(true);
+        if (questions.useVagrant) {
+            const vagrantConfig = defaultVagrantConfig;
+            vagrantConfig.vagrant.deployDir = questions.vagrantDir;
+            await this.updateWorkspaceConfig(vagrantConfig);
+        }
+        if (questions.refresh) await new Generator().run(true).finally();
     }
 
     async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
