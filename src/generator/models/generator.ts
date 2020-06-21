@@ -28,20 +28,25 @@ export class Generator {
 
         const consoles = global.config.workspace?.consoles;
 
-        return new Promise<void>(async (resolve) => {
+        return new Promise(() =>
             consoles.map(async (consoleConfig) => {
-                await shell
-                    .exec(`${consoleConfig.executable} ${consoleConfig.list}`, runInVagrant, true, true, true)
-                    .then((stdout) => {
-                        this.console = consoleConfig;
-                        this.consoleOutput = stdout.toString();
-                        this.parseConsoleOutput();
-                        this.storeCommands();
-                        console.log(successTxt(consoleConfig.name + ' commands successfully added'));
-                    })
-                    .catch((err) => console.error(errorTxt(`Generating ${consoleConfig.name} commands failed`)));
-            });
-        });
+                try {
+                    const stdout = shell.execSync(
+                        `${consoleConfig.executable} ${consoleConfig.list}`,
+                        runInVagrant,
+                        true,
+                        true,
+                    );
+                    this.console = consoleConfig;
+                    this.consoleOutput = stdout.toString();
+                    this.parseConsoleOutput();
+                    await this.storeCommands();
+                    console.log(successTxt(consoleConfig.name + ' commands successfully added'));
+                } catch (e) {
+                    console.error(errorTxt(`Generating ${consoleConfig.name} commands failed`));
+                }
+            }),
+        );
     }
 
     /**

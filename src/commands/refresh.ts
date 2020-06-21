@@ -20,6 +20,6 @@ export default class Refresh extends Command {
     async run(): Promise<void> {
         const { flags } = this.parse(Refresh);
 
-        await new Generator().run(flags.vagrant);
+        await new Generator().run(flags.vagrant).then((test) => console.log(test));
     }
 }

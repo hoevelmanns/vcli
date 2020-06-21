@@ -1,6 +1,6 @@
 import { shell } from './shell';
 import cli from 'cli-ux';
-import { infoText } from '../../shared/utils';
+import { errorTxt, infoText } from '../../shared/utils';
 
 export class CustomCommand {
     protected runInVagrant = false;
@@ -26,7 +26,8 @@ export class CustomCommand {
                 runInVagrant: this.runInVagrant || vagrant,
                 command: this.execute,
             })
-            .then((res) => console.log(res));
+            .then((res) => console.log(res))
+            .catch((err: Error) => console.log(errorTxt('Command failed: ', err)));
     };
 
     public get vagrant(): CustomCommand {

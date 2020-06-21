@@ -114,7 +114,7 @@ export class VConfig {
             vagrantConfig.vagrant.deployDir = questions.vagrantDir;
             await this.updateWorkspaceConfig(vagrantConfig);
         }
-        if (questions.refresh) await new Generator().run(true).finally();
+        if (questions.refresh) await new Generator().run(true);
     }
 
     async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
