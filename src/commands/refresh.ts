@@ -1,7 +1,7 @@
+import { refreshAutocompleteCache } from '../shared/utils';
+import { Generator } from '../generator/models';
 import { flags } from '@oclif/command';
 import Command from './base';
-import { Generator } from '../generator/models';
-import Index from '@oclif/plugin-autocomplete/lib/commands/autocomplete';
 
 export default class Refresh extends Command {
     static hidden = false;
@@ -23,7 +23,7 @@ export default class Refresh extends Command {
 
         await new Generator().run(flags.vagrant).then(async () => {
             // Refresh autocomplete
-            await Index.run(['-r'], this.config);
+            await refreshAutocompleteCache(this.config);
         });
     }
 }

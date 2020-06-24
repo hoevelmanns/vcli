@@ -1,13 +1,14 @@
+import { IExecFunctionOptions } from 'async-shelljs';
+
 export interface Flags {
     [key: string]: string;
 }
 
-export interface ShellCommandOptions {
-    command: string;
-    flags?: Flags;
+export interface IShellOptions extends IExecFunctionOptions {
     runInVagrant?: boolean;
     runInProjectRoot?: boolean;
-    displayText?: string;
+    showLockedWarning?: boolean;
+    flags?: Flags;
 }
 
 export interface ConsoleCommand {

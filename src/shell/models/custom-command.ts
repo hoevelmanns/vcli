@@ -21,10 +21,7 @@ export class CustomCommand {
     public run = async (vagrant = false): Promise<void> => {
         cli.action.start(actionTxt(`Executing: ${this.description} -> `) + infoTxt(this.execute));
 
-        await shell.exec({
-            runInVagrant: this.runInVagrant || vagrant,
-            command: this.execute,
-        });
+        await shell.exec(this.execute, { runInVagrant: true }).catch((e) => console.log(e.message));
     };
 
     public get vagrant(): CustomCommand {

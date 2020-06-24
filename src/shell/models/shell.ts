@@ -1,19 +1,15 @@
-import { ShellCommandOptions } from '../types';
 import { asyncExec } from 'async-shelljs';
-import { execSync, spawn } from 'child_process';
-import { errorTxt, warningTxt } from '../../shared/models';
-import { isVagrantLocked } from '../../shared/models';
+import { errorTxt } from '../../shared/models';
+import { IShellOptions } from '../types';
+import { ChildProcess, execSync, spawn } from 'child_process';
+import { isVagrantLocked, isVagrantNotUp } from '../../shared/utils';
+import { vagrant } from './vagrant';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
  */
-class Shell {
-    private runInVagrant = false;
-
-    get vagrant(): Shell {
-        this.runInVagrant = true;
-        return this;
-    }
+export class Shell {
+    private _runInVagrant = false;
 
     /**
      * Executes shell commands, also in a vagrant machine
@@ -22,70 +18,60 @@ class Shell {
      * @see https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
      *
      * @param command
-     * @param runInVagrant
-     * @param runInProjectRoot
-     * @param silent
+     * @param options
      * @param retry
-     * @param showVMLockedWarning
      */
-    async exec(
-        command: ShellCommandOptions | string,
-        runInVagrant = false,
-        runInProjectRoot = false,
-        silent = false,
+    exec = async (
+        command: string,
+        options?: IShellOptions,
         retry = 0, // todo config
-        showVMLockedWarning = false,
-    ): Promise<any> {
-        return await asyncExec(this.prepareCommand(command, runInVagrant, runInProjectRoot), { silent }).catch(
-            async (err: Error) => {
-                if (isVagrantLocked(err) && retry <= 5) {
-                    if (showVMLockedWarning) console.info(warningTxt('VM is locked. Retry...'));
-                    return this.exec(command, runInVagrant, runInProjectRoot, silent, retry++);
-                }
+    ): Promise<string> => {
+        return asyncExec(this.prepareCommand(command, options), options).catch(async (err: Error) => {
+            if (isVagrantNotUp(err)) {
+                return await vagrant.up().then(async () => await this.exec(command, options));
+            }
+            if (isVagrantLocked(err) && retry <= 5) return this.exec(command, options, retry++);
 
-                console.error(errorTxt('Error executing command: '), err.message);
-                process.exit();
-            },
-        );
+            console.error(errorTxt('Error executing command:'), command);
+            throw new Error(err.message);
+        });
+    };
+
+    spawn(command: string, options: IShellOptions): ChildProcess {
+        return spawn(this.prepareCommand(command, options));
     }
 
-    spawn(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false, silent = false) {
-        return spawn(this.prepareCommand(command, runInVagrant, runInProjectRoot));
+    execSync(command: string, options: IShellOptions): Buffer {
+        return execSync(this.prepareCommand(command, options));
     }
 
-    execSync(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false, silent = false) {
-        return execSync(this.prepareCommand(command, runInVagrant, runInProjectRoot));
+    get runInVagrant(): Shell {
+        this._runInVagrant = true;
+        return this;
     }
 
     /**
      * Concat given flags stringified to the given command and prepends vagrant command if given
      *
+     * @param command
      * @param options
-     * @param runInVagrant
-     * @param runInProjectRoot
      * @returns string
      */
-    private prepareCommand(
-        options: ShellCommandOptions | string,
-        runInVagrant = false,
-        runInProjectRoot = false,
-    ): string {
-        options = typeof options === 'string' ? ({ runInVagrant, command: options } as ShellCommandOptions) : options;
-        runInVagrant = (options.runInVagrant || this.runInVagrant) && 'vagrant' in global.config.workspace;
-        runInProjectRoot = options?.runInProjectRoot || runInProjectRoot;
+    private prepareCommand(command: string, options?: IShellOptions): string {
+        const { workspace } = global.config,
+            runInVagrant = (options?.runInVagrant || this._runInVagrant) && 'vagrant' in workspace,
+            runInProjectRoot = options?.runInProjectRoot || options?.runInVagrant;
 
-        if (runInVagrant)
-            options.command = `vagrant ssh -c "cd ~/${global.config.workspace.vagrant?.deployDir} && ${options.command}"`;
-        if (!runInVagrant && runInProjectRoot)
-            options.command = `cd ${global.config.workspace.root} && ${options.command}`;
-        if (!options.flags) return options.command;
+        if (runInVagrant) command = `vagrant ssh -c "cd ~/${workspace.vagrant?.deployDir} && ${command}"`;
+        if (!runInVagrant && runInProjectRoot) command = `cd ${workspace.root} && ${command}`;
+        if (!options?.flags) return command;
 
         const flagsStr = Object.entries(options.flags)
             .map((flag) => '-' + flag.join(' '))
             .join(' ')
             .trim();
 
-        return options.command.concat(' ', flagsStr).trim();
+        return command.concat(' ', flagsStr).trim();
     }
 }
 

@@ -1,21 +1,20 @@
+import { createOrRenameSymlink, refreshAutocompleteCache, showAutocompleteSetupInstructions } from '../utils';
 import { defaultConfigFile, defaultVagrantConfig, defaultWorkspace } from '../types/defaults';
+import { errorTxt, infoTxt, successTxt, whiteTxt } from './logging';
 import { IConfiguration, IWorkspaceConfig } from '../types';
+import { Generator } from '../../generator/models';
 import { IConfig } from '@oclif/config';
+import * as inquirer from 'inquirer';
 import { v4 as uuidv4 } from 'uuid';
 import * as findUp from 'find-up';
 import cli from 'cli-ux';
-import * as inquirer from 'inquirer';
-import { Generator } from '../../generator/models';
-import { actionTxt, errorTxt, successTxt, whiteTxt } from './logging';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
-import { shell } from '../../shell/models';
 
 global.config = <IConfiguration>{};
 
 export class VConfig {
     private static oclifConfig: IConfig;
     private static workspaceConfigFile: string;
-    private workspaceHasVagrantFile = false;
 
     /**
      * The entry point of the workspace configuration
@@ -24,24 +23,22 @@ export class VConfig {
      * @returns void
      */
     initWorkspace = async (oclifConfig: IConfig): Promise<void> => {
-        this.workspaceHasVagrantFile = fs.existsSync('Vagrantfile');
-
         VConfig.oclifConfig = oclifConfig;
 
         const workspaceConfigFile = await findUp(defaultConfigFile);
 
-        if (!workspaceConfigFile) {
-            await this.createWorkspace()
-                .then(async () => await this.setupVagrant())
-                .then(async () => await this.setupGenerator())
-                .then(async () => await this.setupAutocomplete())
-                .catch((err: Error) => console.log(errorTxt('Error creating workspace: '), whiteTxt(err.message)));
+        if (workspaceConfigFile) {
+            return await VConfig.set(workspaceConfigFile);
         }
 
-        await VConfig.setConfig(workspaceConfigFile);
+        await this.createWorkspace()
+            .then(VConfig.setupVagrant)
+            .then(VConfig.setupGenerator)
+            .then(VConfig.setupAutocomplete)
+            .catch((err: Error) => console.log(errorTxt('Error creating workspace: '), whiteTxt(err.message)));
     };
 
-    async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
+    static async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
         global.config.workspace = { ...global.config.workspace, ...config };
         await fs.writeJSON(VConfig.workspaceConfigFile, global.config.workspace, { flag: 'w' });
     }
@@ -49,28 +46,30 @@ export class VConfig {
     /**
      * @returns void
      */
-    setupVagrant = async (): Promise<void> =>
+    static setupVagrant = async (): Promise<void> =>
         new Promise(async (resolve, reject) => {
+            const workspaceHasVagrantFile = fs.existsSync('Vagrantfile');
+
             const questions: { refresh: boolean; useVagrant: boolean; vagrantDir: string } = await inquirer.prompt([
                 {
                     name: 'useVagrant',
                     message: 'Do you want to use vagrant?',
                     type: 'confirm',
-                    when: this.workspaceHasVagrantFile,
+                    when: workspaceHasVagrantFile,
                 },
                 {
                     name: 'vagrantDir',
                     message: 'Vagrant workspace directory?',
                     default: defaultVagrantConfig.vagrant.deployDir,
                     type: 'input',
-                    when: (answers) => answers.useVagrant,
+                    when: (answers): boolean => answers.useVagrant,
                 },
             ]);
 
             if (questions.useVagrant) {
                 defaultVagrantConfig.vagrant.deployDir = questions.vagrantDir;
-                return await this.updateWorkspaceConfig(defaultVagrantConfig)
-                    .then(() => resolve())
+                return await VConfig.updateWorkspaceConfig(defaultVagrantConfig)
+                    .then(resolve)
                     .catch((err: Error) => reject(err.message));
             }
 
@@ -80,19 +79,26 @@ export class VConfig {
     /**
      * Triggers the generation of external cli commands
      */
-    setupGenerator = async () =>
+    static setupGenerator = async (): Promise<void> =>
         new Promise(async (resolve, reject) => {
-            const questions: { refresh: boolean } = await inquirer.prompt([
+            const questions: { refresh: boolean; refreshVagrant: boolean } = await inquirer.prompt([
+                {
+                    name: 'refreshVagrant',
+                    message: 'Generate the commands from vagrant now? (vc refresh -v)',
+                    type: 'confirm',
+                    when: !!global.config.workspace?.vagrant,
+                },
                 {
                     name: 'refresh',
-                    message: 'Generate the commands now? (vc refresh)',
+                    message: 'Generate the commands from host now? (vc refresh)',
                     type: 'confirm',
+                    when: (answers): boolean => !answers.refreshVagrant,
                 },
             ]);
 
-            if (questions.refresh) {
+            if (questions.refresh || questions.refreshVagrant) {
                 return await new Generator()
-                    .run(true)
+                    .run(questions.refreshVagrant)
                     .then((res) => resolve(res))
                     .catch((err) => reject(err));
             }
@@ -103,31 +109,30 @@ export class VConfig {
     /**
      * Adds the autocomplete env var to the shell profile and source it
      */
-    setupAutocomplete = async (): Promise<void> => {
-        const shellName = VConfig.oclifConfig.shell;
-        const bin = VConfig.oclifConfig.bin;
-        const shellCommand = `printf "$(${bin} autocomplete:script ${shellName})" >> ~/.${shellName}rc`;
+    static setupAutocomplete = async (): Promise<void> => {
+        const oclifConfig = VConfig.oclifConfig,
+            { shell, bin } = oclifConfig,
+            successMsg =
+                `3) For using the autocompletion please run "${bin}" in a new terminal window or use:` +
+                infoTxt(`\n$ exec ${shell}.`) +
+                `\n\n4) Run "${bin}" for display available commands`;
 
-        if (await this.hasShellProfileAutocompleteEnvVars(bin, shellName)) {
-            return;
+        if (await VConfig.hasShellProfileAutocompleteEnvVars(bin, shell)) {
+            return await refreshAutocompleteCache(oclifConfig);
         }
 
-        cli.action.start(actionTxt('Adding the autocomplete env var to the shell profile and source it'));
-        await shell
-            .exec(shellCommand)
-            .then(() => shell.exec(`/bin/${shellName} -c "source ~/.${shellName}rc"`))
-            .then(() => shell.execSync(`exec ${shellName}`))
-            .then(() => cli.action.stop())
-            .catch((err: Error) => console.error(errorTxt('Error setting up autocomplete: '), err.message));
+        await showAutocompleteSetupInstructions(oclifConfig)
+            .then(() => console.log(successMsg))
+            .then(() => process.exit());
     };
 
     /**
      *
      * @param bin
-     * @param shellName
+     * @param shell
      */
-    private hasShellProfileAutocompleteEnvVars = async (bin: string, shellName: string): Promise<boolean> => {
-        const shellProfile = await fs.readFile(VConfig.oclifConfig.home + `/.${shellName}rc`, 'utf8');
+    static hasShellProfileAutocompleteEnvVars = async (bin: string, shell: string): Promise<boolean> => {
+        const shellProfile = await fs.readFile(VConfig.oclifConfig.home + `/.${shell}rc`, 'utf8');
         return shellProfile.match(`${bin.toUpperCase()}_AC_ZSH_SETUP_PATH`);
     };
 
@@ -136,7 +141,7 @@ export class VConfig {
      * @param workspaceConfigFile
      * @returns void
      */
-    private static async setConfig(workspaceConfigFile?: string): Promise<void> {
+    private static async set(workspaceConfigFile?: string): Promise<void> {
         VConfig.workspaceConfigFile = workspaceConfigFile ?? VConfig.workspaceConfigFile;
 
         let workspaceConfig = await fs.readJSON(VConfig.workspaceConfigFile);
@@ -158,17 +163,17 @@ export class VConfig {
      * @returns void
      */
     private createWorkspace = async (): Promise<void> => {
-        const pkgJsonPath = process.cwd() + '/package.json';
-        const currentPathHasPkgJson = await fs.pathExists(pkgJsonPath);
-        const localPackageJson = currentPathHasPkgJson ? await fs.readJson(pkgJsonPath) : null;
-        const workspaceName = await cli.prompt('What is the name of the workspace?', {
-            default: localPackageJson?.name ?? '',
-        });
-        const root = process.cwd();
-        const uuid = uuidv4(workspaceName);
-        const config: IWorkspaceConfig = { ...defaultWorkspace, name: workspaceName, uuid, root };
+        const pkgJsonPath = process.cwd() + '/package.json',
+            currentPathHasPkgJson = await fs.pathExists(pkgJsonPath),
+            localPackageJson = currentPathHasPkgJson ? await fs.readJson(pkgJsonPath) : null,
+            workspaceName = await cli.prompt('What is the name of the workspace?', {
+                default: localPackageJson?.name ?? '',
+            }),
+            root = process.cwd(),
+            uuid = uuidv4(workspaceName),
+            config: IWorkspaceConfig = { ...defaultWorkspace, name: workspaceName, uuid, root };
 
-        await this.createWorkspaceConfig(config)
+        await this.createWorkspaceConfigFile(config)
             .then(() => console.log(successTxt(`Workspace "${config.name}" created!`), '\n'))
             .catch((err) => console.error(err));
     };
@@ -177,28 +182,19 @@ export class VConfig {
      *
      * @param config
      */
-    private createWorkspaceConfig = (config: IWorkspaceConfig): Promise<void> =>
+    private createWorkspaceConfigFile = (config: IWorkspaceConfig): Promise<void> =>
         new Promise((resolve, reject) => {
-            const configDir = VConfig.oclifConfig.configDir;
-            const targetDir = `${configDir}/${config.uuid}`;
-            const targetFile = `${targetDir}/config.json`;
+            const configDir = VConfig.oclifConfig.configDir,
+                targetDir = `${configDir}/${config.uuid}`,
+                targetFile = `${targetDir}/config.json`;
 
             VConfig.workspaceConfigFile = `${process.cwd()}/${defaultConfigFile}`;
 
-            try {
-                fs.mkdirSync(targetDir, { recursive: true });
-                fs.writeFileSync(targetFile, JSON.stringify(config), { flag: 'w' });
-
-                if (fs.existsSync(targetFile)) {
-                    fs.renameSync(targetFile, VConfig.workspaceConfigFile);
-                } else {
-                    fs.symlink(targetFile, VConfig.workspaceConfigFile, 'file');
-                }
-                resolve(VConfig.setConfig().finally());
-            } catch (e) {
-                console.log('Error creating the workspace configuration: ', e);
-                reject(e);
-            }
+            fs.mkdir(targetDir, { recursive: true })
+                .then(async () => await fs.writeFile(targetFile, JSON.stringify(config), { flag: 'w' }))
+                .then(async () => await createOrRenameSymlink(targetFile, VConfig.workspaceConfigFile))
+                .then(() => resolve(VConfig.set()))
+                .catch((err: Error) => reject(err));
         });
 }
 

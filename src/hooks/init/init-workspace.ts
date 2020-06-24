@@ -14,7 +14,7 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
             console.log('duplicate ', item.id);
             return;
         }
-        corePlugin.commands.push((<Command.Plugin>(<unknown>{
+        corePlugin.commands.push((<Command.Plugin>(<Command>{
             ...item,
             load(): CustomCommand {
                 return new CustomCommand(item.name, item.description, item.execute, item.type, item.context, item.id);
