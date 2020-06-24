@@ -1,6 +1,8 @@
 import { ShellCommandOptions } from '../types';
+import { asyncExec } from 'async-shelljs';
 import { execSync, spawn } from 'child_process';
-const { shellExec } = require('@annoai/shelljs-promise');
+import { errorTxt, warningTxt } from '../../shared/models';
+import { isVagrantLocked } from '../../shared/models';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -23,18 +25,39 @@ class Shell {
      * @param runInVagrant
      * @param runInProjectRoot
      * @param silent
-     * @param async
+     * @param retry
+     * @param showVMLockedWarning
      */
-    exec = async (
+    async exec(
         command: ShellCommandOptions | string,
         runInVagrant = false,
         runInProjectRoot = false,
         silent = false,
-        async = true,
-    ): Promise<string> =>
-        await shellExec(this.prepareCommand(command, runInVagrant, runInProjectRoot), { silent, async })
-            .then((stdout: string) => stdout)
-            .catch((err: Error) => err);
+        retry = 0, // todo config
+        showVMLockedWarning = false,
+    ): Promise<any> {
+        return await asyncExec(this.prepareCommand(command, runInVagrant, runInProjectRoot), { silent }).catch(
+            async (err: Error) => {
+                if (isVagrantLocked(err) && retry <= 5) {
+                    if (showVMLockedWarning) console.info(warningTxt('VM is locked. Retry...'));
+                    return this.exec(command, runInVagrant, runInProjectRoot, silent, retry++);
+                }
+
+                console.error(errorTxt('Error executing command: '), err.message);
+                process.exit();
+            },
+        );
+    }
+
+    // todo doc
+    reloadShell() {
+        try {
+            execSync('exec zsh');
+            execSync('exec bash');
+        } catch (e) {
+            console.log('reloadShell()', e);
+        }
+    }
 
     spawn(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false, silent = false) {
         return spawn(this.prepareCommand(command, runInVagrant, runInProjectRoot));

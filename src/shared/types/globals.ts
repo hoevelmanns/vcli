@@ -31,7 +31,9 @@ export interface IExternalConsole {
     executable: string;
     list: string;
     name?: string;
-    prefix?: string;
+    topicName?: string;
+    regexList: string;
+    topicDescription?: string;
 }
 
 export interface IVagrantConfig {

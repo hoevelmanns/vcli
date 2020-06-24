@@ -1,6 +1,6 @@
 import { shell } from './shell';
 import cli from 'cli-ux';
-import { errorTxt, infoText } from '../../shared/utils';
+import { actionTxt, infoTxt } from '../../shared/models';
 
 export class CustomCommand {
     protected runInVagrant = false;
@@ -19,15 +19,12 @@ export class CustomCommand {
      * @param vagrant
      */
     public run = async (vagrant = false): Promise<void> => {
-        cli.action.start(`Executing: ${this.description} -> ${infoText(this.execute)}`);
+        cli.action.start(actionTxt(`Executing: ${this.description} -> `) + infoTxt(this.execute));
 
-        shell
-            .exec({
-                runInVagrant: this.runInVagrant || vagrant,
-                command: this.execute,
-            })
-            .then((res) => console.log(res))
-            .catch((err: Error) => console.log(errorTxt('Command failed: ', err)));
+        await shell.exec({
+            runInVagrant: this.runInVagrant || vagrant,
+            command: this.execute,
+        });
     };
 
     public get vagrant(): CustomCommand {

@@ -1,4 +1,4 @@
-import { makeClassName, makeFunctionName } from '../../shared/utils';
+import { makeClassName, makeFunctionName } from '../../shared/models';
 import { ICustomCommand } from '../../shared/types';
 
 export const cliCommandTemplate = (cmd: ICustomCommand): string => `

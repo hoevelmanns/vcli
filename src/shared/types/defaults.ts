@@ -13,14 +13,16 @@ export const defaultWorkspace = <IWorkspaceConfig>{
             parserStartString: 'Available commands:',
             executable: 'bin/console',
             list: 'list',
+            regexList: '([^ ]*:\\w*\\S*[\\w])',
         },
         {
             name: 'phing',
             parserStartString: 'Main targets:',
             executable: 'vendor/bin/phing',
             list: '-l',
-            prefix: 'phing',
+            topicName: 'build',
             topicDescription: 'Phing targets',
+            regexList: '([ ].+[ ]+[ ])\\b',
         },
     ],
 };

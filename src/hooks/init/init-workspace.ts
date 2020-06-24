@@ -1,13 +1,14 @@
 import { Hook, Plugin, Command } from '@oclif/config';
 import { CustomCommand } from '../../shell/models';
 import { ICustomCommand } from '../../shared/types';
-import { vcConfig } from '../../shared/utils';
+import { vcConfig } from '../../shared/models';
 
 const hook: Hook<'init'> = async function (opts): Promise<void> {
     await vcConfig.initWorkspace(opts.config);
-    const corePlugin = opts.config.plugins[0] as Plugin;
 
-    const processed: string[] = [];
+    const corePlugin = (await opts.config.plugins[0]) as Plugin,
+        processed: string[] = [];
+
     global.config.workspace?.customCommands?.forEach((item: ICustomCommand) => {
         if (processed.includes(item.id)) {
             console.log('duplicate ', item.id);

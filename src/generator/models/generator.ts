@@ -1,7 +1,7 @@
+import { actionTxt, errorTxt, successTxt, vcConfig } from '../../shared/models';
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { shell } from '../../shell/models';
 import cli from 'cli-ux';
-import { vcConfig, successTxt, errorTxt } from '../../shared/utils';
 
 /**
  * todo: refactoring
@@ -11,58 +11,48 @@ export class Generator {
     private commands: ICustomCommand[] = [];
     private console = <IExternalConsole>{};
     private runInVagrant = false;
-    private _consoleOutput = <string>'';
-    private workspaceConfig = global.config.workspace;
+    private processedCommands: string[] = [];
+
+    get vagrant(): Generator {
+        this.runInVagrant = true;
+        return this;
+    }
 
     /**
      * todo description
      */
     async run(runInVagrant = false): Promise<void> {
-        if (!global?.config?.workspace?.consoles) {
-            const error = 'No consoles defined in .vclirc.json';
-            cli.error(error);
-            return new Promise(() => Error(error));
-        }
+        const consoles = global?.config?.workspace?.consoles;
+        if (!consoles) return cli.error(errorTxt('No consoles defined in .vclirc.json'));
 
-        cli.action.start('Generating cli commands from external consoles');
+        this.runInVagrant = runInVagrant;
 
-        const consoles = global.config.workspace?.consoles;
+        cli.action.start(actionTxt('Adding the cli commands from external consoles. Please wait'));
 
-        return new Promise(() =>
-            consoles.map(async (consoleConfig) => {
-                try {
-                    const stdout = shell.execSync(
-                        `${consoleConfig.executable} ${consoleConfig.list}`,
-                        runInVagrant,
-                        true,
-                        true,
-                    );
-                    this.console = consoleConfig;
-                    this.consoleOutput = stdout.toString();
-                    this.parseConsoleOutput();
-                    await this.storeCommands();
-                    console.log(successTxt(consoleConfig.name + ' commands successfully added'));
-                } catch (e) {
-                    console.error(errorTxt(`Generating ${consoleConfig.name} commands failed`));
-                }
-            }),
+        await Promise.all(
+            consoles.map((consoleConfig) =>
+                this.parseCommandsFromConsoleList(consoleConfig).then((commands) => {
+                    commands?.map((command) => this.addCommand('test', command.trim(), consoleConfig));
+                    console.info(successTxt(`Commands from "${consoleConfig.name}" successfully added!`));
+                }),
+            ),
         );
+
+        await this.storeCommands();
+
+        return cli.action.stop();
     }
 
     /**
-     * @returns void
+     *
+     * @param consoleConfig
      */
-    private parseConsoleOutput(): void {
-        const lines = this.consoleOutput.split('\n');
-
-        lines.forEach((line) => {
-            const command = line.trim().split(' ')[0];
-            const description = line.replace(command, '').trim();
-
-            if (this.ignoreCommands.includes(command)) return;
-            if (this.workspaceConfig.customCommands?.hasOwnProperty(command)) return; // todo change "force flag" is given
-            if (command && description) this.addCommand(description, command, this.console);
-        });
+    private async parseCommandsFromConsoleList(
+        consoleConfig: IExternalConsole,
+    ): Promise<RegExpMatchArray | null | undefined> {
+        const listCommand = `${consoleConfig.executable} ${consoleConfig.list}`,
+            commandList = await this.fetchConsoleCommandList(listCommand);
+        return commandList?.match(new RegExp(consoleConfig.regexList, 'gm'));
     }
 
     /**
@@ -73,19 +63,28 @@ export class Generator {
      * @param command
      * @param console
      */
-    addCommand = (description: string, command: string, console: IExternalConsole): void | number =>
+    addCommand = (description: string, command: string, console: IExternalConsole): void | number => {
+        if (this.processedCommands.includes(command + console.name)) return;
+
         this.commands.push({
             aliases: [],
             args: [],
             flags: {},
             hidden: false,
-            id: this.console.prefix ? this.console.prefix + ':' + command : command, // todo
-            name: this.console.prefix ? this.console.prefix + ':' + command : command, // todo
+            id: console.topicName ? console.topicName + ':' + command : command, // todo
+            name: console.topicName ? console.topicName + ':' + command : command, // todo
             description,
             execute: `${console.executable} ${command}`,
             type: CommandType.external,
             context: this.console.name ?? 'unknown',
         });
+
+        this.processedCommands.push(command + console.name);
+    };
+
+    private fetchConsoleCommandList = async (command: string): Promise<string> => {
+        return shell.exec(command, this.runInVagrant, true, true);
+    };
 
     /**
      *
@@ -94,18 +93,31 @@ export class Generator {
         return await vcConfig.updateWorkspaceConfig({ customCommands: this.commands });
     }
 
-    get vagrant(): Generator {
-        this.runInVagrant = true;
-        return this;
-    }
-
-    set consoleOutput(content: string) {
-        this._consoleOutput = content.substr(
-            content.indexOf(this.console.parserStartString) + this.console.parserStartString.length,
-        );
+    /** todo remove
+    getOnlyCommandsFromOutput(content: string, consoleConfig: IExternalConsole) {
+        console.log('te', content.match(new RegExp('\t([^\t]+)')));
+        process.exit();
+        return content
+            .substr(content.indexOf(consoleConfig.parserStartString) + consoleConfig.parserStartString.length)
+            .match(new RegExp('\t([^\t]+)'));
     }
 
     get consoleOutput(): string {
         return this._consoleOutput;
     }
+
+    private parseConsoleOutput(listContent: string, config: IExternalConsole): void {
+        const lines = listContent.split('\n');
+
+        lines.forEach((line) => {
+            const command = line.trim().split('\t')[0].trim();
+            const description = line.replace(command, '').trim();
+            console.log('command', command);
+
+            if (this.ignoreCommands.includes(command)) return;
+            if (this.workspaceConfig.customCommands?.hasOwnProperty(command)) return; // todo change "force flag" is given
+            if (command && description) this.addCommand(description, command, this.console);
+        });
+    }
+     */
 }

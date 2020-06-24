@@ -1,5 +1,5 @@
 import { shell } from './shell';
-import { notify } from '../../shared/utils';
+import { notify } from '../../shared/models';
 import cli from 'cli-ux';
 
 export class Vagrant {
@@ -7,10 +7,10 @@ export class Vagrant {
      * Starts the vagrant machine
      */
 
-    up(): void {
+    async up(): Promise<void> {
         cli.action.start('Starting machine');
 
-        shell
+        return await shell
             .exec('vagrant up')
             .then(() => notify('Vagrant successfully started'))
             .catch((err) => notify(`Error starting vagrant: ${err}`));
