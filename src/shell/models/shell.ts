@@ -49,16 +49,6 @@ class Shell {
         );
     }
 
-    // todo doc
-    reloadShell() {
-        try {
-            execSync('exec zsh');
-            execSync('exec bash');
-        } catch (e) {
-            console.log('reloadShell()', e);
-        }
-    }
-
     spawn(command: ShellCommandOptions | string, runInVagrant = false, runInProjectRoot = false, silent = false) {
         return spawn(this.prepareCommand(command, runInVagrant, runInProjectRoot));
     }

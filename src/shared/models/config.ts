@@ -18,6 +18,7 @@ export class VConfig {
     private workspaceHasVagrantFile = false;
 
     /**
+     * The entry point of the workspace configuration
      *
      * @param oclifConfig
      * @returns void
@@ -34,12 +35,74 @@ export class VConfig {
                 .then(async () => await this.setupVagrant())
                 .then(async () => await this.setupGenerator())
                 .then(async () => await this.setupAutocomplete())
-                .catch((err: Error) => console.log(errorTxt('Error white setup: '), whiteTxt(err.message)));
+                .catch((err: Error) => console.log(errorTxt('Error creating workspace: '), whiteTxt(err.message)));
         }
 
         await VConfig.setConfig(workspaceConfigFile);
     };
 
+    async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
+        global.config.workspace = { ...global.config.workspace, ...config };
+        await fs.writeJSON(VConfig.workspaceConfigFile, global.config.workspace, { flag: 'w' });
+    }
+
+    /**
+     * @returns void
+     */
+    setupVagrant = async (): Promise<void> =>
+        new Promise(async (resolve, reject) => {
+            const questions: { refresh: boolean; useVagrant: boolean; vagrantDir: string } = await inquirer.prompt([
+                {
+                    name: 'useVagrant',
+                    message: 'Do you want to use vagrant?',
+                    type: 'confirm',
+                    when: this.workspaceHasVagrantFile,
+                },
+                {
+                    name: 'vagrantDir',
+                    message: 'Vagrant workspace directory?',
+                    default: defaultVagrantConfig.vagrant.deployDir,
+                    type: 'input',
+                    when: (answers) => answers.useVagrant,
+                },
+            ]);
+
+            if (questions.useVagrant) {
+                defaultVagrantConfig.vagrant.deployDir = questions.vagrantDir;
+                return await this.updateWorkspaceConfig(defaultVagrantConfig)
+                    .then(() => resolve())
+                    .catch((err: Error) => reject(err.message));
+            }
+
+            resolve();
+        });
+
+    /**
+     * Triggers the generation of external cli commands
+     */
+    setupGenerator = async () =>
+        new Promise(async (resolve, reject) => {
+            const questions: { refresh: boolean } = await inquirer.prompt([
+                {
+                    name: 'refresh',
+                    message: 'Generate the commands now? (vc refresh)',
+                    type: 'confirm',
+                },
+            ]);
+
+            if (questions.refresh) {
+                return await new Generator()
+                    .run(true)
+                    .then((res) => resolve(res))
+                    .catch((err) => reject(err));
+            }
+
+            resolve();
+        });
+
+    /**
+     * Adds the autocomplete env var to the shell profile and source it
+     */
     setupAutocomplete = async (): Promise<void> => {
         const shellName = VConfig.oclifConfig.shell;
         const bin = VConfig.oclifConfig.bin;
@@ -49,7 +112,6 @@ export class VConfig {
             return;
         }
 
-        // Add the autocomplete env var to the shell profile and source it
         cli.action.start(actionTxt('Adding the autocomplete env var to the shell profile and source it'));
         await shell
             .exec(shellCommand)
@@ -59,10 +121,15 @@ export class VConfig {
             .catch((err: Error) => console.error(errorTxt('Error setting up autocomplete: '), err.message));
     };
 
+    /**
+     *
+     * @param bin
+     * @param shellName
+     */
     private hasShellProfileAutocompleteEnvVars = async (bin: string, shellName: string): Promise<boolean> => {
         const shellProfile = await fs.readFile(VConfig.oclifConfig.home + `/.${shellName}rc`, 'utf8');
         return shellProfile.match(`${bin.toUpperCase()}_AC_ZSH_SETUP_PATH`);
-    }
+    };
 
     /**
      *
@@ -90,7 +157,7 @@ export class VConfig {
     /**
      * @returns void
      */
-    createWorkspace = async (): Promise<void> => {
+    private createWorkspace = async (): Promise<void> => {
         const pkgJsonPath = process.cwd() + '/package.json';
         const currentPathHasPkgJson = await fs.pathExists(pkgJsonPath);
         const localPackageJson = currentPathHasPkgJson ? await fs.readJson(pkgJsonPath) : null;
@@ -106,68 +173,11 @@ export class VConfig {
             .catch((err) => console.error(err));
     };
 
-    setupGenerator = async () =>
-      new Promise(async (resolve, reject) => {
-        const questions: { refresh: boolean; } = await inquirer.prompt([
-            {
-                name: 'refresh',
-                message: 'Generate the commands now? (vc refresh)',
-                type: 'confirm',
-            },
-        ]);
-
-        if (questions.refresh) {
-            return await new Generator()
-              .run(true)
-              .then((res) => resolve(res))
-              .catch((err) => reject(err));
-        }
-
-        resolve();
-
-    })
-
-    /**
-     * @returns void
-     */
-    setupVagrant = async (): Promise<void> =>
-        new Promise(async (resolve, reject) => {
-            const questions: { refresh: boolean; useVagrant: boolean; vagrantDir: string } = await inquirer.prompt([
-                {
-                    name: 'useVagrant',
-                    message: 'Do you want to use vagrant?',
-                    type: 'confirm',
-                    when: this.workspaceHasVagrantFile,
-                },
-                {
-                    name: 'vagrantDir',
-                    message: 'Vagrant workspace directory?',
-                    default: defaultVagrantConfig.vagrant.deployDir,
-                    type: 'input',
-                    when: (answers) => answers.useVagrant,
-                },
-            ]);
-
-            if (questions.useVagrant) {
-                defaultVagrantConfig.vagrant.deployDir = questions.vagrantDir;
-                return await this.updateWorkspaceConfig(defaultVagrantConfig)
-                  .then(() => resolve())
-                  .catch((err: Error) => reject(err.message))
-            }
-
-            resolve();
-        });
-
-    async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
-        global.config.workspace = { ...global.config.workspace, ...config };
-        await fs.writeJSON(VConfig.workspaceConfigFile, global.config.workspace, { flag: 'w' });
-    }
-
     /**
      *
      * @param config
      */
-    createWorkspaceConfig = (config: IWorkspaceConfig): Promise<void> =>
+    private createWorkspaceConfig = (config: IWorkspaceConfig): Promise<void> =>
         new Promise((resolve, reject) => {
             const configDir = VConfig.oclifConfig.configDir;
             const targetDir = `${configDir}/${config.uuid}`;
