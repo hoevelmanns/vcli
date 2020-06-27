@@ -1,4 +1,3 @@
-import { refreshAutocompleteCache } from '../shared/utils';
 import { Generator } from '../generator/models';
 import { flags } from '@oclif/command';
 import Command from './base';
@@ -21,9 +20,6 @@ export default class Refresh extends Command {
     async run(): Promise<void> {
         const { flags } = this.parse(Refresh);
 
-        await new Generator().run(flags.vagrant).then(async () => {
-            // Refresh autocomplete
-            await refreshAutocompleteCache(this.config);
-        });
+        await new Generator().run(flags.vagrant);
     }
 }

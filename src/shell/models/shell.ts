@@ -1,7 +1,6 @@
 import { asyncExec } from 'async-shelljs';
 import { errorTxt } from '../../shared/models';
 import { IShellOptions } from '../types';
-import { ChildProcess, execSync, spawn } from 'child_process';
 import { isMachineLocked } from '../../shared/utils';
 import cli from 'cli-ux';
 
@@ -27,22 +26,13 @@ export class Shell {
         retry = 0, // todo config
     ): Promise<string> => {
         if (options?.actionInfo) cli.action.start(options.actionInfo);
-
         return asyncExec(this.prepareCommand(command, options), options).catch(async (err: Error) => {
-            if (isMachineLocked(err) && retry <= 5) return await this.exec(command, options, retry++);
+            if (isMachineLocked(err) && retry <= 5) await this.exec(command, options, retry++);
 
             console.error(errorTxt('Error executing command:'), command);
             throw new Error(err.message);
         });
     };
-
-    spawn(command: string, options: IShellOptions): ChildProcess {
-        return spawn(this.prepareCommand(command, options));
-    }
-
-    execSync(command: string, options: IShellOptions): Buffer {
-        return execSync(this.prepareCommand(command, options));
-    }
 
     get runInVagrant(): Shell {
         this._runInVagrant = true;

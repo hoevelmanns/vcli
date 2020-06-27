@@ -28,6 +28,7 @@ export interface ICustomCommand extends Command {
     prefix?: string;
     type: CommandType;
     runInVagrant?: boolean;
+    topicName?: string;
 }
 
 export interface IExternalConsole {

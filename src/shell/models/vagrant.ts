@@ -1,20 +1,24 @@
 import { shell } from './shell';
 import { infoTxt, notify } from '../../shared/models';
 import { asyncExec } from 'async-shelljs';
+import cli from 'cli-ux';
 
 export class Vagrant {
     /**
      * Starts the vagrant machine
      */
 
-    async up(silent = false): Promise<void> {
+    up = async (silent = false): Promise<void> => {
         const actionInfo = infoTxt('Starting machine');
 
-        return await shell
+        await shell
             .exec('vagrant up', { silent, actionInfo })
-            .then(() => notify('Vagrant successfully started'))
+            .then(() => {
+                cli.action.stop();
+                notify('Vagrant successfully started');
+            })
             .catch((err) => notify(`Error starting VM: ${err}`));
-    }
+    };
 
     /**
      * Halts the vagrant machine
@@ -28,11 +32,11 @@ export class Vagrant {
             .catch((err) => notify(`Error halting VM: ${err}`));
     }
 
-    isMachineUp = async (): Promise<boolean> =>
+    machineIsUp = async (): Promise<boolean> =>
         await asyncExec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
 
     startMachineIfNotUp = async (silent = true): Promise<void> => {
-        if (!(await this.isMachineUp())) {
+        if (!(await this.machineIsUp())) {
             await this.up(silent);
         }
     };

@@ -1,4 +1,9 @@
-import { createOrRenameSymlink, refreshAutocompleteCache, showAutocompleteSetupInstructions } from '../utils';
+import {
+    createOrRenameSymlink,
+    existAutoCompleteEnvVar,
+    refreshAutocompleteCache,
+    showAutocompleteSetupInstructions,
+} from '../utils';
 import { defaultConfigFile, defaultVagrantConfig, defaultWorkspace } from '../types/defaults';
 import { errorTxt, infoTxt, successTxt, whiteTxt } from './logging';
 import { IWorkspaceConfig } from '../types';
@@ -11,7 +16,7 @@ import cli from 'cli-ux';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 export class VConfig {
-    private static oclifConfig: IConfig;
+    public static oclifConfig: IConfig;
     private static workspaceConfigFile: string;
 
     /**
@@ -29,7 +34,7 @@ export class VConfig {
             return await VConfig.set(workspaceConfigFile);
         }
 
-        await this.createWorkspace()
+        return await this.createWorkspace()
             .then(VConfig.setupVagrant)
             .then(VConfig.setupGenerator)
             .then(VConfig.setupAutocomplete)
@@ -38,7 +43,7 @@ export class VConfig {
 
     static async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
         global.config.workspace = { ...global.config.workspace, ...config };
-        await fs.writeJSON(VConfig.workspaceConfigFile, global.config.workspace, { flag: 'w' });
+        await fs.writeJSON(VConfig.workspaceConfigFile, global.config.workspace, { spaces: 2, flag: 'w' });
     }
 
     /**
@@ -115,23 +120,11 @@ export class VConfig {
                 infoTxt(`\n$ exec ${shell}.`) +
                 `\n\n4) Run "${bin}" for display available commands`;
 
-        if (await VConfig.hasShellProfileAutocompleteEnvVars(bin, shell)) {
+        if (await existAutoCompleteEnvVar(bin, shell)) {
             return await refreshAutocompleteCache(oclifConfig);
         }
 
-        await showAutocompleteSetupInstructions(oclifConfig)
-            .then(() => console.log(successMsg))
-            .then(() => process.exit());
-    };
-
-    /**
-     *
-     * @param bin
-     * @param shell
-     */
-    static hasShellProfileAutocompleteEnvVars = async (bin: string, shell: string): Promise<boolean> => {
-        const shellProfile = await fs.readFile(VConfig.oclifConfig.home + `/.${shell}rc`, 'utf8');
-        return shellProfile.match(`${bin.toUpperCase()}_AC_ZSH_SETUP_PATH`);
+        return await showAutocompleteSetupInstructions(oclifConfig).then(() => console.log(successMsg));
     };
 
     /**
@@ -163,9 +156,9 @@ export class VConfig {
     private createWorkspace = async (): Promise<void> => {
         const pkgJsonPath = process.cwd() + '/package.json',
             currentPathHasPkgJson = await fs.pathExists(pkgJsonPath),
-            localPackageJson = currentPathHasPkgJson ? await fs.readJson(pkgJsonPath) : null,
+            workspacePkgJson = currentPathHasPkgJson ? await fs.readJson(pkgJsonPath) : null,
             workspaceName = await cli.prompt('What is the name of the workspace?', {
-                default: localPackageJson?.name ?? '',
+                default: workspacePkgJson?.name ?? '',
             }),
             root = process.cwd(),
             uuid = uuidv4(workspaceName),

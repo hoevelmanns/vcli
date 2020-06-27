@@ -14,6 +14,7 @@ export const defaultWorkspace = <IWorkspaceConfig>{
             executable: 'bin/console',
             list: 'list',
             regexList: '([^ ]*:\\w*\\S*[\\w])',
+            regexCommandHelp: '',
         },
         {
             name: 'phing',

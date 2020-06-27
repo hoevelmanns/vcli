@@ -1,7 +1,8 @@
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
-import { actionTxt, errorTxt, successTxt, VConfig } from '../../shared/models';
-import cli from 'cli-ux';
+import { VConfig } from '../../shared/models';
 import { shell, vagrant } from '../../shell/models';
+
+const Listr = require('listr');
 
 export class Generator {
     private ignoreCommands = ['list', 'help'];
@@ -14,34 +15,37 @@ export class Generator {
         return this;
     }
 
-    /**
-     * The entry point of the generator
-     *
-     */
     async run(runInVagrant = false): Promise<void> {
-        const consoles = global?.config?.workspace?.consoles;
-        if (!consoles) return cli.error(errorTxt('No consoles defined in .vclirc.json'));
-
         this.runInVagrant = runInVagrant;
 
-        if (runInVagrant) await vagrant.startMachineIfNotUp();
+        const { consoles } = global?.config?.workspace;
 
-        cli.action.start(actionTxt('Adding the cli commands from external consoles. Please wait'));
+        if (runInVagrant || this.runInVagrant) await vagrant.startMachineIfNotUp();
 
-        await Promise.all(
-            consoles.map(async (consoleConfig) => {
-                const { name } = consoleConfig;
+        const tasks = new Listr([
+            {
+                title: 'Getting available console commands',
+                task: (): void =>
+                    new Listr(
+                        consoles?.map((consoleConfig) => ({
+                            title: consoleConfig.name,
+                            task: (): Promise<void> => this.addCommandsFromConsole(consoleConfig),
+                        })),
+                    ),
+            },
+            {
+                title: 'Store Commands',
+                task: (): Promise<void> => this.storeCommands(),
+                enabled: (): boolean => this.commands.length > 0,
+            },
+            {
+                title: 'Building autocomplete cache',
+                task: (): Promise<void> => VConfig.setupAutocomplete(),
+                enabled: (): boolean => this.commands.length > 0,
+            },
+        ]);
 
-                try {
-                    const parsedCommands = await this.parseCommandsFromConsoleList(consoleConfig);
-                    parsedCommands?.map((command) => this.addCommand('test', command.trim(), consoleConfig));
-                    console.info(successTxt(`Commands from "${name}" successfully added!`));
-                } catch (e) {
-                    console.log(errorTxt(`Generating commands from "${name}" failed:`), e.message);
-                }
-            }),
-        );
-        await this.storeCommands();
+        await tasks.run().catch((err: Error) => console.log(err.message));
     }
 
     /**
@@ -77,16 +81,14 @@ export class Generator {
     /**
      * Parses command from console command list by given regex
      *
-     * @param consoleConfig
      */
-    private async parseCommandsFromConsoleList(
-        consoleConfig: IExternalConsole,
-    ): Promise<RegExpMatchArray | null | undefined> {
+    private async addCommandsFromConsole(consoleConfig: IExternalConsole): Promise<void> {
         const { executable, list, regexList } = consoleConfig,
             listCommand = `${executable} ${list}`,
             commandList = await this.fetchConsoleCommandList(listCommand);
 
-        return commandList?.match(new RegExp(regexList, 'gm'));
+        const commands = commandList?.match(new RegExp(regexList, 'gm'));
+        commands?.map((command) => this.addCommand('test', command.trim(), consoleConfig));
     }
 
     /**
@@ -103,6 +105,6 @@ export class Generator {
      *
      */
     private async storeCommands(): Promise<void> {
-        return await VConfig.updateWorkspaceConfig({ customCommands: this.commands });
+        await VConfig.updateWorkspaceConfig({ customCommands: this.commands });
     }
 }
