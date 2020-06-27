@@ -1,7 +1,7 @@
 import { createOrRenameSymlink, refreshAutocompleteCache, showAutocompleteSetupInstructions } from '../utils';
 import { defaultConfigFile, defaultVagrantConfig, defaultWorkspace } from '../types/defaults';
 import { errorTxt, infoTxt, successTxt, whiteTxt } from './logging';
-import { IConfiguration, IWorkspaceConfig } from '../types';
+import { IWorkspaceConfig } from '../types';
 import { Generator } from '../../generator/models';
 import { IConfig } from '@oclif/config';
 import * as inquirer from 'inquirer';
@@ -9,8 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 import * as findUp from 'find-up';
 import cli from 'cli-ux';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
-
-global.config = <IConfiguration>{};
 
 export class VConfig {
     private static oclifConfig: IConfig;

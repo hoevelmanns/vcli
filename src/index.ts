@@ -1,9 +1,10 @@
-import { IConfiguration } from './shared/types';
+import { IConfiguration, IEnvironment } from './shared/types';
 
 declare global {
     namespace NodeJS {
         interface Global {
             config: IConfiguration;
+            env: IEnvironment;
         }
     }
 }

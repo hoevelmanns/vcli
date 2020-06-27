@@ -2,8 +2,8 @@ import { asyncExec } from 'async-shelljs';
 import { errorTxt } from '../../shared/models';
 import { IShellOptions } from '../types';
 import { ChildProcess, execSync, spawn } from 'child_process';
-import { isVagrantLocked, isVagrantNotUp } from '../../shared/utils';
-import { vagrant } from './vagrant';
+import { isMachineLocked } from '../../shared/utils';
+import cli from 'cli-ux';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -26,11 +26,10 @@ export class Shell {
         options?: IShellOptions,
         retry = 0, // todo config
     ): Promise<string> => {
+        if (options?.actionInfo) cli.action.start(options.actionInfo);
+
         return asyncExec(this.prepareCommand(command, options), options).catch(async (err: Error) => {
-            if (isVagrantNotUp(err)) {
-                return await vagrant.up().then(async () => await this.exec(command, options));
-            }
-            if (isVagrantLocked(err) && retry <= 5) return this.exec(command, options, retry++);
+            if (isMachineLocked(err) && retry <= 5) return await this.exec(command, options, retry++);
 
             console.error(errorTxt('Error executing command:'), command);
             throw new Error(err.message);

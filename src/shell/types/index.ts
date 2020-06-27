@@ -9,6 +9,7 @@ export interface IShellOptions extends IExecFunctionOptions {
     runInProjectRoot?: boolean;
     showLockedWarning?: boolean;
     flags?: Flags;
+    actionInfo?: string;
 }
 
 export interface ConsoleCommand {

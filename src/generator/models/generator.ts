@@ -1,7 +1,7 @@
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { actionTxt, errorTxt, successTxt, VConfig } from '../../shared/models';
-import { shell } from '../../shell/models';
 import cli from 'cli-ux';
+import { shell, vagrant } from '../../shell/models';
 
 export class Generator {
     private ignoreCommands = ['list', 'help'];
@@ -23,6 +23,8 @@ export class Generator {
         if (!consoles) return cli.error(errorTxt('No consoles defined in .vclirc.json'));
 
         this.runInVagrant = runInVagrant;
+
+        if (runInVagrant) await vagrant.startMachineIfNotUp();
 
         cli.action.start(actionTxt('Adding the cli commands from external consoles. Please wait'));
 
@@ -66,6 +68,7 @@ export class Generator {
             execute: `${executable} ${command}`,
             type: CommandType.external,
             context: name ?? 'unknown',
+            runInVagrant: this.runInVagrant,
         });
 
         this.processedCommands.push(command + console.name);
@@ -92,7 +95,7 @@ export class Generator {
      * @param listCommand
      */
     private fetchConsoleCommandList = async (listCommand: string): Promise<string> => {
-        return shell.exec(listCommand, { runInVagrant: true, runInProjectRoot: true, silent: true });
+        return shell.exec(listCommand, { runInVagrant: this.runInVagrant, runInProjectRoot: true, silent: true }); // todo runInVagrant
     };
 
     /**

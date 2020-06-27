@@ -3,6 +3,9 @@ import { Command, IConfig } from '@oclif/config';
 export interface IConfiguration extends IConfig {
     workspace: IWorkspaceConfig;
 }
+export interface IEnvironment {
+    machineUp: boolean;
+}
 
 export interface IWorkspaceConfig {
     name: string;
@@ -24,6 +27,7 @@ export interface ICustomCommand extends Command {
     hidden: boolean; // todo
     prefix?: string;
     type: CommandType;
+    runInVagrant?: boolean;
 }
 
 export interface IExternalConsole {

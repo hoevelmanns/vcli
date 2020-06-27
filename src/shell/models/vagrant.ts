@@ -1,32 +1,41 @@
 import { shell } from './shell';
-import { notify } from '../../shared/models';
-import cli from 'cli-ux';
+import { infoTxt, notify } from '../../shared/models';
+import { asyncExec } from 'async-shelljs';
 
 export class Vagrant {
     /**
      * Starts the vagrant machine
      */
 
-    async up(): Promise<void> {
-        cli.action.start('Starting machine');
+    async up(silent = false): Promise<void> {
+        const actionInfo = infoTxt('Starting machine');
 
         return await shell
-            .exec('vagrant up')
+            .exec('vagrant up', { silent, actionInfo })
             .then(() => notify('Vagrant successfully started'))
-            .catch((err) => notify(`Error starting vagrant: ${err}`));
+            .catch((err) => notify(`Error starting VM: ${err}`));
     }
 
     /**
      * Halts the vagrant machine
      */
-    halt(): void {
-        cli.action.start('Stopping machine');
+    halt(silent = false): void {
+        const actionInfo = infoTxt('Stopping machine');
 
         shell
-            .exec('vagrant halt')
+            .exec('vagrant halt', { silent, actionInfo })
             .then(() => notify('Vagrant stopped'))
-            .catch((err) => notify(`Error halting vagrant: ${err}`));
+            .catch((err) => notify(`Error halting VM: ${err}`));
     }
+
+    isMachineUp = async (): Promise<boolean> =>
+        await asyncExec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
+
+    startMachineIfNotUp = async (silent = true): Promise<void> => {
+        if (!(await this.isMachineUp())) {
+            await this.up(silent);
+        }
+    };
 }
 
 export const vagrant = new Vagrant();
