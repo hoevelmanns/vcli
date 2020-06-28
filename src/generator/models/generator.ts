@@ -1,4 +1,4 @@
-import { CommandType, IExternalCommand, IExternalConsole } from '../../shared/types';
+import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
 import { VConfig } from '../../shared/models';
 import { shell, vagrant } from '../../shell/models';
 
@@ -6,7 +6,7 @@ const Listr = require('listr');
 
 export class Generator {
     private ignoreCommands = ['list', 'help'];
-    private commands: IExternalCommand[] = [];
+    private commands: ICustomCommand[] = [];
     private runInVagrant = false;
     private force = false;
     private processedCommands: string[] = [];
@@ -107,10 +107,8 @@ export class Generator {
      *
      */
     private async storeCommands(): Promise<void> {
-        const currentExternalCommands = global.config.workspace?.externalCommands ?? [],
-        externalCommands = this.force
-            ? this.commands
-            : [...(currentExternalCommands ?? []), ...this.commands];
-        await VConfig.updateWorkspaceConfig({ externalCommands });
+        const currentExternalCommands = global.config.workspace?.customCommands ?? [],
+            externalCommands = this.force ? this.commands : [...currentExternalCommands, ...this.commands];
+        await VConfig.updateWorkspaceConfig({ customCommands: externalCommands });
     }
 }

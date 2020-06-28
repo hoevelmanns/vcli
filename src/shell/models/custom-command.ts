@@ -2,14 +2,14 @@ import { shell } from './shell';
 import { actionTxt, infoTxt, warningTxt } from '../../shared/models';
 import { vagrant } from './vagrant';
 import VCBase from '../../commands/base';
-import { IExternalCommand } from '../../shared/types';
+import { ICustomCommand } from '../../shared/types';
 const confirm = require('@inquirer/confirm');
 
-export class ExternalCommand extends VCBase {
+export class CustomCommand extends VCBase {
     static hidden = true;
-    private data = <IExternalCommand>{};
+    private data = <ICustomCommand>{};
 
-    set(item: IExternalCommand): ExternalCommand {
+    set(item: ICustomCommand): CustomCommand {
         this.data = item;
         return this;
     }
@@ -40,7 +40,7 @@ export class ExternalCommand extends VCBase {
         await shell.exec(command, { runInVagrant, actionInfo }).catch((e) => console.log(e.message));
     };
 
-    public get vagrant(): ExternalCommand {
+    public get vagrant(): CustomCommand {
         this.data.runInVagrant = true;
         return this;
     }

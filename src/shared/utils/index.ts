@@ -1,3 +1,3 @@
 export * from './error';
-export * from './external-commands';
+export * from './autocomplete';
 export * from './filesystem';

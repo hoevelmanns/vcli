@@ -15,10 +15,10 @@ export interface IWorkspaceConfig {
     vagrant?: IVagrantConfig;
     notifications?: INotificationConfig;
     consoles?: IExternalConsole[];
-    externalCommands?: IExternalCommand[];
+    customCommands?: ICustomCommand[];
 }
 
-export interface IExternalCommand extends Command {
+export interface ICustomCommand extends Command {
     id: string;
     name: string;
     execute: string;

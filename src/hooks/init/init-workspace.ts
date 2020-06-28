@@ -1,6 +1,6 @@
 import { Hook, Plugin, Command } from '@oclif/config';
-import { ExternalCommand } from '../../shell/models';
-import { IConfiguration, IExternalCommand } from '../../shared/types';
+import { CustomCommand } from '../../shell/models';
+import { IConfiguration, ICustomCommand } from '../../shared/types';
 import { vcConfig, VConfig } from '../../shared/models';
 
 global.config = <IConfiguration>{};
@@ -11,17 +11,17 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
     const corePlugin = (await opts.config.plugins[0]) as Plugin,
         processed: string[] = [],
         commandName = process.argv[2],
-        externalCommand = global.config?.workspace?.externalCommands?.find((item) => item.name === commandName);
+        externalCommand = global.config?.workspace?.customCommands?.find((item) => item.name === commandName);
 
-    if (externalCommand) global.config.workspace.externalCommands = [externalCommand];
+    if (externalCommand) global.config.workspace.customCommands = [externalCommand];
 
-    global.config.workspace?.externalCommands?.forEach((item: IExternalCommand) => {
+    global.config.workspace?.customCommands?.forEach((item: ICustomCommand) => {
         if (processed.includes(item.id)) return;
 
         corePlugin.commands.push((<Command.Plugin>(<Command>{
             ...item,
-            load(): ExternalCommand {
-                return new ExternalCommand(process.argv, VConfig.oclifConfig).set(item);
+            load(): CustomCommand {
+                return new CustomCommand(process.argv, VConfig.oclifConfig).set(item);
             },
         })) as Command.Plugin);
         processed.push(item.id);
