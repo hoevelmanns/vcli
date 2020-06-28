@@ -15,11 +15,16 @@ export default class Refresh extends Command {
             type: 'boolean',
             description: 'run generator in vagrant',
         }),
+        force: flags.boolean({
+            char: 'f',
+            type: 'boolean',
+            description: 'delete existing external commands',
+        }),
     };
 
     async run(): Promise<void> {
         const { flags } = this.parse(Refresh);
 
-        await new Generator().run(flags.vagrant);
+        await new Generator().run(flags.vagrant, flags.force);
     }
 }

@@ -8,6 +8,7 @@ export class Generator {
     private ignoreCommands = ['list', 'help'];
     private commands: IExternalCommand[] = [];
     private runInVagrant = false;
+    private force = false;
     private processedCommands: string[] = [];
 
     get vagrant(): Generator {
@@ -15,7 +16,8 @@ export class Generator {
         return this;
     }
 
-    async run(runInVagrant = false): Promise<void> {
+    async run(runInVagrant = false, force = false): Promise<void> {
+        this.force = force;
         this.runInVagrant = runInVagrant;
 
         const { consoles } = global?.config?.workspace;
@@ -105,6 +107,10 @@ export class Generator {
      *
      */
     private async storeCommands(): Promise<void> {
-        await VConfig.updateWorkspaceConfig({ externalCommands: this.commands });
+        const currentExternalCommands = global.config.workspace?.externalCommands ?? [],
+        externalCommands = this.force
+            ? this.commands
+            : [...(currentExternalCommands ?? []), ...this.commands];
+        await VConfig.updateWorkspaceConfig({ externalCommands });
     }
 }
