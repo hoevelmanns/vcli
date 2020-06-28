@@ -1,6 +1,6 @@
-import { ICustomCommand } from '../../shared/types';
+import { IExternalCommand } from '../../shared/types';
 
 export interface CommandTemplate {
-    command: ICustomCommand;
+    command: IExternalCommand;
     template: string;
 }

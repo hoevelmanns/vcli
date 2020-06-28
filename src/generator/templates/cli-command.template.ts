@@ -1,7 +1,7 @@
 import { makeClassName, makeFunctionName } from '../../shared/models';
-import { ICustomCommand } from '../../shared/types';
+import { IExternalCommand } from '../../shared/types';
 
-export const cliCommandTemplate = (cmd: ICustomCommand): string => `
+export const cliCommandTemplate = (cmd: IExternalCommand): string => `
 import Command from '@oclif/command';
 
 export abstract class ${makeClassName(cmd.name)} extends Command {
