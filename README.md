@@ -21,7 +21,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/1.1.1 linux-x64 node-v12.13.1
+@hoevelmanns/vcli/1.1.2 linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -98,7 +98,7 @@ OPTIONS
   -n, --create  create workspace
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.1.1/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.1.2/src/commands/create.ts)_
 
 ## `vc halt`
 
@@ -112,7 +112,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v1.1.1/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v1.1.2/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -145,7 +145,7 @@ OPTIONS
   -v, --vagrant  run generator in vagrant
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.1.1/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.1.2/src/commands/refresh.ts)_
 
 ## `vc up`
 
@@ -159,5 +159,5 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v1.1.1/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v1.1.2/src/commands/up.ts)_
 <!-- commandsstop -->

@@ -1,5 +1,5 @@
 import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
-import { VConfig } from '../../shared/models';
+import { autocompleteSetup, VConfig } from "../../shared/models";
 import { shell, vagrant } from '../../shell/models';
 
 const Listr = require('listr');
@@ -42,7 +42,7 @@ export class Generator {
             },
             {
                 title: 'Building autocomplete cache',
-                task: (): Promise<void> => VConfig.setupAutocomplete(),
+                task: (): Promise<void> => autocompleteSetup(),
                 enabled: (): boolean => this.commands.length > 0,
             },
         ]);
