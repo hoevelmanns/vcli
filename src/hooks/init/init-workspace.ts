@@ -11,11 +11,11 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
     const corePlugin = (await opts.config.plugins[0]) as Plugin,
         processed: string[] = [],
         commandName = process.argv[2],
-        externalCommand = global.config?.workspace?.externalCommand?.find((item) => item.name === commandName);
+        externalCommand = global.config?.workspace?.externalCommands?.find((item) => item.name === commandName);
 
-    if (externalCommand) global.config.workspace.externalCommand = [externalCommand];
+    if (externalCommand) global.config.workspace.externalCommands = [externalCommand];
 
-    global.config.workspace?.externalCommand?.forEach((item: IExternalCommand) => {
+    global.config.workspace?.externalCommands?.forEach((item: IExternalCommand) => {
         if (processed.includes(item.id)) return;
 
         corePlugin.commands.push((<Command.Plugin>(<Command>{

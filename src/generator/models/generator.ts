@@ -105,6 +105,6 @@ export class Generator {
      *
      */
     private async storeCommands(): Promise<void> {
-        await VConfig.updateWorkspaceConfig({ externalCommand: this.commands });
+        await VConfig.updateWorkspaceConfig({ externalCommands: this.commands });
     }
 }

@@ -15,7 +15,7 @@ export interface IWorkspaceConfig {
     vagrant?: IVagrantConfig;
     notifications?: INotificationConfig;
     consoles?: IExternalConsole[];
-    externalCommand?: IExternalCommand[];
+    externalCommands?: IExternalCommand[];
 }
 
 export interface IExternalCommand extends Command {
