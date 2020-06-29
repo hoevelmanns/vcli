@@ -1,11 +1,15 @@
 import { shell } from './shell';
-import { vagrant } from './vagrant';
-import VCBase from '../commands/base';
+import { Vagrant } from './vagrant';
 import { ICustomCommand } from '../shared/types';
 import { actionTxt, infoTxt } from '../shared';
 import { isMachineNotUp } from './machine-states';
+import { IConfig } from '@oclif/config';
 
-export class CustomCommand extends VCBase {
+export class CustomCommand extends Vagrant {
+    constructor(argv: string[], config: IConfig) {
+        super();
+    }
+
     static hidden = true;
     private data = <ICustomCommand>{};
 
@@ -21,13 +25,13 @@ export class CustomCommand extends VCBase {
     public run = async (forceRunInVagrant = false): Promise<void> => {
         const { execute } = this.data,
             args = process.argv,
-            command = [execute, args.slice(3, args.length).join(' ')].join(' '),
+            command = [execute, args.slice(3, args.length).join(' ')].join(' ').trim(),
             actionInfo = actionTxt('Executing: ' + infoTxt(command)),
             runInVagrant = this.data.runInVagrant ?? forceRunInVagrant;
 
         await shell.exec(command, { runInVagrant, actionInfo }).catch(async (err: Error) => {
             if (isMachineNotUp(err)) {
-                await vagrant.startMachineIfNotUp();
+                await this.startMachineIfNotUp();
                 return this.run(runInVagrant);
             }
         });

@@ -1,5 +1,7 @@
 import { IExecFunctionOptions } from 'async-shelljs';
 
+export * from './shell';
+
 export interface Flags {
     [key: string]: string;
 }

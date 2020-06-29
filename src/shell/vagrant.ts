@@ -1,10 +1,10 @@
-import { shell } from './shell';
+import { Shell } from './shell';
 import { asyncExec } from 'async-shelljs';
 import cli from 'cli-ux';
 import { infoTxt, notify, warningTxt } from '../shared';
 const confirm = require('@inquirer/confirm');
 
-export class Vagrant {
+export class Vagrant extends Shell {
     /**
      * Starts the vagrant machine
      */
@@ -12,8 +12,7 @@ export class Vagrant {
     startMachine = async (silent = false): Promise<void> => {
         const actionInfo = infoTxt('Starting machine');
 
-        await shell
-            .exec('vagrant up', { silent, actionInfo })
+        await this.exec('vagrant up', { silent, actionInfo })
             .then(() => {
                 cli.action.stop();
                 notify('Vagrant successfully started');
@@ -27,8 +26,7 @@ export class Vagrant {
     haltMachine(silent = false): void {
         const actionInfo = infoTxt('Stopping machine');
 
-        shell
-            .exec('vagrant halt', { silent, actionInfo })
+        this.exec('vagrant halt', { silent, actionInfo })
             .then(() => notify('Vagrant stopped'))
             .catch((err) => notify(`Error halting VM: ${err}`));
     }

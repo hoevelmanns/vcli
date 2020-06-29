@@ -18,11 +18,11 @@ export class Generator {
 
     async run(runInVagrant = false, force = false): Promise<void> {
         this.force = force;
-        this.runInVagrant = runInVagrant || this.runInVagrant
+        this.runInVagrant = runInVagrant || this.runInVagrant;
 
         const { consoles } = global?.config?.workspace;
 
-        if (this.runInVagrant && !await vagrant.machineIsUp()) await vagrant.startMachine(true);
+        if (this.runInVagrant && !(await vagrant.machineIsUp())) await vagrant.startMachine(true);
 
         const tasks = new Listr([
             {
