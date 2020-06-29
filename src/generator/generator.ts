@@ -1,6 +1,7 @@
-import { CommandType, ICustomCommand, IExternalConsole } from '../../shared/types';
-import { autocompleteSetup, VConfig } from "../../shared/models";
-import { shell, vagrant } from '../../shell/models';
+import { CommandType, ICustomCommand, IExternalConsole } from '../shared/types';
+import { autocompleteSetup } from '../autocomplete';
+import { VConfig } from '../config';
+import { shell, vagrant } from '../shell';
 
 const Listr = require('listr');
 

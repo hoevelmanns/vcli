@@ -1,3 +1,3 @@
 export interface ISetup {
-  run(): Promise<void>
+    run(): Promise<void>;
 }

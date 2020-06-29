@@ -1,5 +1,5 @@
 import * as notifier from 'node-notifier';
-import { INotification } from '../types';
+import { INotification } from './types';
 
 export function notify(notification: INotification | string): void {
     if (global.config.workspace.notifications?.disabled) {

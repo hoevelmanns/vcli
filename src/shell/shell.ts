@@ -1,8 +1,8 @@
 import { asyncExec } from 'async-shelljs';
-import { errorTxt } from '../../shared/models';
-import { IShellOptions } from '../types';
-import { isMachineLocked } from '../../shared/utils';
+import { IShellOptions } from './types';
 import cli from 'cli-ux';
+import { isMachineLocked } from "../shared/utils/error";
+import { errorTxt } from "../shared";
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme

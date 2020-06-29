@@ -1,5 +1,5 @@
-import { makeClassName, makeFunctionName } from '../../shared/models';
 import { ICustomCommand } from '../../shared/types';
+import { makeClassName, makeFunctionName } from '../../shared';
 
 export const customCommandTemplate = (cmd: ICustomCommand): string => `
 export class ${makeClassName(cmd.name)} extends ShellCommand {

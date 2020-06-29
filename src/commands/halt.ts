@@ -1,6 +1,6 @@
 import { flags } from '@oclif/command';
 import Command from './base';
-import { vagrant } from '../shell/models';
+import { vagrant } from '../shell';
 
 export default class Halt extends Command {
     static hidden = false;

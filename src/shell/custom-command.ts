@@ -1,8 +1,8 @@
 import { shell } from './shell';
-import { actionTxt, infoTxt, warningTxt } from '../../shared/models';
 import { vagrant } from './vagrant';
-import VCBase from '../../commands/base';
-import { ICustomCommand } from '../../shared/types';
+import VCBase from '../commands/base';
+import { ICustomCommand } from '../shared/types';
+import { actionTxt, infoTxt, warningTxt } from '../shared';
 const confirm = require('@inquirer/confirm');
 
 export class CustomCommand extends VCBase {

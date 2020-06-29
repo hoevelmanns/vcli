@@ -1,6 +1,6 @@
 import Index from '@oclif/plugin-autocomplete/lib/commands/autocomplete';
 import { IConfig } from '@oclif/config';
-import { VConfig } from '../models';
+import { VConfig } from '../config';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 export const refreshAutocompleteCache = async (config: IConfig): Promise<void> => await Index.run(['-r'], config);

@@ -1,15 +1,11 @@
 import { Hook, Plugin, Command } from '@oclif/config';
-import { CustomCommand } from '../../shell/models';
 import { IConfiguration, ICustomCommand } from '../../shared/types';
-import {
-    autocompleteSetup,
-    generatorSetup,
-    vagrantSetup,
-    errorTxt,
-    vcConfig,
-    whiteTxt,
-    VConfig
-} from "../../shared/models";
+import { vcConfig, VConfig } from '../../config';
+import { vagrantSetup } from '../../shell/vagrant-setup';
+import { generatorSetup } from '../../generator/generator-setup';
+import { autocompleteSetup } from '../../autocomplete';
+import { errorTxt, whiteTxt } from '../../shared';
+import { CustomCommand } from '../../shell';
 
 global.config = <IConfiguration>{};
 
@@ -18,10 +14,10 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
 
     if (!hasWorkspace) {
         await VConfig.createWorkspace()
-          .then(vagrantSetup)
-          .then(generatorSetup)
-          .then(autocompleteSetup)
-          .catch((err: Error) => console.log(errorTxt('Error creating workspace: '), whiteTxt(err.message)));
+            .then(vagrantSetup)
+            .then(generatorSetup)
+            .then(autocompleteSetup)
+            .catch((err: Error) => console.log(errorTxt('Error creating workspace: '), whiteTxt(err.message)));
     }
 
     const corePlugin = (await opts.config.plugins[0]) as Plugin,

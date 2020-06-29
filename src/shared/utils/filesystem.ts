@@ -1,10 +1,11 @@
+import { infoTxt } from '../logging';
+
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 /**
  *
  * @param target
  * @param src
  */
-import { infoTxt } from '../models';
 
 export const createOrRenameSymlink = async (target: string, src: string): Promise<void> => {
     if (await fs.exists(target)) {

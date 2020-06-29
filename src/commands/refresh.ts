@@ -1,6 +1,6 @@
-import { Generator } from '../generator/models';
 import { flags } from '@oclif/command';
 import Command from './base';
+import { Generator } from '../generator';
 
 export default class Refresh extends Command {
     static hidden = false;

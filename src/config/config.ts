@@ -1,13 +1,11 @@
-import { defaultConfigFile, defaultWorkspace } from '../types/defaults';
-import { successTxt } from './logging';
-import { IWorkspaceConfig } from '../types';
+import { defaultConfigFile, defaultWorkspace } from '../shared/types/defaults';
+import { successTxt } from '../shared';
+import { IWorkspaceConfig } from '../shared/types';
 import { IConfig } from '@oclif/config';
 import { v4 as uuidv4 } from 'uuid';
 import * as findUp from 'find-up';
 import cli from 'cli-ux';
-import {
-    createOrRenameSymlink,
-} from "../utils";
+import { createOrRenameSymlink } from '../shared/utils';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 export class VConfig {

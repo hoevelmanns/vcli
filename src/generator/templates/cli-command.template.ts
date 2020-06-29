@@ -1,5 +1,5 @@
-import { makeClassName, makeFunctionName } from '../../shared/models';
 import { ICustomCommand } from '../../shared/types';
+import { makeClassName, makeFunctionName } from '../../shared';
 
 export const cliCommandTemplate = (cmd: ICustomCommand): string => `
 import Command from '@oclif/command';

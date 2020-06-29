@@ -1,7 +1,7 @@
 import { shell } from './shell';
-import { infoTxt, notify } from '../../shared/models';
 import { asyncExec } from 'async-shelljs';
 import cli from 'cli-ux';
+import { infoTxt, notify } from "../shared";
 
 export class Vagrant {
     /**
