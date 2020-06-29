@@ -33,7 +33,7 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
         corePlugin.commands.push((<Command.Plugin>(<Command>{
             ...item,
             load(): CustomCommand {
-                return new CustomCommand(process.argv, VConfig.oclifConfig).set(item);
+                return new CustomCommand().set(item);
             },
         })) as Command.Plugin);
         processed.push(item.id);

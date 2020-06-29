@@ -3,7 +3,6 @@ import Command from './base';
 import { CustomCommand, vagrant } from '../shell';
 import { VConfig } from '../config';
 import { ICustomCommand } from '../shared/types';
-import Index from '@oclif/plugin-autocomplete/lib/commands/autocomplete';
 
 export default class VagrantCommand extends Command {
     static hidden = false;
@@ -44,7 +43,7 @@ export default class VagrantCommand extends Command {
             return VagrantCommand.run(['-h'], this.config);
         }
 
-        await new CustomCommand(process.argv, VConfig.oclifConfig)
+        await new CustomCommand()
             .set(<ICustomCommand>{
                 runInVagrant: true,
                 name: commandName,

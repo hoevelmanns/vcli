@@ -3,12 +3,8 @@ import { Vagrant } from './vagrant';
 import { ICustomCommand } from '../shared/types';
 import { actionTxt, infoTxt } from '../shared';
 import { isMachineNotUp } from './machine-states';
-import { IConfig } from '@oclif/config';
 
 export class CustomCommand extends Vagrant {
-    constructor(argv: string[], config: IConfig) {
-        super();
-    }
 
     static hidden = true;
     private data = <ICustomCommand>{};
