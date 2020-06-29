@@ -1,6 +1,5 @@
-import { flags } from '@oclif/command';
-import Command from './base';
-import { vagrant } from '../shell';
+import Command, { flags } from '@oclif/command';
+import { Vagrant } from '../shell';
 
 export default class Up extends Command {
     static hidden = false;
@@ -14,5 +13,5 @@ export default class Up extends Command {
         help: flags.help({ char: 'h' }),
     };
 
-    run = async (): Promise<void> => await vagrant.startMachine(false);
+    run = async (): Promise<void> => await new Vagrant().startMachine(false);
 }

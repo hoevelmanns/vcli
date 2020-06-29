@@ -1,4 +1,4 @@
-import { VConfig } from '../config';
+import { vcConfig } from '../config';
 import { ISetup } from '../shared/types/setup';
 import { infoTxt } from '../shared';
 import { existAutoCompleteEnvVar, refreshAutocompleteCache, showAutocompleteSetupInstructions } from './autocomplete';
@@ -7,9 +7,9 @@ import { existAutoCompleteEnvVar, refreshAutocompleteCache, showAutocompleteSetu
  * Adds the autocomplete env var to the shell profile and source it
  *
  */
-export class AutocompleteSetup extends VConfig implements ISetup {
+export class AutocompleteSetup implements ISetup {
     run = async (): Promise<void> => {
-        const oclifConfig = VConfig.oclifConfig,
+        const oclifConfig = vcConfig.oclifConfig,
             { shell, bin } = oclifConfig,
             successMsg =
                 `3) For using the autocompletion please run "${bin}" in a new terminal window or use:` +

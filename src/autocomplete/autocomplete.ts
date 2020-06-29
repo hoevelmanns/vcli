@@ -1,6 +1,5 @@
 import Index from '@oclif/plugin-autocomplete/lib/commands/autocomplete';
 import { IConfig } from '@oclif/config';
-import { VConfig } from '../config';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 // todo vc autocomplete -r && source ~/.zshrc && exec zsh
@@ -13,6 +12,6 @@ export const showAutocompleteSetupInstructions = async (config: IConfig): Promis
  */
 
 export const existAutoCompleteEnvVar = async (bin: string, shell: string): Promise<boolean> => {
-    const shellProfile = await fs.readFile(VConfig.oclifConfig.home + `/.${shell}rc`, 'utf8');
+    const shellProfile = await fs.readFile(global.config.home + `/.${shell}rc`, 'utf8');
     return shellProfile.match(`${bin.toUpperCase()}_AC_ZSH_SETUP_PATH`);
 };

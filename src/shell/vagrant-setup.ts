@@ -3,15 +3,11 @@
  */
 import * as inquirer from 'inquirer';
 import { defaultVagrantConfig } from '../shared/types/defaults';
-import { VConfig } from '../shared';
 import { ISetup } from '../shared/types/setup';
-const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
+import { VConfig } from '../config';
+const fs = require('fs-extra');
 
-export class VagrantSetup extends VConfig implements ISetup {
-    constructor() {
-        super();
-    }
-
+export class VagrantSetup implements ISetup {
     run = async (): Promise<void> =>
         new Promise(async (resolve, reject) => {
             const workspaceHasVagrantFile = fs.existsSync('Vagrantfile');
@@ -34,7 +30,8 @@ export class VagrantSetup extends VConfig implements ISetup {
 
             if (questions.useVagrant) {
                 defaultVagrantConfig.vagrant.deployDir = questions.vagrantDir;
-                return await VConfig.updateWorkspaceConfig(defaultVagrantConfig)
+                return await VConfig.getInstance()
+                    .updateWorkspaceConfig(defaultVagrantConfig)
                     .then(resolve)
                     .catch((err: Error) => reject(err.message));
             }

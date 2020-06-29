@@ -1,15 +1,13 @@
-import { flags } from '@oclif/command';
-import Command from './base';
-import { CustomCommand, vagrant } from '../shell';
-import { VConfig } from '../config';
+import { CustomCommand, Vagrant } from '../shell';
 import { ICustomCommand } from '../shared/types';
+import Command, { flags } from '@oclif/command';
 
 export default class VagrantCommand extends Command {
     static hidden = false;
 
     static description = 'vagrant wrapper'; // todo description
 
-    static usage = 'vc vagrant [COMMAND]';
+    static usage = 'vagrant (v) [COMMAND]';
 
     static aliases = ['v'];
 
@@ -33,8 +31,8 @@ export default class VagrantCommand extends Command {
     run = async (): Promise<void> => {
         const { flags } = this.parse(VagrantCommand);
 
-        if (flags.up) return vagrant.startMachine(false);
-        if (flags.halt) return vagrant.haltMachine();
+        if (flags.up) return new Vagrant().startMachine(false);
+        if (flags.halt) return new Vagrant().haltMachine();
 
         // passing arguments to vagrant
         const commandName = process.argv.slice(3, process.argv.length).join(' ').trim();

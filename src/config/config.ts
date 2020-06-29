@@ -9,9 +9,14 @@ import { createOrRenameSymlink } from '../shared/utils';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 export class VConfig {
-    public static oclifConfig: IConfig;
+    public oclifConfig = <IConfig>{};
     private static workspaceConfigFile: string;
+    private static instance: VConfig;
 
+    static getInstance(): VConfig {
+        this.instance = this.instance ?? new VConfig();
+        return VConfig.instance;
+    }
     /**
      * The entry point of the workspace configuration
      *
@@ -19,19 +24,19 @@ export class VConfig {
      * @returns void
      */
     hasWorkspace = async (oclifConfig: IConfig): Promise<boolean> => {
-        VConfig.oclifConfig = oclifConfig;
+        this.oclifConfig = oclifConfig;
 
         const workspaceConfigFile = await findUp(defaultConfigFile);
 
         if (workspaceConfigFile) {
-            await VConfig.set(workspaceConfigFile);
+            await this.set(workspaceConfigFile);
             return true;
         }
 
         return false;
     };
 
-    static async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
+    async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
         global.config.workspace = { ...global.config.workspace, ...config };
         await fs.writeJSON(VConfig.workspaceConfigFile, global.config.workspace, { spaces: 2, flag: 'w' });
     }
@@ -41,7 +46,7 @@ export class VConfig {
      * @param workspaceConfigFile
      * @returns void
      */
-    private static async set(workspaceConfigFile?: string): Promise<void> {
+    private async set(workspaceConfigFile?: string): Promise<void> {
         VConfig.workspaceConfigFile = workspaceConfigFile ?? VConfig.workspaceConfigFile;
 
         let workspaceConfig = await fs.readJSON(VConfig.workspaceConfigFile);
@@ -54,7 +59,7 @@ export class VConfig {
         };
 
         Object.assign(global.config, {
-            ...VConfig.oclifConfig,
+            ...this.oclifConfig,
             ...{ workspace: { ...workspaceConfig } },
         });
     }
@@ -62,7 +67,7 @@ export class VConfig {
     /**
      * @returns void
      */
-    static createWorkspace = async (): Promise<void> => {
+    createWorkspace = async (): Promise<void> => {
         const pkgJsonPath = process.cwd() + '/package.json',
             currentPathHasPkgJson = await fs.pathExists(pkgJsonPath),
             workspacePkgJson = currentPathHasPkgJson ? await fs.readJson(pkgJsonPath) : null,
@@ -73,7 +78,7 @@ export class VConfig {
             uuid = uuidv4(workspaceName),
             config: IWorkspaceConfig = { ...defaultWorkspace, name: workspaceName, uuid, root };
 
-        await VConfig.createWorkspaceConfigFile(config)
+        await this.createWorkspaceConfigFile(config)
             .then(() => console.log(successTxt(`Workspace "${config.name}" created!`), '\n'))
             .catch((err) => console.error(err));
     };
@@ -82,9 +87,9 @@ export class VConfig {
      *
      * @param config
      */
-    static createWorkspaceConfigFile = (config: IWorkspaceConfig): Promise<void> =>
+    createWorkspaceConfigFile = (config: IWorkspaceConfig): Promise<void> =>
         new Promise((resolve, reject) => {
-            const configDir = VConfig.oclifConfig.configDir,
+            const configDir = this.oclifConfig.configDir,
                 targetDir = `${configDir}/${config.uuid}`,
                 targetFile = `${targetDir}/config.json`;
 
@@ -93,7 +98,7 @@ export class VConfig {
             fs.mkdir(targetDir, { recursive: true })
                 .then(async () => await fs.writeFile(targetFile, JSON.stringify(config), { flag: 'w' }))
                 .then(async () => await createOrRenameSymlink(targetFile, VConfig.workspaceConfigFile))
-                .then(() => resolve(VConfig.set()))
+                .then(() => resolve(this.set()))
                 .catch((err: Error) => reject(err));
         });
 }

@@ -1,7 +1,5 @@
 import { IExecFunctionOptions } from 'async-shelljs';
 
-export * from './shell';
-
 export interface Flags {
     [key: string]: string;
 }
@@ -12,6 +10,7 @@ export interface IShellOptions extends IExecFunctionOptions {
     showLockedWarning?: boolean;
     flags?: Flags;
     actionInfo?: string;
+    silent?: boolean;
 }
 
 export interface ConsoleCommand {

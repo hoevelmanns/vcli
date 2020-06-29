@@ -1,11 +1,9 @@
-import { shell } from './shell';
 import { Vagrant } from './vagrant';
 import { ICustomCommand } from '../shared/types';
 import { actionTxt, infoTxt } from '../shared';
 import { isMachineNotUp } from './machine-states';
 
 export class CustomCommand extends Vagrant {
-
     static hidden = true;
     private data = <ICustomCommand>{};
 
@@ -25,7 +23,7 @@ export class CustomCommand extends Vagrant {
             actionInfo = actionTxt('Executing: ' + infoTxt(command)),
             runInVagrant = this.data.runInVagrant ?? forceRunInVagrant;
 
-        await shell.exec(command, { runInVagrant, actionInfo }).catch(async (err: Error) => {
+        await this.exec(command, { runInVagrant, actionInfo }).catch(async (err: Error) => {
             if (isMachineNotUp(err)) {
                 await this.startMachineIfNotUp();
                 return this.run(runInVagrant);

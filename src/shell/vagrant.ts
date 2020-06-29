@@ -1,5 +1,4 @@
 import { Shell } from './shell';
-import { asyncExec } from 'async-shelljs';
 import cli from 'cli-ux';
 import { infoTxt, notify, warningTxt } from '../shared';
 const confirm = require('@inquirer/confirm');
@@ -32,7 +31,7 @@ export class Vagrant extends Shell {
     }
 
     machineIsUp = async (): Promise<boolean> =>
-        await asyncExec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
+        await this.exec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
 
     startMachineIfNotUp = async (silent = true): Promise<void> => {
         await cli.action.pauseAsync(async () => {

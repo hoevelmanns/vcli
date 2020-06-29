@@ -2,11 +2,10 @@
  * Triggers the generation of external cli commands
  */
 import * as inquirer from 'inquirer';
-import { VConfig } from '../config';
 import { ISetup } from '../shared/types/setup';
 import { Generator } from './generator';
 
-export class GeneratorSetup extends VConfig implements ISetup {
+export class GeneratorSetup implements ISetup {
     run = async (): Promise<void> =>
         new Promise(async (resolve, reject) => {
             const questions: { refresh: boolean; refreshVagrant: boolean } = await inquirer.prompt([

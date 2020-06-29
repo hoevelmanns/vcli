@@ -1,7 +1,7 @@
 import { CommandType, ICustomCommand, IExternalConsole } from '../shared/types';
 import { autocompleteSetup } from '../autocomplete';
+import { vagrant } from '../shell';
 import { VConfig } from '../config';
-import { shell, vagrant } from '../shell';
 
 const Listr = require('listr');
 
@@ -99,7 +99,7 @@ export class Generator {
      * @param listCommand
      */
     private fetchConsoleCommandList = async (listCommand: string): Promise<string> => {
-        return shell.exec(listCommand, { runInVagrant: this.runInVagrant, runInProjectRoot: true, silent: true }); // todo runInVagrant
+        return vagrant.exec(listCommand, { runInVagrant: this.runInVagrant, runInProjectRoot: true, silent: true }); // todo runInVagrant
     };
 
     /**
@@ -109,6 +109,6 @@ export class Generator {
     private async storeCommands(): Promise<void> {
         const currentCustomCommands = global.config.workspace?.customCommands ?? [],
             externalCommands = this.force ? this.commands : [...currentCustomCommands, ...this.commands];
-        await VConfig.updateWorkspaceConfig({ customCommands: externalCommands });
+        await VConfig.getInstance().updateWorkspaceConfig({ customCommands: externalCommands });
     }
 }

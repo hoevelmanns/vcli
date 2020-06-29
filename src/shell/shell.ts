@@ -64,5 +64,3 @@ export class Shell {
         return command.concat(' ', flagsStr).trim();
     }
 }
-
-export const shell = new Shell();
