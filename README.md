@@ -21,7 +21,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/1.2.5 linux-x64 node-v12.13.1
+@hoevelmanns/vcli/1.2.6 linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -37,7 +37,7 @@ USAGE
 * [`vc help [COMMAND]`](#vc-help-command)
 * [`vc refresh`](#vc-refresh)
 * [`vc up`](#vc-up)
-* [`vc vc vagrant [COMMAND]`](#vc-vc-vagrant-command)
+* [`vc vagrant (v) [COMMAND]`](#vc-vagrant-v-command)
 
 ## `vc autocomplete [SHELL]`
 
@@ -95,12 +95,11 @@ USAGE
   $ vc create
 
 OPTIONS
-  -h, --help     show CLI help
-  -n, --create   create workspace
-  -v, --vagrant  show CLI help
+  -h, --help    show CLI help
+  -n, --create  create workspace
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.5/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.6/src/commands/create.ts)_
 
 ## `vc halt`
 
@@ -111,11 +110,10 @@ USAGE
   $ vc halt
 
 OPTIONS
-  -h, --help     show CLI help
-  -v, --vagrant  show CLI help
+  -h, --help  show CLI help
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.5/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.6/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -148,7 +146,7 @@ OPTIONS
   -v, --vagrant  run generator in vagrant
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.5/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.6/src/commands/refresh.ts)_
 
 ## `vc up`
 
@@ -159,29 +157,27 @@ USAGE
   $ vc up
 
 OPTIONS
-  -h, --help     show CLI help
-  -v, --vagrant  show CLI help
+  -h, --help  show CLI help
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.5/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.6/src/commands/up.ts)_
 
-## `vc vc vagrant [COMMAND]`
+## `vc vagrant (v) [COMMAND]`
 
 vagrant wrapper
 
 ```
 USAGE
-  $ vc vc vagrant [COMMAND]
+  $ vc vagrant (v) [COMMAND]
 
 OPTIONS
-  -h, --help     show CLI help
-  -s, --halt     stop the VM
-  -u, --up       start the VM
-  -v, --vagrant  show CLI help
+  -h, --help  show CLI help
+  -s, --halt  stop the VM
+  -u, --up    start the VM
 
 ALIASES
   $ vc v
 ```
 
-_See code: [src/commands/vagrant.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.5/src/commands/vagrant.ts)_
+_See code: [src/commands/vagrant.ts](https://github.com/hoevelmanns/vcli/blob/v1.2.6/src/commands/vagrant.ts)_
 <!-- commandsstop -->

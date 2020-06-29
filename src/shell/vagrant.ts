@@ -35,11 +35,11 @@ export class Vagrant extends Shell {
 
     startMachineIfNotUp = async (silent = true): Promise<void> => {
         await cli.action.pauseAsync(async () => {
-            const startVagrant = await confirm({
+            const startVM = await confirm({
                 message: 'VM is not running. Start now?', // todo
             });
 
-            if (startVagrant) {
+            if (startVM) {
                 return await this.startMachine(true);
             }
 

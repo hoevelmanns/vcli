@@ -74,7 +74,7 @@ export class Generator {
             execute: `${executable} ${command}`,
             type: CommandType.external,
             context: name ?? 'unknown',
-            runInVagrant: this.runInVagrant,
+            runInVM: this.runInVagrant,
         });
 
         this.processedCommands.push(command + console.name);
@@ -99,7 +99,7 @@ export class Generator {
      * @param listCommand
      */
     private fetchConsoleCommandList = async (listCommand: string): Promise<string> => {
-        return vagrant.exec(listCommand, { runInVagrant: this.runInVagrant, runInProjectRoot: true, silent: true }); // todo runInVagrant
+        return vagrant.exec(listCommand, { runInVM: this.runInVagrant, runInProjectRoot: true, silent: true }); // todo runInVagrant
     };
 
     /**

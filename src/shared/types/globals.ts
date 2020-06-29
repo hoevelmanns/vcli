@@ -27,7 +27,7 @@ export interface ICustomCommand extends Command {
     hidden: boolean; // todo
     prefix?: string;
     type: CommandType;
-    runInVagrant?: boolean;
+    runInVM?: boolean;
     topicName?: string;
 }
 

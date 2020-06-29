@@ -8,7 +8,7 @@ import cli from 'cli-ux';
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
  */
 export class Shell {
-    private _runInVagrant = false;
+    private _vm = false;
 
     /**
      * Executes shell commands, also in a vagrant machine
@@ -35,8 +35,8 @@ export class Shell {
         });
     };
 
-    get runInVagrant(): Shell {
-        this._runInVagrant = true;
+    get vm(): Shell {
+        this._vm = true;
         return this;
     }
 
@@ -49,11 +49,11 @@ export class Shell {
      */
     private prepareCommand(command: string, options?: IShellOptions): string {
         const { workspace } = global.config,
-            runInVagrant = (options?.runInVagrant || this._runInVagrant) && 'vagrant' in workspace,
-            runInProjectRoot = options?.runInProjectRoot || options?.runInVagrant;
+            runInVM = (options?.runInVM || this._vm) && 'vagrant' in workspace,
+            runInProjectRoot = options?.runInProjectRoot || options?.runInVM;
 
-        if (runInVagrant) command = `vagrant ssh -c "cd ~/${workspace.vagrant?.deployDir} && ${command}"`;
-        if (!runInVagrant && runInProjectRoot) command = `cd ${workspace.root} && ${command}`;
+        if (runInVM) command = `vagrant ssh -c "cd ~/${workspace.vagrant?.deployDir} && ${command}"`;
+        if (!runInVM && runInProjectRoot) command = `cd ${workspace.root} && ${command}`;
         if (!options?.flags) return command;
 
         const flagsStr = Object.entries(options.flags)

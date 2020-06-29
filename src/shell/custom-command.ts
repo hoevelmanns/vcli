@@ -14,25 +14,25 @@ export class CustomCommand extends Vagrant {
 
     /**
      *
-     * @param forceRunInVagrant
+     * @param forceRunInVM
      */
-    public run = async (forceRunInVagrant = false): Promise<void> => {
+    public run = async (forceRunInVM = false): Promise<void> => {
         const { execute } = this.data,
             args = process.argv,
             command = [execute, args.slice(3, args.length).join(' ')].join(' ').trim(),
-            actionInfo = actionTxt('Executing: ' + infoTxt(command)),
-            runInVagrant = this.data.runInVagrant ?? forceRunInVagrant;
+            runInVM = this.data.runInVM ?? forceRunInVM,
+            actionInfo = actionTxt(`Executing${runInVM ? ' (VM):' : ':' } ${infoTxt(command)}`);
 
-        await this.exec(command, { runInVagrant, actionInfo }).catch(async (err: Error) => {
+        await this.exec(command, { runInVM: runInVM, actionInfo }).catch(async (err: Error) => {
             if (isMachineNotUp(err)) {
                 await this.startMachineIfNotUp();
-                return this.run(runInVagrant);
+                return this.run(runInVM);
             }
         });
     };
 
     public get vagrant(): CustomCommand {
-        this.data.runInVagrant = true;
+        this.data.runInVM = true;
         return this;
     }
 }

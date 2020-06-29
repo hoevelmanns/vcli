@@ -43,7 +43,7 @@ export default class VagrantCommand extends Command {
 
         await new CustomCommand()
             .set(<ICustomCommand>{
-                runInVagrant: true,
+                runInVM: true,
                 name: commandName,
                 context: 'custom',
             })

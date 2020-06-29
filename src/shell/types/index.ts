@@ -5,7 +5,7 @@ export interface Flags {
 }
 
 export interface IShellOptions extends IExecFunctionOptions {
-    runInVagrant?: boolean;
+    runInVM?: boolean;
     runInProjectRoot?: boolean;
     showLockedWarning?: boolean;
     flags?: Flags;
