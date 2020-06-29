@@ -3,6 +3,7 @@ import { IConfig } from '@oclif/config';
 import { VConfig } from '../config';
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
+// todo vc autocomplete -r && source ~/.zshrc && exec zsh
 export const refreshAutocompleteCache = async (config: IConfig): Promise<void> => await Index.run(['-r'], config);
 export const showAutocompleteSetupInstructions = async (config: IConfig): Promise<void> => await Index.run([], config);
 /**

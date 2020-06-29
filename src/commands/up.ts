@@ -14,5 +14,5 @@ export default class Up extends Command {
         help: flags.help({ char: 'h' }),
     };
 
-    run = async (): Promise<void> => await vagrant.up(false);
+    run = async (): Promise<void> => await vagrant.startMachine(false);
 }

@@ -2,10 +2,10 @@
  * @returns void
  */
 import * as inquirer from 'inquirer';
-const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 import { defaultVagrantConfig } from '../shared/types/defaults';
 import { VConfig } from '../shared';
 import { ISetup } from '../shared/types/setup';
+const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 export class VagrantSetup extends VConfig implements ISetup {
     constructor() {

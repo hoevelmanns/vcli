@@ -1,14 +1,15 @@
 import { shell } from './shell';
 import { asyncExec } from 'async-shelljs';
 import cli from 'cli-ux';
-import { infoTxt, notify } from "../shared";
+import { infoTxt, notify, warningTxt } from '../shared';
+const confirm = require('@inquirer/confirm');
 
 export class Vagrant {
     /**
      * Starts the vagrant machine
      */
 
-    up = async (silent = false): Promise<void> => {
+    startMachine = async (silent = false): Promise<void> => {
         const actionInfo = infoTxt('Starting machine');
 
         await shell
@@ -23,7 +24,7 @@ export class Vagrant {
     /**
      * Halts the vagrant machine
      */
-    halt(silent = false): void {
+    haltMachine(silent = false): void {
         const actionInfo = infoTxt('Stopping machine');
 
         shell
@@ -36,9 +37,18 @@ export class Vagrant {
         await asyncExec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
 
     startMachineIfNotUp = async (silent = true): Promise<void> => {
-        if (!(await this.machineIsUp())) {
-            await this.up(silent);
-        }
+        await cli.action.pauseAsync(async () => {
+            const startVagrant = await confirm({
+                message: 'VM is not running. Start now?', // todo
+            });
+
+            if (startVagrant) {
+                return await this.startMachine(true);
+            }
+
+            console.log(warningTxt('Aborted.'));
+            process.exit();
+        });
     };
 }
 

@@ -6,7 +6,6 @@ import { shell, vagrant } from '../shell';
 const Listr = require('listr');
 
 export class Generator {
-    private ignoreCommands = ['list', 'help'];
     private commands: ICustomCommand[] = [];
     private runInVagrant = false;
     private force = false;
@@ -19,11 +18,11 @@ export class Generator {
 
     async run(runInVagrant = false, force = false): Promise<void> {
         this.force = force;
-        this.runInVagrant = runInVagrant;
+        this.runInVagrant = runInVagrant || this.runInVagrant
 
         const { consoles } = global?.config?.workspace;
 
-        if (runInVagrant || this.runInVagrant) await vagrant.startMachineIfNotUp();
+        if (this.runInVagrant && !await vagrant.machineIsUp()) await vagrant.startMachine(true);
 
         const tasks = new Listr([
             {
@@ -108,8 +107,8 @@ export class Generator {
      *
      */
     private async storeCommands(): Promise<void> {
-        const currentExternalCommands = global.config.workspace?.customCommands ?? [],
-            externalCommands = this.force ? this.commands : [...currentExternalCommands, ...this.commands];
+        const currentCustomCommands = global.config.workspace?.customCommands ?? [],
+            externalCommands = this.force ? this.commands : [...currentCustomCommands, ...this.commands];
         await VConfig.updateWorkspaceConfig({ customCommands: externalCommands });
     }
 }

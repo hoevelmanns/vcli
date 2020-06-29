@@ -14,5 +14,5 @@ export default class Halt extends Command {
         help: flags.help({ char: 'h' }),
     };
 
-    run = async (): Promise<void> => vagrant.halt();
+    run = async (): Promise<void> => vagrant.haltMachine();
 }

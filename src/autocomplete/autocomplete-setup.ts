@@ -3,10 +3,11 @@ import { ISetup } from '../shared/types/setup';
 import { infoTxt } from '../shared';
 import { existAutoCompleteEnvVar, refreshAutocompleteCache, showAutocompleteSetupInstructions } from './autocomplete';
 
+/**
+ * Adds the autocomplete env var to the shell profile and source it
+ *
+ */
 export class AutocompleteSetup extends VConfig implements ISetup {
-    /**
-     * Adds the autocomplete env var to the shell profile and source it
-     */
     run = async (): Promise<void> => {
         const oclifConfig = VConfig.oclifConfig,
             { shell, bin } = oclifConfig,

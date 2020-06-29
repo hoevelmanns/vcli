@@ -1,8 +1,8 @@
-import { asyncExec } from 'async-shelljs';
+import { isMachineLocked } from './machine-states';
 import { IShellOptions } from './types';
+import { asyncExec } from 'async-shelljs';
+import { errorTxt } from '../shared';
 import cli from 'cli-ux';
-import { isMachineLocked } from "../shared/utils/error";
-import { errorTxt } from "../shared";
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -29,8 +29,9 @@ export class Shell {
         return asyncExec(this.prepareCommand(command, options), options).catch(async (err: Error) => {
             if (isMachineLocked(err) && retry <= 5) await this.exec(command, options, retry++);
 
-            console.error(errorTxt('Error executing command:'), command);
-            throw new Error(err.message);
+            console.error(errorTxt('Error executing command:'), err.message);
+
+            throw err;
         });
     };
 
