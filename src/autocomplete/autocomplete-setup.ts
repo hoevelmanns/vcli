@@ -8,20 +8,20 @@ import { existAutoCompleteEnvVar, refreshAutocompleteCache, showAutocompleteSetu
  *
  */
 export class AutocompleteSetup implements ISetup {
-    run = async (): Promise<void> => {
-        const oclifConfig = vcConfig.oclifConfig,
-            { shell, bin } = oclifConfig,
-            successMsg =
-                `3) For using the autocompletion please run "${bin}" in a new terminal window or use:` +
-                infoTxt(`\n$ exec ${shell}.`) +
-                `\n\n4) Run "${bin}" for display available commands`;
+  run = async (): Promise<void> => {
+    const oclifConfig = vcConfig.oclifConfig,
+      { shell, bin } = oclifConfig,
+      successMsg =
+        `3) For using the autocompletion please run "${bin}" in a new terminal window or use:` +
+        infoTxt(`\n$ exec ${shell}.`) +
+        `\n\n4) Run "${bin}" for display available commands`;
 
-        if (await existAutoCompleteEnvVar(bin, shell)) {
-            return await refreshAutocompleteCache(oclifConfig); // todo  source ~/.zshrc
-        }
+    if (await existAutoCompleteEnvVar(bin, shell)) {
+      return await refreshAutocompleteCache(oclifConfig); // todo  source ~/.zshrc
+    }
 
-        return await showAutocompleteSetupInstructions(oclifConfig).then(() => console.log(successMsg));
-    };
+    return await showAutocompleteSetupInstructions(oclifConfig).then(() => console.log(successMsg));
+  };
 }
 
 export const autocompleteSetup = async (): Promise<void> => new AutocompleteSetup().run();
