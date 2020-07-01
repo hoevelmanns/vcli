@@ -1,4 +1,5 @@
 import { Command, IConfig } from '@oclif/config';
+import { exists } from 'fs';
 
 export interface IConfiguration extends IConfig {
     workspace: IWorkspaceConfig;
@@ -15,6 +16,7 @@ export interface IWorkspaceConfig {
     vagrant?: IVagrantConfig;
     notifications?: INotificationConfig;
     consoles?: IExternalConsole[];
+    topics?: { [key: string]: string };
     customCommands?: ICustomCommand[];
 }
 

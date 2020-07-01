@@ -1,4 +1,4 @@
-import { isMachineLocked } from './machine-states';
+import { isMachineLocked } from './errors';
 import { IShellOptions } from './types';
 import { asyncExec } from 'async-shelljs';
 import { errorTxt } from '../shared';
@@ -54,13 +54,7 @@ export class Shell {
 
         if (runInVM) command = `vagrant ssh -c "cd ~/${workspace.vagrant?.deployDir} && ${command}"`;
         if (!runInVM && runInProjectRoot) command = `cd ${workspace.root} && ${command}`;
-        if (!options?.flags) return command;
 
-        const flagsStr = Object.entries(options.flags)
-            .map((flag) => '-' + flag.join(' '))
-            .join(' ')
-            .trim();
-
-        return command.concat(' ', flagsStr).trim();
+        return command.trim();
     }
 }

@@ -89,8 +89,14 @@ export class Generator {
             listCommand = `${executable} ${list}`,
             commandList = await this.fetchConsoleCommandList(listCommand);
 
-        const commands = commandList?.match(new RegExp(regexList, 'gm'));
-        commands?.map((command) => this.addCommand('test', command.trim(), consoleConfig));
+        const lines = commandList?.match(new RegExp(regexList, 'gm'));
+
+        lines?.map((line) => {
+            const command = line.trim().split(' ')[0],
+                description = line.replace(command, '').trim();
+
+            this.addCommand(description, command.trim(), consoleConfig);
+        });
     }
 
     /**

@@ -13,7 +13,7 @@ export const defaultWorkspace = <IWorkspaceConfig>{
             parserStartString: 'Available commands:',
             executable: 'bin/console',
             list: 'list',
-            regexList: '([^ ]*:\\w*\\S*[\\w])',
+            regexList: '^(?!.*--.)^(.*:.).*(\\n)',
         },
         {
             name: 'phing',
@@ -22,7 +22,7 @@ export const defaultWorkspace = <IWorkspaceConfig>{
             list: '-l',
             topicName: 'build',
             topicDescription: 'Phing targets',
-            regexList: '([ ].+[ ]+[ ])\\b',
+            regexList: '^(?!.*--.)^(.*  .).*(\\n)', // todo
         },
     ],
 };

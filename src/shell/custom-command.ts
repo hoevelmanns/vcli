@@ -1,7 +1,9 @@
 import { Vagrant } from './vagrant';
 import { ICustomCommand } from '../shared/types';
 import { actionTxt, infoTxt } from '../shared';
-import { isMachineNotUp } from './machine-states';
+import { isMachineNotUp } from './errors';
+import cli from 'cli-ux';
+import { IShellOptions } from './types';
 
 export class CustomCommand extends Vagrant {
     static hidden = true;
@@ -21,9 +23,11 @@ export class CustomCommand extends Vagrant {
             args = process.argv,
             command = [execute, args.slice(3, args.length).join(' ')].join(' ').trim(),
             runInVM = this.data.runInVM ?? forceRunInVM,
-            actionInfo = actionTxt(`Executing${runInVM ? ' (VM):' : ':' } ${infoTxt(command)}`);
+            actionInfo = actionTxt(`Executing${runInVM ? ' (VM):' : ':'} ${infoTxt(command)}`),
+            options: IShellOptions = { runInVM, actionInfo };
 
-        await this.exec(command, { runInVM: runInVM, actionInfo }).catch(async (err: Error) => {
+        await this.exec(command, options).catch(async (err: Error) => {
+            cli.action.stop();
             if (isMachineNotUp(err)) {
                 await this.startMachineIfNotUp();
                 return this.run(runInVM);
