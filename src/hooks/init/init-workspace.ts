@@ -10,9 +10,8 @@ import { vagrantSetup } from '../../shell/vagrant-setup';
 global.config = <IConfiguration>{};
 
 const hook: Hook<'init'> = async function (opts): Promise<void> {
-  const hasWorkspace = await vcConfig.hasWorkspace(opts.config);
 
-  if (!hasWorkspace) {
+  if (!await vcConfig.initWorkspace(opts.config)) {
     await vcConfig
       .createWorkspace()
       .then(vagrantSetup)
@@ -28,7 +27,7 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
 
   if (customCommand) global.config.workspace.customCommands = [customCommand];
 
-  global.config.workspace?.customCommands?.forEach((item: ICustomCommand) => {
+  global.config.workspace?.customCommands?.map((item: ICustomCommand) => {
     if (processed.includes(item.id)) return;
 
     corePlugin.commands.push((<Command.Plugin>(<Command>{

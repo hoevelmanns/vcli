@@ -23,7 +23,7 @@ export class VConfig {
    * @param oclifConfig
    * @returns void
    */
-  hasWorkspace = async (oclifConfig: IConfig): Promise<boolean> => {
+  initWorkspace = async (oclifConfig: IConfig): Promise<boolean> => {
     this.oclifConfig = oclifConfig;
 
     const workspaceConfigFile = await findUp(defaultConfigFile);

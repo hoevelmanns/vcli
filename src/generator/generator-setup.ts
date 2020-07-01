@@ -27,7 +27,7 @@ export class GeneratorSetup implements ISetup {
         },
         {
           name: 'refresh',
-          message: 'Generate the commands from host now? (vc refresh)',
+          message: 'Generate the commands from localhost now? (vc refresh)',
           type: 'confirm',
           when: (answers) => !answers.refreshVagrant && answers.consoles.length > 0,
         },
