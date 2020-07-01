@@ -2,7 +2,6 @@ import { CommandType, ICustomCommand, IExternalConsole } from '../shared/types'
 import { autocompleteSetup } from '../autocomplete'
 import { vagrant } from '../shell'
 import { VConfig } from '../config'
-import cli from 'cli-ux'
 
 const Listr = require('listr')
 
@@ -19,31 +18,37 @@ export class Generator {
 
   async run(runInVagrant = false, force = false): Promise<void> {
     this.force = force
-    this.runInVagrant = runInVagrant || this.runInVagrant
+    this.runInVagrant = runInVagrant ?? this.runInVagrant
 
-    const { consoles } = global?.config?.workspace
+    const { consoles } = global?.config?.workspace;
 
-    if (this.runInVagrant && !(await vagrant.isMachineUp())) await vagrant.startMachine(true)
+    if (this.runInVagrant && !await vagrant.isMachineUp()) await vagrant.startMachine(true)
 
-    const tasks = new Listr([
-      {
-        title: 'Getting available console commands',
-        task: (): void =>
-          new Listr(
-            consoles?.map((consoleConfig) => ({
-              title: consoleConfig.name,
-              task: (): Promise<void> => this.addCommandsFromConsole(consoleConfig),
-            })),
-          ),
-      },
-      {
-        title: 'Store Commands',
-        task: (): Promise<void> => this.storeCommands(),
-        enabled: (): boolean => this.commands.length > 0,
-      }
-    ], { exitOnError: false })
+    const tasks = new Listr(
+      [
+        {
+          title: 'Getting available console commands',
+          task: (): void =>
+            new Listr(
+              consoles?.map((consoleConfig) => ({
+                title: consoleConfig.name,
+                task: (): Promise<void> => this.addCommandsFromConsole(consoleConfig),
+              })),
+            ),
+        },
+        {
+          title: 'Store Commands',
+          task: (): Promise<void> => this.storeCommands(),
+          enabled: (): boolean => this.commands.length > 0,
+        },
+      ],
+      { exitOnError: false },
+    )
 
-    await tasks.run().catch((err: Error) => console.log(err.message)).then(() => autocompleteSetup())
+    await tasks
+      .run()
+      .catch((err: Error) => console.log(err.message))
+      .then(() => autocompleteSetup())
   }
 
   /**

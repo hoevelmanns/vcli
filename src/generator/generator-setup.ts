@@ -23,13 +23,13 @@ export class GeneratorSetup implements ISetup {
           name: 'refreshVagrant',
           message: 'Generate the commands from vagrant now? (vc refresh -v)',
           type: 'confirm',
-          when: (answers) => !!global.config.workspace?.vagrant && answers.consoles.length > 0,
+          when: (answers): boolean => !!global.config.workspace?.vagrant && answers.consoles.length > 0,
         },
         {
           name: 'refresh',
           message: 'Generate the commands from localhost now? (vc refresh)',
           type: 'confirm',
-          when: (answers) => !answers.refreshVagrant && answers.consoles.length > 0,
+          when: (answers): boolean => !answers.refreshVagrant && answers.consoles.length > 0,
         },
       ]);
 

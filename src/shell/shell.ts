@@ -35,7 +35,7 @@ export class Shell {
     });
   };
 
-  get vm(): Shell {
+  get vagrant(): Shell {
     this._vm = true;
     return this;
   }

@@ -17,7 +17,7 @@ export class AutocompleteSetup implements ISetup {
         `\n\n4) Run "${bin}" for display available commands`;
 
     if (await existAutoCompleteEnvVar(bin, shell)) {
-      return await refreshAutocompleteCache(oclifConfig); // todo  source ~/.zshrc
+      return await refreshAutocompleteCache(oclifConfig);
     }
 
     return await showAutocompleteSetupInstructions(oclifConfig).then(() => console.log(successMsg));

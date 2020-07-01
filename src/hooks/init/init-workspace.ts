@@ -2,16 +2,15 @@ import { Hook, Plugin, Command } from '@oclif/config';
 import { IConfiguration, ICustomCommand } from '../../shared/types';
 import { vcConfig } from '../../config';
 import { generatorSetup } from '../../generator/generator-setup';
-import { autocompleteSetup } from '../../autocomplete';
 import { errorTxt, whiteTxt } from '../../shared';
 import { CustomCommand } from '../../shell';
 import { vagrantSetup } from '../../shell/vagrant-setup';
+import { autocompleteSetup } from '../../autocomplete'
 
 global.config = <IConfiguration>{};
 
 const hook: Hook<'init'> = async function (opts): Promise<void> {
-
-  if (!await vcConfig.initWorkspace(opts.config)) {
+  if (!(await vcConfig.initWorkspace(opts.config))) {
     await vcConfig
       .createWorkspace()
       .then(vagrantSetup)
