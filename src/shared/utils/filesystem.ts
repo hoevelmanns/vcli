@@ -1,4 +1,6 @@
 import { infoTxt } from '../logging';
+import { asyncExec } from 'async-shelljs';
+import { Stats } from 'fs';
 
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 /**
@@ -16,3 +18,8 @@ export const createOrRenameSymlink = async (target: string, src: string): Promis
     console.log(infoTxt('created'));
   }
 };
+
+export const getPathByInode = async (inode: number): Promise<string> =>
+  await asyncExec(`find ~/ -inum ${inode} -print -quit`);
+
+export const getCwdInode = async (): Promise<string> => await fs.lstat(process.cwd()).then((stats: Stats) => stats.ino);

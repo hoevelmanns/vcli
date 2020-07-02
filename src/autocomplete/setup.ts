@@ -7,7 +7,7 @@ import { existAutoCompleteEnvVar, refreshAutocompleteCache, showAutocompleteSetu
  * Adds the autocomplete env var to the shell profile and source it
  *
  */
-export class AutocompleteSetup implements ISetup {
+export class Setup implements ISetup {
   run = async (): Promise<void> => {
     const oclifConfig = vcConfig.oclifConfig,
       { shell, bin } = oclifConfig,
@@ -24,4 +24,4 @@ export class AutocompleteSetup implements ISetup {
   };
 }
 
-export const autocompleteSetup = async (): Promise<void> => new AutocompleteSetup().run();
+export const autocompleteSetup = async (): Promise<void> => new Setup().run();

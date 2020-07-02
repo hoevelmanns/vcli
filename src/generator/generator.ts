@@ -1,33 +1,35 @@
-import { CommandType, ICustomCommand, IExternalConsole } from '../shared/types'
-import { autocompleteSetup } from '../autocomplete'
-import { vagrant } from '../shell'
-import { VConfig } from '../config'
+import { CommandType, ICustomCommand, IExternalConsole } from '../shared/types';
+import { autocompleteSetup } from '../autocomplete';
+import { vagrant } from '../shell';
+import { VConfig } from '../config';
 
-const Listr = require('listr')
+const Listr = require('listr');
 
 export class Generator {
-  private commands: ICustomCommand[] = []
-  private runInVagrant = false
-  private force = false
-  private processedCommands: string[] = []
+  private commands: ICustomCommand[] = [];
+  private runInVagrant = false;
+  private force = false;
+  private processedCommands: string[] = [];
 
   get vagrant(): Generator {
-    this.runInVagrant = true
-    return this
+    this.runInVagrant = true;
+    return this;
   }
 
   async run(runInVagrant = false, force = false): Promise<void> {
-    this.force = force
-    this.runInVagrant = runInVagrant ?? this.runInVagrant
+    this.force = force;
+    this.runInVagrant = runInVagrant ?? this.runInVagrant;
 
     const { consoles } = global?.config?.workspace;
 
-    if (this.runInVagrant && !await vagrant.isMachineUp()) await vagrant.startMachine(true)
+    if (!consoles) return;
+
+    if (this.runInVagrant && !(await vagrant.isMachineUp())) await vagrant.startMachine(true);
 
     const tasks = new Listr(
       [
         {
-          title: 'Getting available console commands',
+          title: 'Collecting commands',
           task: (): void =>
             new Listr(
               consoles?.map((consoleConfig) => ({
@@ -43,12 +45,12 @@ export class Generator {
         },
       ],
       { exitOnError: false },
-    )
+    );
 
     await tasks
       .run()
       .catch((err: Error) => console.log(err.message))
-      .then(() => autocompleteSetup())
+      .then(() => autocompleteSetup());
   }
 
   /**
@@ -60,9 +62,9 @@ export class Generator {
    * @param console
    */
   addCommand = (description: string, command: string, console: IExternalConsole): void | number => {
-    const { topicName, name, executable } = console
+    const { topicName, name, executable } = console;
 
-    if (this.processedCommands.includes(command + name)) return
+    if (this.processedCommands.includes(command + name)) return;
 
     this.commands.push({
       aliases: [],
@@ -76,10 +78,10 @@ export class Generator {
       type: CommandType.external,
       context: name ?? 'unknown',
       runInVM: this.runInVagrant,
-    })
+    });
 
-    this.processedCommands.push(command + console.name)
-  }
+    this.processedCommands.push(command + console.name);
+  };
 
   /**
    * Parses command from console command list by given regex
@@ -88,16 +90,16 @@ export class Generator {
   private async addCommandsFromConsole(consoleConfig: IExternalConsole): Promise<void> {
     const { executable, list, regexList } = consoleConfig,
       listCommand = `${executable} ${list || ''}`.trim(),
-      commandList = await this.fetchConsoleCommandList(listCommand)
+      commandList = await this.fetchConsoleCommandList(listCommand);
 
-    const lines = commandList?.match(new RegExp(regexList, 'gm'))
+    const lines = commandList?.match(new RegExp(regexList, 'gm'));
 
     lines?.map((line) => {
       const command = line.trim().split(' ')[0],
-        description = line.replace(command, '').trim()
+        description = line.replace(command, '').trim();
 
-      this.addCommand(description, command.trim(), consoleConfig)
-    })
+      this.addCommand(description, command.trim(), consoleConfig);
+    });
   }
 
   /**
@@ -106,8 +108,8 @@ export class Generator {
    * @param listCommand
    */
   private fetchConsoleCommandList = async (listCommand: string): Promise<string> => {
-    return vagrant.exec(listCommand, { runInVM: this.runInVagrant, runInProjectRoot: true, silent: true }) // todo runInVagrant
-  }
+    return vagrant.exec(listCommand, { runInVM: this.runInVagrant, runInProjectRoot: true, silent: true }); // todo runInVagrant
+  };
 
   /**
    * Stores the parsed commands in the workspace configuration file
@@ -115,7 +117,7 @@ export class Generator {
    */
   private async storeCommands(): Promise<void> {
     const currentCustomCommands = global.config.workspace?.customCommands ?? [],
-      externalCommands = this.force ? this.commands : [...currentCustomCommands, ...this.commands]
-    await VConfig.getInstance().updateWorkspaceConfig({ customCommands: externalCommands })
+      externalCommands = this.force ? this.commands : [...currentCustomCommands, ...this.commands];
+    await VConfig.getInstance().updateWorkspaceConfig({ customCommands: externalCommands });
   }
 }

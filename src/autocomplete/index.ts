@@ -1,2 +1,2 @@
 export * from './autocomplete';
-export * from './autocomplete-setup';
+export * from './setup';

@@ -1,11 +1,11 @@
 import { Hook, Plugin, Command } from '@oclif/config';
 import { IConfiguration, ICustomCommand } from '../../shared/types';
 import { vcConfig } from '../../config';
-import { generatorSetup } from '../../generator/generator-setup';
+import { generatorSetup } from '../../generator/setup';
 import { errorTxt, whiteTxt } from '../../shared';
 import { CustomCommand } from '../../shell';
 import { vagrantSetup } from '../../shell/vagrant-setup';
-import { autocompleteSetup } from '../../autocomplete'
+import { autocompleteSetup } from '../../autocomplete';
 
 global.config = <IConfiguration>{};
 

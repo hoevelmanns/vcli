@@ -8,26 +8,26 @@ import { defaultConsoles } from '../shared/types/defaults';
 import { VConfig } from '../config';
 import { IExternalConsole } from '../shared/types';
 
-export class GeneratorSetup implements ISetup {
+export class Setup implements ISetup {
   run = async (): Promise<void> =>
     new Promise(async (resolve, reject) => {
       const questions: { consoles: string[]; refresh: boolean; refreshVagrant: boolean } = await inquirer.prompt([
         {
           name: 'consoles',
-          message: 'Which consoles do you want to use in this workspace?',
+          message: 'Select the project frameworks:',
           type: 'checkbox',
           choices: defaultConsoles.map((console) => console.name),
           when: defaultConsoles.length,
         },
         {
           name: 'refreshVagrant',
-          message: 'Generate the commands from vagrant now? (vc refresh -v)',
+          message: 'Apply commands now? (vc refresh -v)',
           type: 'confirm',
           when: (answers): boolean => !!global.config.workspace?.vagrant && answers.consoles.length > 0,
         },
         {
           name: 'refresh',
-          message: 'Generate the commands from localhost now? (vc refresh)',
+          message: 'Apply commands now? (vc refresh)',
           type: 'confirm',
           when: (answers): boolean => !answers.refreshVagrant && answers.consoles.length > 0,
         },
@@ -54,4 +54,4 @@ export class GeneratorSetup implements ISetup {
     });
 }
 
-export const generatorSetup = async (): Promise<void> => new GeneratorSetup().run();
+export const generatorSetup = async (): Promise<void> => new Setup().run();
