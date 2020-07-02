@@ -16,3 +16,4 @@ src/commands/**/*
 !src/commands/halt.ts
 !src/commands/up.ts
 !src/commands/refresh.ts
+/workspace-setup-scripts-todo/

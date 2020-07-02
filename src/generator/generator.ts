@@ -24,7 +24,7 @@ export class Generator {
 
     if (!consoles) return;
 
-    if (this.runInVagrant && !(await vagrant.isMachineUp())) await vagrant.startMachine(true);
+    if (this.runInVagrant && !await vagrant.isMachineUp()) await vagrant.startMachine(true);
 
     const tasks = new Listr(
       [
@@ -88,11 +88,12 @@ export class Generator {
    *
    */
   private async addCommandsFromConsole(consoleConfig: IExternalConsole): Promise<void> {
+    // todo parsing from list or get from json configuration like npm pkgjson or composer
+
     const { executable, list, regexList } = consoleConfig,
       listCommand = `${executable} ${list || ''}`.trim(),
-      commandList = await this.fetchConsoleCommandList(listCommand);
-
-    const lines = commandList?.match(new RegExp(regexList, 'gm'));
+      commandList = await this.fetchConsoleCommandList(listCommand),
+      lines = commandList?.match(new RegExp(regexList, 'gm'));
 
     lines?.map((line) => {
       const command = line.trim().split(' ')[0],
@@ -108,7 +109,7 @@ export class Generator {
    * @param listCommand
    */
   private fetchConsoleCommandList = async (listCommand: string): Promise<string> => {
-    return vagrant.exec(listCommand, { runInVM: this.runInVagrant, runInProjectRoot: true, silent: true }); // todo runInVagrant
+    return vagrant.exec(listCommand, { runInVM: this.runInVagrant, runInProjectRoot: true, silent: true });
   };
 
   /**

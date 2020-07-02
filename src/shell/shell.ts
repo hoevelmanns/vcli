@@ -1,7 +1,6 @@
 import { isMachineLocked } from './errors';
 import { IShellOptions } from './types';
 import { asyncExec } from 'async-shelljs';
-import { errorTxt } from '../shared';
 import cli from 'cli-ux';
 
 /**
@@ -28,9 +27,6 @@ export class Shell {
     if (options?.actionInfo) cli.action.start(options.actionInfo);
     return asyncExec(this.prepareCommand(command, options), options).catch(async (err: Error) => {
       if (isMachineLocked(err) && retry <= 5) await this.exec(command, options, retry++);
-
-      console.error(errorTxt('Error executing command:'), err.message);
-
       throw err;
     });
   };

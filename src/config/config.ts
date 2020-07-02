@@ -42,14 +42,13 @@ export class VConfig {
    * @returns void
    */
   private async set(workspaceConfigFile?: string): Promise<void> {
-    VConfig.workspaceConfigFile = workspaceConfigFile ?? VConfig.workspaceConfigFile;
-
+    const configFile = VConfig.workspaceConfigFile = workspaceConfigFile ?? VConfig.workspaceConfigFile;
+    const workspaceDir = configFile?.replace(defaultConfigFile, '');
     let workspaceConfig = await fs.readJSON(VConfig.workspaceConfigFile);
-    const workspaceDir = VConfig.workspaceConfigFile?.replace(defaultConfigFile, '');
 
     workspaceConfig = {
       ...workspaceConfig,
-      ...{ configFile: VConfig.workspaceConfigFile },
+      ...{ configFile },
       ...{ root: workspaceDir },
     };
 

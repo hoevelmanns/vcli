@@ -7,9 +7,10 @@ import { IShellOptions } from './types';
 
 export class CustomCommand extends Vagrant {
   static hidden = true;
-  private data = <ICustomCommand>{};
+  private readonly data = <ICustomCommand>{};
 
-  set(item: ICustomCommand): CustomCommand {
+  constructor(private item: ICustomCommand) {
+    super();
     this.data = item;
     return this;
   }

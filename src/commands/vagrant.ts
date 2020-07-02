@@ -41,8 +41,7 @@ export default class VagrantCommand extends Command {
       return VagrantCommand.run(['-h'], this.config);
     }
 
-    await new CustomCommand()
-      .set(<ICustomCommand>{
+    await new CustomCommand(<ICustomCommand>{
         runInVM: true,
         name: commandName,
         context: 'custom',
