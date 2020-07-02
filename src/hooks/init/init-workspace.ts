@@ -15,7 +15,6 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
       .createWorkspace()
       .then(vagrantSetup)
       .then(generatorSetup)
-      .then(autocompleteSetup)
       .catch((err: Error) => console.log(errorTxt('Error creating workspace: '), whiteTxt(err.message)));
   }
 

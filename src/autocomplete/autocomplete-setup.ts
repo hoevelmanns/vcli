@@ -20,7 +20,7 @@ export class AutocompleteSetup implements ISetup {
       return await refreshAutocompleteCache(oclifConfig);
     }
 
-    return await showAutocompleteSetupInstructions(oclifConfig).then(() => console.log(successMsg));
+    await showAutocompleteSetupInstructions(oclifConfig).then(() => console.log(successMsg));
   };
 }
 
