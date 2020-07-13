@@ -24,11 +24,13 @@ export class CustomCommand extends Vagrant {
       args = process.argv,
       command = [execute, args.slice(3, args.length).join(' ')].join(' ').trim(),
       runInVM = this.data.runInVM ?? forceRunInVM,
+      runInProjectRoot = this.data.runInProjectRoot,
       actionInfo = actionTxt(`Executing${runInVM ? ' (VM):' : ':'} ${infoTxt(command)}`),
-      options: IShellOptions = { runInVM, actionInfo };
+      options: IShellOptions = { runInVM, runInProjectRoot };
 
-    await this.exec(command, options).catch(async (err: Error) => {
-      cli.action.stop();
+    cli.info(actionInfo);
+
+    await this.spawn(command, options).catch(async (err: Error) => {
       if (isMachineNotUp(err)) {
         await this.startMachineIfNotUp();
         return this.run(runInVM);

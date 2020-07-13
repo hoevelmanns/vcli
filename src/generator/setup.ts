@@ -4,14 +4,19 @@
 import * as inquirer from 'inquirer';
 import { ISetup } from '../shared/types/setup';
 import { Generator } from './generator';
-import { defaultConsoles } from '../shared/types/defaults';
+import { defaultConsoles, defaultPackageManagers } from '../shared/types/defaults';
 import { VConfig } from '../config';
-import { IExternalConsole } from '../shared/types';
+import { IExternalConsole, IPackageManager } from '../shared/types';
 
 export class Setup implements ISetup {
   run = async (): Promise<void> =>
     new Promise(async (resolve, reject) => {
-      const questions: { consoles: string[]; refresh: boolean; refreshVagrant: boolean } = await inquirer.prompt([
+      const questions: {
+        consoles: string[];
+        packageManagers: string[];
+        refresh: boolean;
+        refreshVagrant: boolean;
+      } = await inquirer.prompt([
         {
           name: 'consoles',
           message: 'Select the project frameworks:',
@@ -20,16 +25,26 @@ export class Setup implements ISetup {
           when: defaultConsoles.length,
         },
         {
+          name: 'packageManagers',
+          message: 'Select the package managers:',
+          type: 'checkbox',
+          // todo get choices from founded pkg managers by package-lock.json & yarn.lock
+          choices: defaultPackageManagers.map((pkgManager) => pkgManager.name),
+          when: defaultPackageManagers.length, // todo
+        },
+        {
           name: 'refreshVagrant',
           message: 'Apply commands now? (vc refresh -v)',
           type: 'confirm',
-          when: (answers): boolean => !!global.config.workspace?.vagrant && answers.consoles.length > 0,
+          when: (answers): boolean =>
+            !!global.config.workspace?.vagrant && (answers.consoles.length > 0 || answers.packageManagers.length > 0),
         },
         {
           name: 'refresh',
           message: 'Apply commands now? (vc refresh)',
           type: 'confirm',
-          when: (answers): boolean => !answers.refreshVagrant && answers.consoles.length > 0,
+          when: (answers): boolean =>
+            !answers.refreshVagrant && (answers.consoles.length > 0 || answers.packageManagers.length > 0),
         },
       ]);
 
@@ -41,6 +56,16 @@ export class Setup implements ISetup {
         });
 
         await VConfig.getInstance().updateWorkspaceConfig({ consoles });
+      }
+
+      if (questions.packageManagers) {
+        const pkgManagers: IPackageManager[] = [];
+        questions.packageManagers.map((name) => {
+          const config = defaultPackageManagers.find((item) => item.name === name);
+          if (config) pkgManagers.push(config);
+        });
+
+        await VConfig.getInstance().updateWorkspaceConfig({ pkgManagers });
       }
 
       if (questions.refresh || questions.refreshVagrant) {

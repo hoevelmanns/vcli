@@ -1,6 +1,6 @@
-import { CommandType, ICustomCommand, IExternalConsole } from '../shared/types';
+import { CommandType, ICustomCommand, IExternalConsole, IPackageManager } from '../shared/types';
 import { autocompleteSetup } from '../autocomplete';
-import { vagrant } from '../shell';
+import { Shell, vagrant } from '../shell';
 import { VConfig } from '../config';
 
 const Listr = require('listr');
@@ -17,26 +17,39 @@ export class Generator {
   }
 
   async run(runInVagrant = false, force = false): Promise<void> {
+    const { consoles, pkgManagers } = global?.config?.workspace;
+
     this.force = force;
     this.runInVagrant = runInVagrant ?? this.runInVagrant;
 
-    const { consoles } = global?.config?.workspace;
+    if (!(consoles && pkgManagers)) return;
 
-    if (!consoles) return;
+    if (this.runInVagrant && !(await vagrant.isMachineUp())) await vagrant.startMachine(true);
 
-    if (this.runInVagrant && !await vagrant.isMachineUp()) await vagrant.startMachine(true);
-
+    // todo
     const tasks = new Listr(
       [
         {
-          title: 'Collecting commands',
+          title: 'Parsing commands',
           task: (): void =>
             new Listr(
               consoles?.map((consoleConfig) => ({
                 title: consoleConfig.name,
-                task: (): Promise<void> => this.addCommandsFromConsole(consoleConfig),
+                task: (): Promise<void> => this.parseConsoleCommands(consoleConfig),
               })),
             ),
+          enabled: (): boolean => !!consoles?.length,
+        },
+        {
+          title: 'Collecting commands from package managers',
+          task: (): void =>
+            new Listr(
+              pkgManagers?.map((pgkManager) => ({
+                title: pgkManager.name,
+                task: (): void => this.addPackageManagerCommands(pgkManager),
+              })),
+            ),
+          enabled: (): boolean => !!pkgManagers?.length,
         },
         {
           title: 'Store Commands',
@@ -55,16 +68,39 @@ export class Generator {
 
   /**
    *
+   * @param pkgManager
+   */
+  private addPackageManagerCommands(pkgManager: IPackageManager): void {
+    let config: { [key: string]: string | undefined } | undefined;
+    if (['npm', 'yarn'].includes(pkgManager.name)) config = global.config?.workspace?.packageJson;
+    if (pkgManager.name === 'composer') config = global.config?.workspace?.composerJson;
+
+    if (!config?.scripts) return;
+
+    Object.entries(config.scripts).forEach(([commandName]) =>
+      this.addCommand('', commandName.trim(), pkgManager, { runInProjectRoot: true }),
+    );
+  }
+
+  /**
+   *
    * Adds a command to the command collection state
    *
    * @param description
    * @param command
-   * @param console
+   * @param consoleConfig
+   * @param options
    */
-  addCommand = (description: string, command: string, console: IExternalConsole): void | number => {
-    const { topicName, name, executable } = console;
+  addCommand = (
+    description: string,
+    command: string,
+    consoleConfig: IExternalConsole | IPackageManager,
+    options?: { execute?: string; runInProjectRoot: boolean },
+  ): void | number => {
+    const { topicName, name, executable } = consoleConfig;
 
     if (this.processedCommands.includes(command + name)) return;
+    if (command.includes('//')) return; // ignore commented line
 
     this.commands.push({
       aliases: [],
@@ -74,22 +110,21 @@ export class Generator {
       id: topicName ? topicName + ':' + command : command, // todo
       name: topicName ? topicName + ':' + command : command, // todo
       description,
-      execute: `${executable} ${command}`,
+      execute: options?.execute || `${executable} ${command}`,
       type: CommandType.external,
       context: name ?? 'unknown',
       runInVM: this.runInVagrant,
+      runInProjectRoot: options?.runInProjectRoot,
     });
 
-    this.processedCommands.push(command + console.name);
+    this.processedCommands.push(command + consoleConfig.name);
   };
 
   /**
    * Parses command from console command list by given regex
    *
    */
-  private async addCommandsFromConsole(consoleConfig: IExternalConsole): Promise<void> {
-    // todo parsing from list or get from json configuration like npm pkgjson or composer
-
+  private async parseConsoleCommands(consoleConfig: IExternalConsole): Promise<void> {
     const { executable, list, regexList } = consoleConfig,
       listCommand = `${executable} ${list || ''}`.trim(),
       commandList = await this.fetchConsoleCommandList(listCommand),
@@ -109,7 +144,7 @@ export class Generator {
    * @param listCommand
    */
   private fetchConsoleCommandList = async (listCommand: string): Promise<string> => {
-    return vagrant.exec(listCommand, { runInVM: this.runInVagrant, runInProjectRoot: true, silent: true });
+    return new Shell().exec(listCommand, { runInVM: this.runInVagrant, runInProjectRoot: true, silent: true });
   };
 
   /**

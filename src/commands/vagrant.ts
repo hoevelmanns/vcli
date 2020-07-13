@@ -42,10 +42,9 @@ export default class VagrantCommand extends Command {
     }
 
     await new CustomCommand(<ICustomCommand>{
-        runInVM: true,
-        name: commandName,
-        context: 'custom',
-      })
-      .run();
+      runInVM: true,
+      name: commandName,
+      context: 'custom',
+    }).run();
   };
 }

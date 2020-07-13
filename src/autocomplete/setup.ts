@@ -2,6 +2,7 @@ import { vcConfig } from '../config';
 import { ISetup } from '../shared/types/setup';
 import { infoTxt } from '../shared';
 import { existAutoCompleteEnvVar, refreshAutocompleteCache, showAutocompleteSetupInstructions } from './autocomplete';
+import { spawn } from 'child_process';
 
 /**
  * Adds the autocomplete env var to the shell profile and source it

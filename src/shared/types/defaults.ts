@@ -1,4 +1,4 @@
-import { IExternalConsole, IWorkspaceConfig } from './globals';
+import { IExternalConsole, IPackageManager, IWorkspaceConfig } from './globals';
 
 export const defaultConfigFile = '.vclirc.json';
 
@@ -30,6 +30,25 @@ export const defaultConsoles = <IExternalConsole[]>[
     name: 'laravel',
     executable: 'php artisan',
     regexList: '^(?!.*--.)^(.*:.).*(\\n)',
+  },
+];
+
+export const defaultPackageManagers = <IPackageManager[]>[
+  {
+    name: 'npm',
+    executable: 'npm run',
+  },
+  {
+    name: 'yarn',
+    executable: 'yarn',
+  },
+  {
+    name: 'composer',
+    executable: 'composer run',
+  },
+  {
+    name: 'pnpm',
+    executable: 'pnpm run',
   },
 ];
 

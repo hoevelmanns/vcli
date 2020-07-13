@@ -1,6 +1,8 @@
 import { Shell } from './shell';
 import cli from 'cli-ux';
 import { infoTxt, notify, warningTxt } from '../shared';
+import { ChildProcess } from 'child_process';
+
 const confirm = require('@inquirer/confirm');
 
 export class Vagrant extends Shell {
@@ -11,33 +13,34 @@ export class Vagrant extends Shell {
   startMachine = async (silent = false): Promise<void> => {
     const actionInfo = infoTxt('Starting machine');
 
-    await this.exec('vagrant up', { silent, actionInfo })
-      .then(() => {
-        cli.action.stop();
-        notify('Vagrant successfully started');
-      })
+    cli.info(actionInfo);
+
+    this.spawn('vagrant up', { silent })
+      .then(() => notify('Vagrant successfully started'))
       .catch((err) => notify(`Error starting VM: ${err}`));
   };
 
   /**
    * Halts the vagrant machine
    */
-  haltMachine(silent = false): void {
+  haltMachine = async (silent = false): Promise<void> => {
     const actionInfo = infoTxt('Stopping machine');
 
-    this.exec('vagrant halt', { silent, actionInfo })
+    cli.info(actionInfo);
+
+    this.spawn('vagrant halt', { silent })
       .then(() => notify('Vagrant stopped'))
       .catch((err) => notify(`Error halting VM: ${err}`));
-  }
+  };
 
   isMachineUp = async (): Promise<boolean> =>
-    await this.exec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
+    this.exec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
 
   startMachineIfNotUp = async (silent = true): Promise<void> => {
     await cli.action.pauseAsync(async () => {
       const startVM = await confirm({ message: 'VM is not running. Start now and execute command again?' });
 
-      if (startVM) return await this.startMachine(true);
+      if (startVM) return this.startMachine(true);
 
       console.log(warningTxt('Aborted.'));
       process.exit();

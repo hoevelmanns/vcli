@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as findUp from 'find-up';
 import cli from 'cli-ux';
 import { createOrRenameSymlink } from '../shared/utils';
+
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 export class VConfig {
@@ -17,23 +18,22 @@ export class VConfig {
     this.instance = this.instance ?? new VConfig();
     return VConfig.instance;
   }
+
   /**
    * The entry point of the workspace configuration
    *
    * @param oclifConfig
    * @returns void
    */
-  initWorkspace = async (oclifConfig: IConfig): Promise<boolean> => {
+  initWorkspace = async (oclifConfig: IConfig): Promise<VConfig | undefined> => {
     this.oclifConfig = oclifConfig;
 
     const workspaceConfigFile = await findUp(defaultConfigFile);
 
     if (workspaceConfigFile) {
       await this.set(workspaceConfigFile);
-      return true;
+      return this;
     }
-
-    return false;
   };
 
   /**
@@ -42,7 +42,7 @@ export class VConfig {
    * @returns void
    */
   private async set(workspaceConfigFile?: string): Promise<void> {
-    const configFile = VConfig.workspaceConfigFile = workspaceConfigFile ?? VConfig.workspaceConfigFile;
+    const configFile = (VConfig.workspaceConfigFile = workspaceConfigFile ?? VConfig.workspaceConfigFile);
     const workspaceDir = configFile?.replace(defaultConfigFile, '');
     let workspaceConfig = await fs.readJSON(VConfig.workspaceConfigFile);
 
@@ -58,19 +58,35 @@ export class VConfig {
     });
   }
 
+  async initPackageManagerConfig(): Promise<void> {
+    const pkgJsonPath = process.cwd() + '/package.json',
+      composerJsonPath = process.cwd() + '/composer.json',
+      currentPathHasPkgJson = await fs.pathExists(pkgJsonPath),
+      currentPathHasComposerJson = await fs.pathExists(composerJsonPath),
+      workspacePkgJson = currentPathHasPkgJson ? await fs.readJson(pkgJsonPath) : null,
+      workspaceComposerJson = currentPathHasComposerJson ? await fs.readJson(composerJsonPath) : null;
+
+    await this.updateWorkspaceConfig({ composerJson: workspaceComposerJson, packageJson: workspacePkgJson }, false);
+  }
+
   /**
    * @returns void
    */
   createWorkspace = async (): Promise<void> => {
-    const pkgJsonPath = process.cwd() + '/package.json',
-      currentPathHasPkgJson = await fs.pathExists(pkgJsonPath),
-      workspacePkgJson = currentPathHasPkgJson ? await fs.readJson(pkgJsonPath) : null,
-      workspaceName = await cli.prompt('What is the name of the workspace?', {
-        default: workspacePkgJson?.name ?? '',
+    await this.initPackageManagerConfig();
+    const workspaceName = await cli.prompt('What is the name of the workspace?', {
+        default: global.config.workspace.packageJson?.name ?? '',
       }),
       root = process.cwd(),
       uuid = uuidv4(workspaceName),
-      config: IWorkspaceConfig = { ...defaultWorkspace, name: workspaceName, uuid, root };
+      config: IWorkspaceConfig = {
+        ...defaultWorkspace,
+        name: workspaceName,
+        uuid,
+        root,
+        packageJson: global.config.workspace?.packageJson,
+        composerJson: global.config.workspace?.composerJson,
+      };
 
     await this.createWorkspaceConfigFile(config)
       .then(() => console.log(successTxt(`Workspace "${config.name}" created!`), '\n'))
@@ -96,9 +112,16 @@ export class VConfig {
         .catch((err: Error) => reject(err));
     });
 
-  async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>): Promise<void> {
+  async updateWorkspaceConfig(config: Partial<IWorkspaceConfig>, save = true): Promise<void> {
     global.config.workspace = { ...global.config.workspace, ...config };
-    await fs.writeJSON(VConfig.workspaceConfigFile, global.config.workspace, { spaces: 2, flag: 'w' });
+    const workspaceFileContent = Object.assign({}, global.config.workspace);
+    delete workspaceFileContent.packageJson;
+    delete workspaceFileContent.composerJson;
+    delete workspaceFileContent.root;
+
+    if (!save) return Promise.resolve();
+
+    await fs.writeJSON(VConfig.workspaceConfigFile, workspaceFileContent, { spaces: 2, flag: 'w' });
   }
 }
 

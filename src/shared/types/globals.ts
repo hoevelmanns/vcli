@@ -3,6 +3,7 @@ import { Command, IConfig } from '@oclif/config';
 export interface IConfiguration extends IConfig {
   workspace: IWorkspaceConfig;
 }
+
 export interface IEnvironment {
   machineUp: boolean;
 }
@@ -15,8 +16,11 @@ export interface IWorkspaceConfig {
   vagrant?: IVagrantConfig;
   notifications?: INotificationConfig;
   consoles?: IExternalConsole[];
+  pkgManagers?: IPackageManager[];
   topics?: { [key: string]: string };
   customCommands?: ICustomCommand[];
+  packageJson?: { [key: string]: string | undefined };
+  composerJson?: { [key: string]: string | undefined };
 }
 
 export interface ICustomCommand extends Command {
@@ -29,14 +33,19 @@ export interface ICustomCommand extends Command {
   prefix?: string;
   type: CommandType;
   runInVM?: boolean;
+  runInProjectRoot?: boolean;
   topicName?: string;
+  ignore?: boolean;
+  checked?: boolean;
 }
+
+export type IPackageManager = IExternalConsole;
 
 export interface IExternalConsole {
   parserStartString: string;
   executable: string;
   list?: string;
-  name?: string;
+  name: string;
   topicName?: string;
   regexList: string;
   topicDescription?: string;

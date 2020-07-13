@@ -1,7 +1,7 @@
 import { isMachineLocked } from './errors';
 import { IShellOptions } from './types';
 import { asyncExec } from 'async-shelljs';
-import cli from 'cli-ux';
+import { spawn } from 'child_process';
 
 /**
  * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
@@ -24,12 +24,19 @@ export class Shell {
     options?: IShellOptions,
     retry = 0, // todo config
   ): Promise<string> => {
-    if (options?.actionInfo) cli.action.start(options.actionInfo);
     return asyncExec(this.prepareCommand(command, options), options).catch(async (err: Error) => {
       if (isMachineLocked(err) && retry <= 5) await this.exec(command, options, retry++);
       throw err;
     });
   };
+
+  spawn = async (command: string, options?: IShellOptions): Promise<string> =>
+    new Promise((resolve, reject) => {
+      spawn(this.prepareCommand(command, options), { stdio: 'inherit', shell: true }).on(
+        'exit',
+        (error) => !error || resolve,
+      );
+    });
 
   get vagrant(): Shell {
     this._vm = true;

@@ -1,5 +1,6 @@
 import Command, { flags } from '@oclif/command';
 import { Generator } from '../generator';
+import { VConfig } from '../config';
 
 export default class Refresh extends Command {
   static hidden = false;
@@ -24,6 +25,7 @@ export default class Refresh extends Command {
   async run(): Promise<void> {
     const { flags } = this.parse(Refresh);
 
+    await VConfig.getInstance().initPackageManagerConfig();
     await new Generator().run(flags.vagrant, flags.force);
   }
 }
