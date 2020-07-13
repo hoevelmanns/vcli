@@ -6,9 +6,6 @@ Wraps your current Command Line Interfaces and allows you to stream the CLI comm
 
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/vcli.svg)](https://npmjs.org/package/@hoevelmanns/vcli)
-[![Downloads/week](https://img.shields.io/npm/dw/vcli.svg)](https://npmjs.org/package/@hoevelmanns/vcli)
-[![License](https://img.shields.io/npm/l/vcli.svg)](https://github.com/hoevelmanns/vcli/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
@@ -21,7 +18,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/1.3.12 linux-x64 node-v12.13.1
+@hoevelmanns/vcli/1.3.14 linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -38,6 +35,7 @@ USAGE
 * [`vc refresh`](#vc-refresh)
 * [`vc up`](#vc-up)
 * [`vc vagrant (v) [COMMAND]`](#vc-vagrant-v-command)
+* [`vc workspace`](#vc-workspace)
 
 ## `vc autocomplete [SHELL]`
 
@@ -99,7 +97,7 @@ OPTIONS
   -n, --create  create workspace
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.12/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/create.ts)_
 
 ## `vc halt`
 
@@ -113,7 +111,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.12/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -146,7 +144,7 @@ OPTIONS
   -v, --vagrant  run generator in vagrant
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.12/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/refresh.ts)_
 
 ## `vc up`
 
@@ -160,7 +158,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.12/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/up.ts)_
 
 ## `vc vagrant (v) [COMMAND]`
 
@@ -179,5 +177,20 @@ ALIASES
   $ vc v
 ```
 
-_See code: [src/commands/vagrant.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.12/src/commands/vagrant.ts)_
+_See code: [src/commands/vagrant.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/vagrant.ts)_
+
+## `vc workspace`
+
+manage workspace
+
+```
+USAGE
+  $ vc workspace
+
+OPTIONS
+  -h, --help         show CLI help
+  -i, --hideCommand  hide commands
+```
+
+_See code: [src/commands/workspace.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/workspace.ts)_
 <!-- commandsstop -->
