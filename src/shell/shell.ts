@@ -3,9 +3,6 @@ import { IShellOptions } from './types';
 import { asyncExec } from 'async-shelljs';
 import { spawn } from 'child_process';
 
-/**
- * @see https://www.npmjs.com/package/rxjs-shell?activeTab=readme
- */
 export class Shell {
   private _vm = false;
 

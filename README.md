@@ -18,7 +18,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/1.3.14 linux-x64 node-v12.13.1
+@hoevelmanns/vcli/1.3.15 linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -97,7 +97,7 @@ OPTIONS
   -n, --create  create workspace
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.15/src/commands/create.ts)_
 
 ## `vc halt`
 
@@ -111,7 +111,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/halt.ts)_
+_See code: [src/commands/halt.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.15/src/commands/halt.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -144,7 +144,7 @@ OPTIONS
   -v, --vagrant  run generator in vagrant
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.15/src/commands/refresh.ts)_
 
 ## `vc up`
 
@@ -158,7 +158,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.15/src/commands/up.ts)_
 
 ## `vc vagrant (v) [COMMAND]`
 
@@ -177,7 +177,7 @@ ALIASES
   $ vc v
 ```
 
-_See code: [src/commands/vagrant.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/vagrant.ts)_
+_See code: [src/commands/vagrant.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.15/src/commands/vagrant.ts)_
 
 ## `vc workspace`
 
@@ -192,5 +192,5 @@ OPTIONS
   -i, --hideCommand  hide commands
 ```
 
-_See code: [src/commands/workspace.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.14/src/commands/workspace.ts)_
+_See code: [src/commands/workspace.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.15/src/commands/workspace.ts)_
 <!-- commandsstop -->

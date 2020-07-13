@@ -5,7 +5,6 @@ import { generatorSetup } from '../../generator/setup';
 import { errorTxt, whiteTxt } from '../../shared';
 import { CustomCommand } from '../../shell';
 import { vagrantSetup } from '../../shell/vagrant-setup';
-import { spawn } from 'child_process';
 
 global.config = <IConfiguration>{};
 
