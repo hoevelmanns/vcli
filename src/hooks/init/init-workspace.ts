@@ -24,17 +24,19 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
 
   if (customCommand) global.config.workspace.customCommands = [customCommand];
 
-  global.config.workspace?.customCommands?.map((item: ICustomCommand) => {
-    if (processed.includes(item.name) || item.ignore) return;
+  global.config.workspace?.customCommands
+    ?.filter((item) => !item.hidden)
+    .map((item: ICustomCommand) => {
+      if (processed.includes(item.name) || item.ignore) return;
 
-    corePlugin.commands.push((<Command.Plugin>(<Command>{
-      ...item,
-      load(): CustomCommand {
-        return new CustomCommand(item);
-      },
-    })) as Command.Plugin);
-    processed.push(item.name);
-  });
+      corePlugin.commands.push((<Command.Plugin>(<Command>{
+        ...item,
+        load(): CustomCommand {
+          return new CustomCommand(item);
+        },
+      })) as Command.Plugin);
+      processed.push(item.name);
+    });
 };
 
 export default hook;
