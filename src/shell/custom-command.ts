@@ -28,6 +28,8 @@ export class CustomCommand extends Vagrant {
       actionInfo = actionTxt(`Executing${runInVM ? ' (VM):' : ':'} ${infoTxt(command)}`),
       options: IShellOptions = { runInVM, runInProjectRoot };
 
+    console.log("command", command)
+
     cli.info(actionInfo);
 
     await this.spawn(command, options).catch(async (err: Error) => {

@@ -34,14 +34,14 @@ export class Setup implements ISetup {
         },
         {
           name: 'refreshVagrant',
-          message: 'Apply commands now? (vc refresh -v)',
+          message: 'Apply commands now? (vc refresh (r) vm)',
           type: 'confirm',
           when: (answers): boolean =>
             !!global.config.workspace?.vagrant && (answers.consoles.length > 0 || answers.packageManagers.length > 0),
         },
         {
           name: 'refresh',
-          message: 'Apply commands now? (vc refresh)',
+          message: 'Apply commands now? (vc refresh (r))',
           type: 'confirm',
           when: (answers): boolean =>
             !answers.refreshVagrant && (answers.consoles.length > 0 || answers.packageManagers.length > 0),
