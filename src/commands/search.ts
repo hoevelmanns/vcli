@@ -2,7 +2,6 @@ import Command, { flags } from '@oclif/command';
 import * as inquirer from 'inquirer';
 import { ICustomCommand, infoTxt, whiteTxt } from '../shared';
 import { CustomCommand } from '../shell';
-import { IFlag } from '@oclif/command/lib/flags';
 
 inquirer.registerPrompt('search-list', require('inquirer-search-list'));
 
@@ -35,10 +34,10 @@ export default class SearchCommand extends Command {
           pageSize: 20,
         },
       ])
-      .then(
-        async (answer: { command: string }) =>
-          await new CustomCommand(<ICustomCommand>availableCommands.find((item) => item.id === answer.command)).run(),
-      )
+      .then(async (answer: { command: string }) => {
+        const commandData = <ICustomCommand>availableCommands.find((item) => item.id === answer.command);
+        await new CustomCommand(commandData).run();
+      })
       .catch((e) => console.log(e));
   };
 }

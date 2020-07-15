@@ -29,18 +29,18 @@ export class Generator {
     const tasks = new Listr(
       [
         {
-          title: 'Parsing commands',
+          title: 'Collecting commands from defined frameworks',
           task: (): void =>
             new Listr(
               consoles?.map((consoleConfig) => ({
                 title: consoleConfig.name,
-                task: (): Promise<void> => this.parseConsoleCommands(consoleConfig),
+                task: (): Promise<void> => this.addFrameworkCommands(consoleConfig),
               })),
             ),
           enabled: (): boolean => !!consoles?.length,
         },
         {
-          title: 'Collecting commands from package managers',
+          title: 'Collecting commands from defined package managers',
           task: (): void =>
             new Listr(
               pkgManagers?.map((pgkManager) => ({
@@ -95,7 +95,7 @@ export class Generator {
     command: string,
     consoleConfig: IExternalConsole | IPackageManager,
     options?: { execute?: string; runInProjectRoot: boolean },
-  ): void | number => {
+  ): void => {
     const { topicName, name, executable } = consoleConfig;
 
     if (this.processedCommands.includes(command + name)) return;
@@ -123,7 +123,7 @@ export class Generator {
    * Parses command from console command list by given regex
    *
    */
-  private async parseConsoleCommands(consoleConfig: IExternalConsole): Promise<void> {
+  private async addFrameworkCommands(consoleConfig: IExternalConsole): Promise<void> {
     const { executable, list, regexList } = consoleConfig,
       listCommand = `${executable} ${list || ''}`.trim(),
       commandList = await this.fetchConsoleCommandList(listCommand),
@@ -148,15 +148,19 @@ export class Generator {
 
   /**
    * Stores the found commands in the workspace configuration
-   *
+   * @todo todo delete duplicate items from this.commands instead from stored commands / makes method more readable
    */
   private async storeCommands(): Promise<void> {
     const storedCustomCommands = global.config.workspace?.customCommands ?? [];
-
     await VConfig.getInstance().updateWorkspaceConfig({
       customCommands: [
-        ...this.overwrite ? [] : storedCustomCommands.filter(storedItem => !this.commands.find(command => command.id === storedItem.id)),
-        ...this.commands],
+        ...(this.overwrite
+          ? []
+          : storedCustomCommands.filter(
+              (storedItem) => !this.commands.find((command) => command.id === storedItem.id),
+            )),
+        ...this.commands,
+      ],
     });
   }
 }

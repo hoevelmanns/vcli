@@ -1,4 +1,5 @@
 import { Command, IConfig } from '@oclif/config';
+import Arg = Command.Arg;
 
 export interface IConfiguration extends IConfig {
   workspace: IWorkspaceConfig;
@@ -28,6 +29,7 @@ export interface ICustomCommand extends Command {
   name: string;
   execute: string;
   description: string;
+  args: ICustomCommandArg[];
   context: string;
   hidden: boolean; // todo
   prefix?: string;
@@ -37,6 +39,10 @@ export interface ICustomCommand extends Command {
   topicName?: string;
   ignore?: boolean;
   checked?: boolean;
+}
+
+export interface ICustomCommandArg extends Arg {
+  prefix?: string;
 }
 
 export type IPackageManager = IExternalConsole;
@@ -49,6 +55,7 @@ export interface IExternalConsole {
   topicName?: string;
   regexList: string;
   topicDescription?: string;
+  context: string;
 }
 
 export interface IVagrantConfig {

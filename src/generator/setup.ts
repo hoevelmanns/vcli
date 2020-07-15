@@ -19,14 +19,14 @@ export class Setup implements ISetup {
       } = await inquirer.prompt([
         {
           name: 'consoles',
-          message: 'Select the project frameworks:',
+          message: 'Select the project framework(s):',
           type: 'checkbox',
           choices: defaultConsoles.map((console) => console.name),
           when: defaultConsoles.length,
         },
         {
           name: 'packageManagers',
-          message: 'Select the package managers:',
+          message: 'Select the package manager(s):',
           type: 'checkbox',
           // todo get choices from founded pkg managers by package-lock.json & yarn.lock
           choices: defaultPackageManagers.map((pkgManager) => pkgManager.name),

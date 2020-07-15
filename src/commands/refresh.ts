@@ -26,7 +26,7 @@ export default class RefreshCommand extends Command {
 
   async run(): Promise<void> {
     const { flags } = this.parse(RefreshCommand);
-    const { args } = this.parse(RefreshCommand)
+    const { args } = this.parse(RefreshCommand);
 
     await VConfig.getInstance().initPackageManagerConfig();
     await new Generator().run(flags.vm || args.vm, flags.force);

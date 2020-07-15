@@ -40,11 +40,11 @@ export const defaultPackageManagers = <IPackageManager[]>[
   },
   {
     name: 'yarn',
-    executable: 'yarn',
+    executable: 'npm run',
   },
   {
     name: 'pnpm',
-    executable: 'pnpm run',
+    executable: 'npm run',
   },
   {
     name: 'composer',

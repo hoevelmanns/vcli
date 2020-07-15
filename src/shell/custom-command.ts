@@ -1,18 +1,29 @@
-import { Vagrant } from './vagrant';
-import { ICustomCommand } from '../shared/types';
-import { actionTxt, infoTxt } from '../shared';
-import { isMachineNotUp } from './errors';
-import cli from 'cli-ux';
+import { ICustomCommand, ICustomCommandArg } from '../shared/types';
+import { actionTxt, infoTxt, VConfig } from '../shared';
 import { IShellOptions } from './types';
+import * as inquirer from 'inquirer';
+import { Shell } from './shell';
+import cli from 'cli-ux';
 
-export class CustomCommand extends Vagrant {
+/**
+ * todo description & tests
+ */
+export class CustomCommand extends Shell {
   static hidden = true;
   private readonly data = <ICustomCommand>{};
+  protected execute = '';
+  protected givenArgs: string[] = [];
 
   constructor(private item: ICustomCommand) {
     super();
     this.data = item;
-    return this;
+  }
+
+  /**
+   * @returns ICustomCommandArg[]
+   */
+  get requiredArgs(): ICustomCommandArg[] {
+    return this.data.args?.filter((arg) => arg.required);
   }
 
   /**
@@ -21,25 +32,80 @@ export class CustomCommand extends Vagrant {
    */
   public run = async (forceRunInVM = false): Promise<void> => {
     const { execute } = this.data,
-      args = process.argv,
-      command = [execute, args.slice(3, args.length).join(' ')].join(' ').trim(),
+      processArgs = process.argv,
+      command = [execute, processArgs.slice(3, processArgs.length).join(' ')].join(' ').trim(),
       runInVM = this.data.runInVM ?? forceRunInVM,
       runInProjectRoot = this.data.runInProjectRoot,
-      actionInfo = actionTxt(`Executing${runInVM ? ' (VM):' : ':'} ${infoTxt(command)}`),
       options: IShellOptions = { runInVM, runInProjectRoot };
 
-    console.log("command", command)
+    this.execute = command;
+    this.givenArgs = command
+      .replace(execute, '')
+      .trim()
+      .split(' ')
+      .filter((arg) => arg !== '');
 
-    cli.info(actionInfo);
+    await this.prepareGivenArguments();
 
-    await this.spawn(command, options).catch(async (err: Error) => {
-      if (isMachineNotUp(err)) {
-        await this.startMachineIfNotUp();
-        return this.run(runInVM);
-      }
-    });
+    cli.info(actionTxt(`Executing${runInVM ? ' (VM):' : ':'} ${infoTxt(this.execute)}`));
+
+    await this.spawn(this.execute, options);
   };
 
+  /**
+   * @returns void
+   */
+  private async prepareGivenArguments(): Promise<void> {
+    if (!this.givenArgs.length) return await this.inquireArguments();
+
+    const args: { [key: string]: string } = {};
+
+    this.requiredArgs?.map((reqArg, index) => (args[reqArg.name] = this.givenArgs[index]));
+
+    if (!Object.keys(args).length) return;
+
+    this.givenArgs.forEach((arg) => (this.execute = this.execute.replace(arg, '').trim()));
+
+    this.formatExecuteString(args);
+  }
+
+  /**
+   * @returns void
+   */
+  private inquireArguments = async (): Promise<void> => {
+    if (!this.requiredArgs) return;
+
+    const answers = await inquirer.prompt(
+      this.requiredArgs.map((arg) => ({
+        type: 'search-list',
+        message: arg.description,
+        name: arg.name,
+        choices: arg.options,
+      })),
+    );
+
+    this.formatExecuteString(answers);
+  };
+
+  /**
+   *
+   * @param args
+   * @returns void
+   */
+  private formatExecuteString(args: { [key: string]: {} }): void {
+    this.execute = [
+      this.execute,
+      Object.entries(args)
+        .map(([key, val]) => (this.requiredArgs.find((arg) => arg.name === key)?.prefix || '') + val)
+        .join(' '),
+    ].join(' ');
+
+    console.log('this', this.execute);
+  }
+
+  /**
+   * @returns CustomCommand
+   */
   public get vagrant(): CustomCommand {
     this.data.runInVM = true;
     return this;
