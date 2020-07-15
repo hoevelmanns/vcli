@@ -15,7 +15,7 @@ export default class VagrantCommand extends Command {
 
   static args = [{ name: 'composer' }, { name: 'npm' }, { name: 'yarn' }];
 
-  static flags = {
+  static flags: flags.Input<any> = {
     ...Command.flags,
     help: flags.help({ char: 'h' }),
     up: flags.boolean({

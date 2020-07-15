@@ -2,6 +2,7 @@ import Command, { flags } from '@oclif/command';
 import * as inquirer from 'inquirer';
 import { ICustomCommand, infoTxt, whiteTxt } from '../shared';
 import { CustomCommand } from '../shell';
+import { IFlag } from '@oclif/command/lib/flags';
 
 inquirer.registerPrompt('search-list', require('inquirer-search-list'));
 
@@ -10,7 +11,7 @@ export default class SearchCommand extends Command {
   static aliases = ['s'];
   static description = 'search for commands, apps, etc.'; // todo description
 
-  static flags = {
+  static flags: flags.Input<any> = {
     ...Command.flags,
     help: flags.help({ char: 'h' }),
   };

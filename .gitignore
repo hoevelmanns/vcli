@@ -17,3 +17,4 @@ src/commands/**/*
 !src/commands/up.ts
 !src/commands/refresh.ts
 /workspace-setup-scripts-todo/
+/pnpm-lock.yaml

@@ -6,7 +6,7 @@ export default class WorkspaceCommand extends Command {
   static hidden = false;
   static description = 'manage workspace'; // todo description
 
-  static flags = {
+  static flags: flags.Input<any> = {
     ...Command.flags,
     help: flags.help({ char: 'h' }),
     hideCommand: flags.boolean({

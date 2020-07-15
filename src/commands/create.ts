@@ -5,7 +5,7 @@ export default class Create extends Command {
 
   static description = 'create workspace'; // todo description
 
-  static flags = {
+  static flags: flags.Input<any> = {
     ...Command.flags,
     help: flags.help({ char: 'h' }),
     create: flags.boolean({ char: 'n', description: 'create workspace' }),

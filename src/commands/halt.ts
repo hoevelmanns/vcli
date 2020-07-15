@@ -8,7 +8,7 @@ export default class Halt extends Command {
 
   static usage = 'halt';
 
-  static flags = {
+  static flags: flags.Input<any> = {
     ...Command.flags,
     help: flags.help({ char: 'h' }),
   };

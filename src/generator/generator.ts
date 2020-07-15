@@ -26,7 +26,6 @@ export class Generator {
 
     if (this.runInVagrant && !(await vagrant.isMachineUp())) await vagrant.startMachine(true);
 
-    // todo
     const tasks = new Listr(
       [
         {
@@ -72,7 +71,7 @@ export class Generator {
    */
   private addPackageManagerCommands(pkgManager: IPackageManager): void {
     let config: { [key: string]: string | undefined } | undefined;
-    if (['npm', 'yarn'].includes(pkgManager.name)) config = global.config?.workspace?.packageJson;
+    if (['npm', 'yarn', 'pnpm'].includes(pkgManager.name)) config = global.config?.workspace?.packageJson;
     if (pkgManager.name === 'composer') config = global.config?.workspace?.composerJson;
 
     if (!config?.scripts) return;
@@ -153,7 +152,7 @@ export class Generator {
    */
   private async storeCommands(): Promise<void> {
     const currentCustomCommands = global.config.workspace?.customCommands ?? [],
-      externalCommands = this.force ? this.commands : [...currentCustomCommands, ...this.commands];
+      externalCommands = this.force ? this.commands : [...currentCustomCommands, ...this.commands]; // todo use merge
     await VConfig.getInstance().updateWorkspaceConfig({ customCommands: externalCommands });
   }
 }

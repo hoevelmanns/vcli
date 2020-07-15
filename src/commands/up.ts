@@ -8,7 +8,7 @@ export default class Up extends Command {
 
   static usage = 'up';
 
-  static flags = {
+  static flags: flags.Input<any> = {
     ...Command.flags,
     help: flags.help({ char: 'h' }),
   };

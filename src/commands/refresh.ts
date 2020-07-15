@@ -7,7 +7,7 @@ export default class Refresh extends Command {
 
   static description = 'add commands from external consoles defined in .vclirc.json to VCLI';
 
-  static flags = {
+  static flags: flags.Input<any> = {
     ...Command.flags,
     help: flags.help({ char: 'h' }),
     vagrant: flags.boolean({
