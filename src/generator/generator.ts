@@ -8,7 +8,7 @@ const Listr = require('listr');
 export class Generator {
   private commands: ICustomCommand[] = [];
   private runInVagrant = false;
-  private force = false;
+  private overwrite = false;
   private processedCommands: string[] = [];
 
   get vagrant(): Generator {
@@ -19,7 +19,7 @@ export class Generator {
   async run(runInVagrant = false, force = false): Promise<void> {
     const { consoles, pkgManagers } = global?.config?.workspace;
 
-    this.force = force;
+    this.overwrite = force;
     this.runInVagrant = runInVagrant ?? this.runInVagrant;
 
     if (!(consoles && pkgManagers)) return;
@@ -147,12 +147,16 @@ export class Generator {
   };
 
   /**
-   * Stores the parsed commands in the workspace configuration file
+   * Stores the found commands in the workspace configuration
    *
    */
   private async storeCommands(): Promise<void> {
-    const currentCustomCommands = global.config.workspace?.customCommands ?? [],
-      externalCommands = this.force ? this.commands : [...currentCustomCommands, ...this.commands]; // todo use merge
-    await VConfig.getInstance().updateWorkspaceConfig({ customCommands: externalCommands });
+    const storedCustomCommands = global.config.workspace?.customCommands ?? [];
+
+    await VConfig.getInstance().updateWorkspaceConfig({
+      customCommands: [
+        ...this.overwrite ? [] : storedCustomCommands.filter(storedItem => !this.commands.find(command => command.id === storedItem.id)),
+        ...this.commands],
+    });
   }
 }

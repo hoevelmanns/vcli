@@ -5,6 +5,7 @@ import { VConfig } from '../config';
 export default class WorkspaceCommand extends Command {
   static hidden = false;
   static description = 'manage workspace'; // todo description
+  static aliases = ['ws'];
 
   static flags: flags.Input<any> = {
     ...Command.flags,
