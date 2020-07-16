@@ -99,8 +99,6 @@ export class CustomCommand extends Shell {
         .map(([key, val]) => (this.requiredArgs.find((arg) => arg.name === key)?.prefix || '') + val)
         .join(' '),
     ].join(' ');
-
-    console.log('this', this.execute);
   }
 
   /**
