@@ -27,7 +27,7 @@ export default class WorkspaceCommand extends Command {
           type: 'checkbox',
           pageSize: 50,
           choices: global.config.workspace.customCommands?.map((item) => ({
-            name: item.name,
+            name: item.id,
             checked: !item.hidden,
           })),
           when: (answers): boolean => !!global.config.workspace.customCommands?.length,
@@ -38,7 +38,7 @@ export default class WorkspaceCommand extends Command {
         const { customCommands } = global.config.workspace;
 
         customCommands?.forEach((item) => {
-          if (!questions.displayCommands.includes(item.name)) {
+          if (!questions.displayCommands.includes(item.id)) {
             item.hidden = true;
           }
         });

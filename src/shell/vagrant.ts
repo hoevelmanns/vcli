@@ -1,11 +1,10 @@
-import { Shell } from './shell';
 import cli from 'cli-ux';
 import { infoTxt, notify, warningTxt } from '../shared';
-import { ChildProcess } from 'child_process';
+import { shell } from './shell';
 
 const confirm = require('@inquirer/confirm');
 
-export class Vagrant extends Shell {
+export class Vagrant {
   /**
    * Starts the vagrant machine
    */
@@ -15,7 +14,8 @@ export class Vagrant extends Shell {
 
     cli.info(actionInfo);
 
-    this.spawn('vagrant up', { silent })
+    shell
+      .spawn('vagrant up', { silent })
       .then(() => notify('Vagrant successfully started'))
       .catch((err) => notify(`Error starting VM: ${err}`));
   };
@@ -28,13 +28,14 @@ export class Vagrant extends Shell {
 
     cli.info(actionInfo);
 
-    this.spawn('vagrant halt', { silent })
+    shell
+      .spawn('vagrant halt', { silent })
       .then(() => notify('Vagrant stopped'))
       .catch((err) => notify(`Error halting VM: ${err}`));
   };
 
   isMachineUp = async (): Promise<boolean> =>
-    this.exec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
+    shell.exec('vagrant status', { silent: true }).then((res) => res.includes('The VM is running'));
 
   startMachineIfNotUp = async (silent = true): Promise<void> => {
     await cli.action.pauseAsync(async () => {

@@ -28,7 +28,7 @@ export default class SearchCommand extends Command {
           choices: availableCommands
             .filter((item) => !item.hidden)
             .map((item) => ({
-              name: infoTxt(item.name) + ' ' + whiteTxt(item.description),
+              name: infoTxt(item.id) + ' ' + whiteTxt(item.description),
               value: item.id,
             })),
           pageSize: 20,

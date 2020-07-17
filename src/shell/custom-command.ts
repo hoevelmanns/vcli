@@ -1,22 +1,23 @@
 import { ICustomCommand, ICustomCommandArg } from '../shared/types';
-import { actionTxt, infoTxt, VConfig } from '../shared';
+import { isArgumentMissing } from './errors';
+import { Command } from '@oclif/command';
 import { IShellOptions } from './types';
 import * as inquirer from 'inquirer';
-import { Shell } from './shell';
+import { shell } from './shell';
 import cli from 'cli-ux';
+
+interface IArgFlag {
+  [key: string]: unknown;
+}
 
 /**
  * todo description & tests
  */
-export class CustomCommand extends Shell {
+export class CustomCommand extends Command {
   static hidden = true;
-  private readonly data = <ICustomCommand>{};
-  protected execute = '';
-  protected givenArgs: string[] = [];
 
-  constructor(private item: ICustomCommand) {
-    super();
-    this.data = item;
+  constructor(private data: ICustomCommand) {
+    super(process.argv.slice(3, process.argv.length), global.config);
   }
 
   /**
@@ -30,44 +31,21 @@ export class CustomCommand extends Shell {
    *
    * @param forceRunInVM
    */
-  public run = async (forceRunInVM = false): Promise<void> => {
-    const { execute } = this.data,
-      processArgs = process.argv,
-      command = [execute, processArgs.slice(3, processArgs.length).join(' ')].join(' ').trim(),
-      runInVM = this.data.runInVM ?? forceRunInVM,
+  run = async (forceRunInVM = false): Promise<void> => {
+    const runInVM = this.data.runInVM ?? forceRunInVM,
       runInProjectRoot = this.data.runInProjectRoot,
       options: IShellOptions = { runInVM, runInProjectRoot };
 
-    this.execute = command;
-    this.givenArgs = command
-      .replace(execute, '')
-      .trim()
-      .split(' ')
-      .filter((arg) => arg !== '');
+    try {
+      const { args, flags } = this.parse(<any>this.data);
+      this.buildExecuteString({ ...args, ...(flags as IArgFlag) });
+    } catch (e) {
+      if (!isArgumentMissing(e)) return console.log(e.message);
+      await this.inquireArguments();
+    }
 
-    await this.prepareGivenArguments();
-
-    cli.info(actionTxt(`Executing${runInVM ? ' (VM):' : ':'} ${infoTxt(this.execute)}`));
-
-    await this.spawn(this.execute, options);
+    await shell.spawn(this.data.execute, options);
   };
-
-  /**
-   * @returns void
-   */
-  private async prepareGivenArguments(): Promise<void> {
-    if (!this.givenArgs.length) return await this.inquireArguments();
-
-    const args: { [key: string]: string } = {};
-
-    this.requiredArgs?.map((reqArg, index) => (args[reqArg.name] = this.givenArgs[index]));
-
-    if (!Object.keys(args).length) return;
-
-    this.givenArgs.forEach((arg) => (this.execute = this.execute.replace(arg, '').trim()));
-
-    this.formatExecuteString(args);
-  }
 
   /**
    * @returns void
@@ -75,7 +53,7 @@ export class CustomCommand extends Shell {
   private inquireArguments = async (): Promise<void> => {
     if (!this.requiredArgs) return;
 
-    const answers = await inquirer.prompt(
+    const args = await inquirer.prompt(
       this.requiredArgs.map((arg) => ({
         type: 'search-list',
         message: arg.description,
@@ -84,7 +62,9 @@ export class CustomCommand extends Shell {
       })),
     );
 
-    this.formatExecuteString(answers);
+    this.buildExecuteString(args);
+
+    await cli.prompt('What is your password?', { prompt: `> ${this.data.execute} `, required: false });
   };
 
   /**
@@ -92,11 +72,11 @@ export class CustomCommand extends Shell {
    * @param args
    * @returns void
    */
-  private formatExecuteString(args: { [key: string]: {} }): void {
-    this.execute = [
-      this.execute,
+  private buildExecuteString(args: IArgFlag): void {
+    this.data.execute = [
+      this.data.execute,
       Object.entries(args)
-        .map(([key, val]) => (this.requiredArgs.find((arg) => arg.name === key)?.prefix || '') + val)
+        .map(([key, val]) => (this.data.args.find((arg) => arg.name === key)?.passAsFlag ? `--${key}=${val}` : val))
         .join(' '),
     ].join(' ');
   }

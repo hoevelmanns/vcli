@@ -76,6 +76,7 @@ export class Generator {
 
     if (!config?.scripts) return;
 
+    // todo parse variables from command and generate args & flags
     Object.entries(config.scripts).forEach(([commandName]) =>
       this.addCommand('', commandName.trim(), pkgManager, { runInProjectRoot: true }),
     );
@@ -94,7 +95,7 @@ export class Generator {
     description: string,
     command: string,
     consoleConfig: IExternalConsole | IPackageManager,
-    options?: { execute?: string; runInProjectRoot: boolean },
+    options?: { execute?: string; runInProjectRoot: boolean; passAsFlag?: boolean },
   ): void => {
     const { topicName, name, executable } = consoleConfig;
 
@@ -107,7 +108,6 @@ export class Generator {
       flags: {},
       hidden: false,
       id: topicName ? topicName + ':' + command : command, // todo
-      name: topicName ? topicName + ':' + command : command, // todo
       description,
       execute: options?.execute || `${executable} ${command}`,
       type: CommandType.external,

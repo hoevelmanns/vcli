@@ -28,7 +28,7 @@ export class Shell {
   };
 
   spawn = async (command: string, options?: IShellOptions): Promise<string> =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       spawn(this.prepareCommand(command, options), { stdio: 'inherit', shell: true }).on(
         'exit',
         (error) => !error || resolve,
@@ -58,3 +58,5 @@ export class Shell {
     return command.trim();
   }
 }
+
+export const shell = new Shell();

@@ -26,7 +26,7 @@ export interface IWorkspaceConfig {
 
 export interface ICustomCommand extends Command {
   id: string;
-  name: string;
+  //name: string;
   execute: string;
   description: string;
   args: ICustomCommandArg[];
@@ -42,7 +42,8 @@ export interface ICustomCommand extends Command {
 }
 
 export interface ICustomCommandArg extends Arg {
-  prefix?: string;
+  variableConstruct?: string;
+  passAsFlag?: boolean;
 }
 
 export type IPackageManager = IExternalConsole;

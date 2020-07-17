@@ -1,12 +1,11 @@
 import { defaultConfigFile, defaultWorkspace } from '../shared/types/defaults';
 import { successTxt } from '../shared';
 import { IWorkspaceConfig } from '../shared/types';
-import { IConfig } from '@oclif/config';
+import { Command, IConfig, IPlugin } from '@oclif/config';
 import { v4 as uuidv4 } from 'uuid';
 import * as findUp from 'find-up';
 import cli from 'cli-ux';
 import { createOrRenameSymlink } from '../shared/utils';
-
 const fs = require('fs-extra'); // todo use @types/fs-extra if fixed
 
 export class VConfig {
@@ -122,6 +121,20 @@ export class VConfig {
     if (!save) return Promise.resolve();
 
     await fs.writeJSON(VConfig.workspaceConfigFile, workspaceFileContent, { spaces: 2, flag: 'w' });
+  }
+
+  getCliPlugin(): IPlugin[] {
+    return global.config.plugins.filter((plugin) => plugin.name.includes(global.config.name));
+  }
+
+  getCliCommands(): Command.Plugin[] | undefined {
+    return this.getCliPlugin()
+      .map((cliPlugin) => cliPlugin.commands)
+      .shift();
+  }
+
+  getCliCommandById(id: string): Command | undefined {
+    return this.getCliCommands()?.find((command) => command.id === id);
   }
 }
 

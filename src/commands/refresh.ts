@@ -25,6 +25,7 @@ export default class RefreshCommand extends Command {
   };
 
   async run(): Promise<void> {
+    this.argv;
     const { flags } = this.parse(RefreshCommand);
     const { args } = this.parse(RefreshCommand);
 
