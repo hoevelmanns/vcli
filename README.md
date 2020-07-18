@@ -18,7 +18,7 @@ $ npm install -g @hoevelmanns/vcli
 $ vc COMMAND
 running command...
 $ vc (-v|--version|version)
-@hoevelmanns/vcli/1.3.24 linux-x64 node-v12.13.1
+@hoevelmanns/vcli/1.3.25 linux-x64 node-v12.13.1
 $ vc --help [COMMAND]
 USAGE
   $ vc COMMAND
@@ -96,7 +96,7 @@ OPTIONS
   -n, --create  create workspace
 ```
 
-_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.24/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.25/src/commands/create.ts)_
 
 ## `vc help [COMMAND]`
 
@@ -132,7 +132,7 @@ ALIASES
   $ vc r
 ```
 
-_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.24/src/commands/refresh.ts)_
+_See code: [src/commands/refresh.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.25/src/commands/refresh.ts)_
 
 ## `vc search`
 
@@ -149,7 +149,7 @@ ALIASES
   $ vc s
 ```
 
-_See code: [src/commands/search.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.24/src/commands/search.ts)_
+_See code: [src/commands/search.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.25/src/commands/search.ts)_
 
 ## `vc vm (v) [COMMAND]`
 
@@ -168,7 +168,7 @@ ALIASES
   $ vc v
 ```
 
-_See code: [src/commands/vm.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.24/src/commands/vm.ts)_
+_See code: [src/commands/vm.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.25/src/commands/vm.ts)_
 
 ## `vc workspace`
 
@@ -186,5 +186,5 @@ ALIASES
   $ vc ws
 ```
 
-_See code: [src/commands/workspace.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.24/src/commands/workspace.ts)_
+_See code: [src/commands/workspace.ts](https://github.com/hoevelmanns/vcli/blob/v1.3.25/src/commands/workspace.ts)_
 <!-- commandsstop -->

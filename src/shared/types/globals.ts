@@ -19,12 +19,13 @@ export interface IWorkspaceConfig {
   consoles?: IExternalConsole[];
   pkgManagers?: IPackageManager[];
   topics?: { [key: string]: string };
+  globals?: { [key: string]: any }; // todo
   customCommands?: ICustomCommand[];
   packageJson?: { [key: string]: string | undefined };
   composerJson?: { [key: string]: string | undefined };
 }
 
-export interface ICustomCommand extends Command {
+export interface ICustomCommand extends Omit<Command, 'args'> {
   id: string;
   //name: string;
   execute: string;
@@ -41,9 +42,10 @@ export interface ICustomCommand extends Command {
   checked?: boolean;
 }
 
-export interface ICustomCommandArg extends Arg {
+export interface ICustomCommandArg extends Omit<Arg, 'options'> {
   variableConstruct?: string;
   passAsFlag?: boolean;
+  options?: string | string[];
 }
 
 export type IPackageManager = IExternalConsole;

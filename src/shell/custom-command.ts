@@ -1,14 +1,10 @@
 import { ICustomCommand, ICustomCommandArg } from '../shared/types';
+import { IArgFlag, IShellOptions } from './types';
 import { isArgumentMissing } from './errors';
 import { Command } from '@oclif/command';
-import { IShellOptions } from './types';
 import * as inquirer from 'inquirer';
 import { shell } from './shell';
 import cli from 'cli-ux';
-
-interface IArgFlag {
-  [key: string]: unknown;
-}
 
 /**
  * todo description & tests
@@ -54,18 +50,36 @@ export class CustomCommand extends Command {
     if (!this.requiredArgs) return;
 
     const args = await inquirer.prompt(
-      this.requiredArgs.map((arg) => ({
-        type: 'search-list',
-        message: arg.description,
-        name: arg.name,
-        choices: arg.options,
-      })),
+      this.requiredArgs.map((arg) => {
+        const argOptions = CustomCommand.getArgumentOptions(arg);
+        return {
+          type: argOptions ? 'search-list' : 'input',
+          message: arg.description,
+          name: arg.name,
+          choices: argOptions,
+        };
+      }),
     );
 
     this.buildExecuteString(args);
 
     await cli.prompt('What is your password?', { prompt: `> ${this.data.execute} `, required: false });
   };
+
+  /**
+   *
+   * @param arg
+   */
+  static getArgumentOptions(arg: ICustomCommandArg): string[] | undefined {
+    if (typeof arg.options === 'string') {
+      // get options from globals
+      return global.config.workspace?.globals?.hasOwnProperty(arg.options)
+        ? global.config.workspace?.globals[arg.options]
+        : undefined;
+    }
+
+    return arg.options;
+  }
 
   /**
    *
