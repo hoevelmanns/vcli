@@ -43,7 +43,6 @@ export interface ICustomCommand extends Omit<Command, 'args'> {
 }
 
 export interface ICustomCommandArg extends Omit<Arg, 'options'> {
-  variableConstruct?: string;
   passAsFlag?: boolean;
   options?: string | string[];
 }

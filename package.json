@@ -2,7 +2,7 @@
   "name": "@hoevelmanns/vcli",
   "private": false,
   "description": "A universal and extensible CLI for Shopware, Laravel and others with vagrant support",
-  "version": "1.3.25",
+  "version": "1.3.26",
   "author": "Marcelle Hövelmanns",
   "bin": {
     "vc": "bin/run"

@@ -1,5 +1,5 @@
 import { Hook, Command } from '@oclif/config';
-import { IConfiguration, ICustomCommand } from '../../shared/types';
+import { IConfiguration, ICustomCommand, ICustomCommandArg } from '../../shared/types';
 import { vcConfig, VConfig } from '../../config';
 import { generatorSetup } from '../../generator/setup';
 import { errorTxt, whiteTxt } from '../../shared';
@@ -8,6 +8,20 @@ import { vagrantSetup } from '../../shell/vagrant-setup';
 import { flags } from '@oclif/command';
 
 global.config = <IConfiguration>{};
+
+/**
+ *
+ * @param arg
+ */
+const getArgumentOptions = (arg: ICustomCommandArg): string[] | undefined => {
+  if (typeof arg.options === 'string') {
+    return global.config.workspace?.globals?.hasOwnProperty(arg.options)
+      ? global.config.workspace?.globals[arg.options]
+      : undefined;
+  }
+
+  return arg.options;
+};
 
 const hook: Hook<'init'> = async function (opts): Promise<void> {
   if (!(await vcConfig.initWorkspace(opts.config))) {
@@ -33,6 +47,7 @@ const hook: Hook<'init'> = async function (opts): Promise<void> {
 
       // adds help flag
       if (!item.flags?.help) item.flags = { ...{ help: flags.help({ char: 'h' }) }, ...item.flags };
+      item.args.map((arg: ICustomCommandArg) => (arg.options = getArgumentOptions(arg)));
 
       cliPluginCommands?.push(<Command.Plugin>(<Command>{
         ...item,

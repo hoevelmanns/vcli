@@ -8,7 +8,6 @@ export interface IArgFlag {
   [key: string]: unknown;
 }
 
-
 export interface IShellOptions extends IExecFunctionOptions {
   runInVM?: boolean;
   runInProjectRoot?: boolean;

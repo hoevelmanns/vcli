@@ -4,16 +4,13 @@ import { isArgumentMissing } from './errors';
 import { Command } from '@oclif/command';
 import * as inquirer from 'inquirer';
 import { shell } from './shell';
-import cli from 'cli-ux';
 
-/**
- * todo description & tests
- */
 export class CustomCommand extends Command {
   static hidden = true;
 
   constructor(private data: ICustomCommand) {
     super(process.argv.slice(3, process.argv.length), global.config);
+    inquirer.registerPrompt('search-list', require('inquirer-search-list'));
   }
 
   /**
@@ -31,6 +28,11 @@ export class CustomCommand extends Command {
     const runInVM = this.data.runInVM ?? forceRunInVM,
       runInProjectRoot = this.data.runInProjectRoot,
       options: IShellOptions = { runInVM, runInProjectRoot };
+
+    if (['v', 'vm'].indexOf(process.argv[2]) > -1) {
+      const execute = process.argv.slice(3, process.argv.length).join(' ');
+      return await shell.spawn(execute, options);
+    }
 
     try {
       const { args, flags } = this.parse(<any>this.data);
@@ -50,36 +52,16 @@ export class CustomCommand extends Command {
     if (!this.requiredArgs) return;
 
     const args = await inquirer.prompt(
-      this.requiredArgs.map((arg) => {
-        const argOptions = CustomCommand.getArgumentOptions(arg);
-        return {
-          type: argOptions ? 'search-list' : 'input',
-          message: arg.description,
-          name: arg.name,
-          choices: argOptions,
-        };
-      }),
+      this.requiredArgs.map((arg) => ({
+        type: 'search-list',
+        message: arg.description,
+        name: arg.name,
+        choices: Array.isArray(arg?.options) ? arg?.options?.map((option) => ({ name: option })) : arg?.options,
+      })),
     );
 
     this.buildExecuteString(args);
-
-    await cli.prompt('What is your password?', { prompt: `> ${this.data.execute} `, required: false });
   };
-
-  /**
-   *
-   * @param arg
-   */
-  static getArgumentOptions(arg: ICustomCommandArg): string[] | undefined {
-    if (typeof arg.options === 'string') {
-      // get options from globals
-      return global.config.workspace?.globals?.hasOwnProperty(arg.options)
-        ? global.config.workspace?.globals[arg.options]
-        : undefined;
-    }
-
-    return arg.options;
-  }
 
   /**
    *

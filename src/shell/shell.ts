@@ -27,7 +27,7 @@ export class Shell {
     });
   };
 
-  spawn = async (command: string, options?: IShellOptions): Promise<string> =>
+  spawn = async (command: string, options?: IShellOptions): Promise<void> =>
     new Promise((resolve) => {
       spawn(this.prepareCommand(command, options), { stdio: 'inherit', shell: true }).on(
         'exit',
