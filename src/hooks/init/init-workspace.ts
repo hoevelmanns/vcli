@@ -19,11 +19,11 @@ const getArgumentOptions = (arg: ICustomCommandArg): string[] | undefined => {
       ? global.config.workspace?.config[arg.options]
       : undefined;
   }
-
+  // todo check if array empty
   return arg.options;
 };
 
-const hook: Hook<'init'> = async function (opts): Promise<void> {
+const hook: Hook<'init'> = async function(opts): Promise<void> {
   if (!(await vcConfig.initWorkspace(opts.config))) {
     await vcConfig
       .createWorkspace()

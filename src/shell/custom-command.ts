@@ -29,6 +29,7 @@ export class CustomCommand extends Command {
    * @param displayPrompt
    */
   run = async (forceRunInVM = false, oclifConfig?: IConfig, displayPrompt = false): Promise<void> => {
+
     const runInVM = this.data.runInVM ?? forceRunInVM,
       runInProjectRoot = this.data.runInProjectRoot,
       options: IShellOptions = { runInVM, runInProjectRoot };
@@ -49,9 +50,7 @@ export class CustomCommand extends Command {
 
     if (displayPrompt) {
       this.data.execute = (
-        this.data.execute +
-        ' ' +
-        (await cli.prompt('', { prompt: `> ${this.data.execute.trim()} `, required: false }))
+        this.data.execute + (await cli.prompt('', { prompt: `> ${this.data.execute.trim()}`, required: false }))
       ).trim();
     }
 
@@ -64,7 +63,7 @@ export class CustomCommand extends Command {
   private inquireArguments = async (): Promise<void> => {
     const args = await inquirer.prompt(
       this.requiredArgs.map((arg) => ({
-        type: 'search-list',
+        type: Array.isArray(arg?.options) ? 'search-list': 'input',
         message: arg.description,
         name: arg.name,
         choices: Array.isArray(arg?.options) ? arg?.options?.map((option) => ({ name: option })) : arg?.options,

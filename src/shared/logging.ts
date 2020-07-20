@@ -7,4 +7,5 @@ export const errorTxt = chalk.red,
   infoTxtReverse = chalk.bgCyan.white,
   commandTxt = chalk.magenta,
   actionTxt = chalk.bold,
-  whiteTxt = chalk.white;
+  whiteTxt = chalk.white,
+  underline = chalk.underline;
