@@ -4,6 +4,8 @@ import { isArgumentMissing } from './errors';
 import { Command } from '@oclif/command';
 import * as inquirer from 'inquirer';
 import { shell } from './shell';
+import { cli } from 'cli-ux';
+import { IConfig } from '@oclif/config';
 
 export class CustomCommand extends Command {
   static hidden = true;
@@ -23,8 +25,10 @@ export class CustomCommand extends Command {
   /**
    *
    * @param forceRunInVM
+   * @param oclifConfig
+   * @param displayPrompt
    */
-  run = async (forceRunInVM = false): Promise<void> => {
+  run = async (forceRunInVM = false, oclifConfig?: IConfig, displayPrompt = false): Promise<void> => {
     const runInVM = this.data.runInVM ?? forceRunInVM,
       runInProjectRoot = this.data.runInProjectRoot,
       options: IShellOptions = { runInVM, runInProjectRoot };
@@ -40,6 +44,15 @@ export class CustomCommand extends Command {
     } catch (e) {
       if (!isArgumentMissing(e)) return console.log(e.message);
       await this.inquireArguments();
+      displayPrompt = true;
+    }
+
+    if (displayPrompt) {
+      this.data.execute = (
+        this.data.execute +
+        ' ' +
+        (await cli.prompt('', { prompt: `> ${this.data.execute.trim()} `, required: false }))
+      ).trim();
     }
 
     await shell.spawn(this.data.execute, options);
@@ -49,8 +62,6 @@ export class CustomCommand extends Command {
    * @returns void
    */
   private inquireArguments = async (): Promise<void> => {
-    if (!this.requiredArgs) return;
-
     const args = await inquirer.prompt(
       this.requiredArgs.map((arg) => ({
         type: 'search-list',

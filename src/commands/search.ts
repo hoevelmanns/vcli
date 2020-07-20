@@ -36,7 +36,7 @@ export default class SearchCommand extends Command {
       ])
       .then(async (answer: { command: string }) => {
         const commandData = <ICustomCommand>availableCommands.find((item) => item.id === answer.command);
-        await new CustomCommand(commandData).run();
+        await new CustomCommand(commandData).run(false, this.config, true);
       })
       .catch((e) => console.log(e));
   };
