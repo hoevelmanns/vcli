@@ -15,8 +15,8 @@ global.config = <IConfiguration>{};
  */
 const getArgumentOptions = (arg: ICustomCommandArg): string[] | undefined => {
   if (typeof arg.options === 'string') {
-    return global.config.workspace?.globals?.hasOwnProperty(arg.options)
-      ? global.config.workspace?.globals[arg.options]
+    return global.config.workspace?.config?.hasOwnProperty(arg.options)
+      ? global.config.workspace?.config[arg.options]
       : undefined;
   }
 

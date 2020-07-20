@@ -19,7 +19,7 @@ export interface IWorkspaceConfig {
   consoles?: IExternalConsole[];
   pkgManagers?: IPackageManager[];
   topics?: { [key: string]: string };
-  globals?: { [key: string]: any }; // todo
+  config?: { [key: string]: any };
   customCommands?: ICustomCommand[];
   packageJson?: { [key: string]: string | undefined };
   composerJson?: { [key: string]: string | undefined };

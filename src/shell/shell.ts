@@ -19,7 +19,7 @@ export class Shell {
   exec = async (
     command: string,
     options?: IShellOptions,
-    retry = 0, // todo config
+    retry = 0,
   ): Promise<string> => {
     return asyncExec(this.prepareCommand(command, options), options).catch(async (err: Error) => {
       if (isMachineLocked(err) && retry <= 5) await this.exec(command, options, retry++);
